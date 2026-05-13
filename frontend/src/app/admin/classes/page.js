@@ -76,32 +76,32 @@ export default function AdminClasses() {
         {/* Class Cards */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px', marginTop: '24px' }}>
           {classes.map(cls => (
-            <div key={cls._id} className="card" style={{ overflow: 'hidden' }}>
-              <div style={{ padding: '20px', borderBottom: '1px solid #f1f5f9' }}>
+            <div key={cls._id} className="card card-3d" style={{ overflow: 'hidden' }}>
+              <div style={{ padding: '20px', borderBottom: '1px solid var(--border-color)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                  <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>{cls.name}</h3>
+                  <h3 className="animate-text-hover" style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--heading-accent)' }}>{cls.name}</h3>
                   <span className="badge" style={{ background: categoryColors[cls.category]?.bg, color: categoryColors[cls.category]?.color }}>{cls.category}</span>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                  <div style={{ padding: '10px', background: '#f8fafc', borderRadius: '8px' }}>
-                    <p style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>Students</p>
-                    <p style={{ fontSize: '1.2rem', fontWeight: 700, color: '#1e293b' }}>{cls.students}</p>
+                  <div className="stat-zoom" style={{ padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+                    <p style={{ fontSize: '0.7rem', color: 'var(--gray-400)', textTransform: 'uppercase', fontWeight: 700 }}>Students</p>
+                    <p style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--gray-900)' }}>{cls.students}</p>
                   </div>
-                  <div style={{ padding: '10px', background: '#f8fafc', borderRadius: '8px' }}>
-                    <p style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>Monthly Fee</p>
-                    <p style={{ fontSize: '1.2rem', fontWeight: 700, color: '#1e293b' }}>Rs {cls.monthlyFee.toLocaleString()}</p>
+                  <div className="stat-zoom" style={{ padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+                    <p style={{ fontSize: '0.7rem', color: 'var(--gray-400)', textTransform: 'uppercase', fontWeight: 700 }}>Monthly Fee</p>
+                    <p style={{ fontSize: '1.3rem', fontWeight: 800, color: '#facc15' }}>Rs {cls.monthlyFee.toLocaleString()}</p>
                   </div>
                 </div>
               </div>
               <div style={{ padding: '16px 20px' }}>
-                <p style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '8px' }}>Sections: {cls.sections.join(', ')}</p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '12px' }}>
-                  {cls.subjects.slice(0, 5).map((s, i) => <span key={i} className="badge badge-info" style={{ fontSize: '0.65rem' }}>{s}</span>)}
-                  {cls.subjects.length > 5 && <span className="badge badge-primary" style={{ fontSize: '0.65rem' }}>+{cls.subjects.length - 5}</span>}
+                <p style={{ fontSize: '0.85rem', color: 'var(--gray-400)', marginBottom: '8px', fontWeight: 500 }}>Sections: {cls.sections.join(', ')}</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
+                  {cls.subjects.slice(0, 5).map((s, i) => <span key={i} className="badge badge-info" style={{ fontSize: '0.7rem', padding: '4px 10px' }}>{s}</span>)}
+                  {cls.subjects.length > 5 && <span className="badge badge-primary" style={{ fontSize: '0.7rem' }}>+{cls.subjects.length - 5}</span>}
                 </div>
                 <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
-                  <button className="btn btn-sm btn-secondary" onClick={() => handleEdit(cls)}><Edit size={14} /> Edit</button>
-                  <button className="btn btn-sm btn-danger" onClick={() => { if (confirm('Delete?')) setClasses(prev => prev.filter(c => c._id !== cls._id)); }}><Trash2 size={14} /></button>
+                  <button className="btn btn-sm btn-secondary" onClick={() => handleEdit(cls)} style={{ borderRadius: '10px' }}><Edit size={14} /> Edit</button>
+                  <button className="btn btn-sm btn-danger" onClick={() => { if (confirm('Delete?')) setClasses(prev => prev.filter(c => c._id !== cls._id)); }} style={{ borderRadius: '10px' }}><Trash2 size={14} /></button>
                 </div>
               </div>
             </div>
