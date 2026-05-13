@@ -472,6 +472,49 @@ select.form-input option {
   background: rgba(255,255,255,0.08) !important;
 }
 
+.profile-img-container {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.profile-img-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: #facc15;
+}
+
+.profile-img-container:hover .profile-img-overlay {
+  opacity: 1;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  padding-right: 20px;
+}
+
+.table th:last-child, .table td:last-child {
+  position: sticky;
+  right: 0;
+  background: var(--white);
+  z-index: 10;
+  box-shadow: -10px 0 20px rgba(0,0,0,0.1);
+  min-width: 150px;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .container { padding: 0 16px; }

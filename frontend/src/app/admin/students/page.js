@@ -11,11 +11,11 @@ import {
 import styles from '../admin.module.css';
 
 const DEMO_STUDENTS = [
-  { _id: '1', name: 'Ali Khan', fatherName: 'Imran Khan', rollNumber: 'QM-01-001', class: { name: 'Class 1' }, section: 'A', age: 7, phone: '0300-1234567', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '2', name: 'Hassan Ahmed', fatherName: 'Tariq Ahmed', rollNumber: 'QM-01-002', class: { name: 'Class 1' }, section: 'A', age: 7, phone: '0301-2345678', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '3', name: 'Muhammad Usman', fatherName: 'Abdul Rashid', rollNumber: 'QM-02-001', class: { name: 'Class 2' }, section: 'A', age: 8, phone: '0302-3456789', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '4', name: 'Bilal Hussain', fatherName: 'Sajjad Hussain', rollNumber: 'QM-02-002', class: { name: 'Class 2' }, section: 'B', age: 8, phone: '0303-4567890', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '5', name: 'Ahmed Raza', fatherName: 'Muhammad Raza', rollNumber: 'QM-03-001', class: { name: 'Class 3' }, section: 'A', age: 9, phone: '0304-5678901', status: 'active', profileImage: { url: '', isDefault: true } },
+  { _id: '1', name: 'Ali Khan', fatherName: 'Imran Khan', rollNumber: 'QM-01-001', class: { name: 'Class 1' }, section: 'A', age: 7, phone: '0300-1234567', status: 'active', profileImage: { url: 'https://images.unsplash.com/photo-1503945438517-f65904a52ce6?w=400&h=400&fit=crop', isDefault: false } },
+  { _id: '2', name: 'Hassan Ahmed', fatherName: 'Tariq Ahmed', rollNumber: 'QM-01-002', class: { name: 'Class 1' }, section: 'A', age: 7, phone: '0301-2345678', status: 'active', profileImage: { url: 'https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=400&h=400&fit=crop', isDefault: false } },
+  { _id: '3', name: 'Muhammad Usman', fatherName: 'Abdul Rashid', rollNumber: 'QM-02-001', class: { name: 'Class 2' }, section: 'A', age: 8, phone: '0302-3456789', status: 'active', profileImage: { url: 'https://images.unsplash.com/photo-1540346030739-1d44ea3e77c2?w=400&h=400&fit=crop', isDefault: false } },
+  { _id: '4', name: 'Bilal Hussain', fatherName: 'Sajjad Hussain', rollNumber: 'QM-02-002', class: { name: 'Class 2' }, section: 'B', age: 8, phone: '0303-4567890', status: 'active', profileImage: { url: 'https://images.unsplash.com/photo-1513956589380-bad6acb9b9d4?w=400&h=400&fit=crop', isDefault: false } },
+  { _id: '5', name: 'Ahmed Raza', fatherName: 'Muhammad Raza', rollNumber: 'QM-03-001', class: { name: 'Class 3' }, section: 'A', age: 9, phone: '0304-5678901', status: 'active', profileImage: { url: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=400&h=400&fit=crop', isDefault: false } },
 ];
 
 export default function AdminStudents() {
@@ -154,8 +154,8 @@ export default function AdminStudents() {
 
         {/* Table */}
         <div className="card" style={{ marginTop: '24px', overflow: 'hidden' }}>
-          <div className="table-wrapper">
-            <table className="table">
+          <div className="table-wrapper" style={{ overflowX: 'auto' }}>
+            <table className="table" style={{ minWidth: '1100px' }}>
               <thead>
                 <tr>
                   <th style={{ color: '#fff' }}>{t('students')}</th>
@@ -174,8 +174,9 @@ export default function AdminStudents() {
                   <tr key={student._id}>
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(255,255,255,0.1)' }}>
+                        <div className="profile-img-container" onClick={() => handleEdit(student)}>
                           <img src={student.profileImage?.url && !student.profileImage?.isDefault ? student.profileImage.url : 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} alt="" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+                          <div className="profile-img-overlay"><Edit size={16} /></div>
                         </div>
                         <span style={{ fontWeight: 700, color: '#fff' }}>{student.name}</span>
                       </div>

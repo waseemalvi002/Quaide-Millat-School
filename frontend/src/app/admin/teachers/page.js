@@ -8,11 +8,11 @@ import { GraduationCap, Search, Plus, Edit, Trash2, Eye, X, Upload, BookOpen, Aw
 import styles from '../admin.module.css';
 
 const DEMO_TEACHERS = [
-  { _id: '1', name: 'Ahmed Khan', email: 'ahmed.khan@qmschool.edu.pk', phone: '0300-1111111', qualification: 'M.Ed', designation: 'Senior Teacher', subjects: ['Urdu'], classes: ['Class 1', 'Class 2'], salary: 45000, status: 'active', joinDate: '2020-01-15', profileImage: { url: '', isDefault: true } },
-  { _id: '2', name: 'Muhammad Farooq', email: 'farooq@qmschool.edu.pk', phone: '0301-2222222', qualification: 'M.Sc Mathematics', designation: 'Head Teacher', subjects: ['Mathematics'], classes: ['Class 5', 'Class 6'], salary: 55000, status: 'active', joinDate: '2018-06-01', profileImage: { url: '', isDefault: true } },
-  { _id: '3', name: 'Sajid Ali', email: 'sajid@qmschool.edu.pk', phone: '0302-3333333', qualification: 'M.A English', designation: 'Teacher', subjects: ['English'], classes: ['Class 3', 'Class 4'], salary: 40000, status: 'active', joinDate: '2021-03-10', profileImage: { url: '', isDefault: true } },
-  { _id: '4', name: 'Kashif Iqbal', email: 'kashif@qmschool.edu.pk', phone: '0303-4444444', qualification: 'M.Sc Physics', designation: 'Teacher', subjects: ['Physics'], classes: ['Class 7', 'Class 8'], salary: 42000, status: 'active', joinDate: '2019-09-01', profileImage: { url: '', isDefault: true } },
-  { _id: '5', name: 'Asif Mahmood', email: 'asif@qmschool.edu.pk', phone: '0304-5555555', qualification: 'M.A Urdu', designation: 'Teacher', subjects: ['Urdu'], classes: ['Class 9', 'Class 10'], salary: 38000, status: 'active', joinDate: '2022-01-15', profileImage: { url: '', isDefault: true } },
+  { _id: '1', name: 'Ahmed Khan', email: 'ahmed.khan@qmschool.edu.pk', phone: '0300-1111111', qualification: 'M.Ed', designation: 'Senior Teacher', subjects: ['Urdu'], classes: ['Class 1', 'Class 2'], salary: 45000, status: 'active', joinDate: '2020-01-15', profileImage: { url: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop', isDefault: false } },
+  { _id: '2', name: 'Muhammad Farooq', email: 'farooq@qmschool.edu.pk', phone: '0301-2222222', qualification: 'M.Sc Mathematics', designation: 'Head Teacher', subjects: ['Mathematics'], classes: ['Class 5', 'Class 6'], salary: 55000, status: 'active', joinDate: '2018-06-01', profileImage: { url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop', isDefault: false } },
+  { _id: '3', name: 'Sajid Ali', email: 'sajid@qmschool.edu.pk', phone: '0302-3333333', qualification: 'M.A English', designation: 'Teacher', subjects: ['English'], classes: ['Class 3', 'Class 4'], salary: 40000, status: 'active', joinDate: '2021-03-10', profileImage: { url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop', isDefault: false } },
+  { _id: '4', name: 'Kashif Iqbal', email: 'kashif@qmschool.edu.pk', phone: '0303-4444444', qualification: 'M.Sc Physics', designation: 'Teacher', subjects: ['Physics'], classes: ['Class 7', 'Class 8'], salary: 42000, status: 'active', joinDate: '2019-09-01', profileImage: { url: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&h=400&fit=crop', isDefault: false } },
+  { _id: '5', name: 'Asif Mahmood', email: 'asif@qmschool.edu.pk', phone: '0304-5555555', qualification: 'M.A Urdu', designation: 'Teacher', subjects: ['Urdu'], classes: ['Class 9', 'Class 10'], salary: 38000, status: 'active', joinDate: '2022-01-15', profileImage: { url: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop', isDefault: false } },
 ];
 
 export default function AdminTeachers() {
@@ -139,8 +139,9 @@ export default function AdminTeachers() {
                   <tr key={teacher._id}>
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
+                        <div className="profile-img-container" onClick={() => handleEdit(teacher)}>
                           <img src={teacher.profileImage?.url && !teacher.profileImage?.isDefault ? teacher.profileImage.url : 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          <div className="profile-img-overlay"><Edit size={16} /></div>
                         </div>
                         <div><span style={{ fontWeight: 700, color: '#fff' }}>{teacher.name}</span><br /><span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{teacher.email}</span></div>
                       </div>
