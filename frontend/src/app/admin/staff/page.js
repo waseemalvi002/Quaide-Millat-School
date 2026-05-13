@@ -7,10 +7,10 @@ import { useThemeLang } from '@/context/ThemeLangContext';
 import styles from '../admin.module.css';
 
 const DEMO_STAFF = [
-  { _id: '1', name: 'Rashid Peon', cnic: '35201-1234567-1', role: 'Peon', phone: '0300-1112233', salary: 20000, status: 'active', joinDate: '2019-01-15' },
-  { _id: '2', name: 'Akbar Ali', cnic: '35201-2345678-2', role: 'Guard', phone: '0301-2223344', salary: 18000, status: 'active', joinDate: '2020-06-01' },
-  { _id: '3', name: 'Nasir Ahmed', cnic: '35201-3456789-3', role: 'Clerk', phone: '0302-3334455', salary: 25000, status: 'active', joinDate: '2018-03-10' },
-  { _id: '4', name: 'Shafiq Hussain', cnic: '35201-4567890-4', role: 'Lab Assistant', phone: '0303-4445566', salary: 22000, status: 'active', joinDate: '2021-09-01' },
+  { _id: '1', name: 'Rashid Peon', cnic: '35201-1234567-1', role: 'Peon', phone: '0300-1112233', salary: 20000, status: 'active', joinDate: '2019-01-15', profileImage: { url: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop', isDefault: false } },
+  { _id: '2', name: 'Akbar Ali', cnic: '35201-2345678-2', role: 'Guard', phone: '0301-2223344', salary: 18000, status: 'active', joinDate: '2020-06-01', profileImage: { url: 'https://images.unsplash.com/photo-1531384441138-2736e62e0919?w=400&h=400&fit=crop', isDefault: false } },
+  { _id: '3', name: 'Nasir Ahmed', cnic: '35201-3456789-3', role: 'Clerk', phone: '0302-3334455', salary: 25000, status: 'active', joinDate: '2018-03-10', profileImage: { url: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=400&h=400&fit=crop', isDefault: false } },
+  { _id: '4', name: 'Shafiq Hussain', cnic: '35201-4567890-4', role: 'Lab Assistant', phone: '0303-4445566', salary: 22000, status: 'active', joinDate: '2021-09-01', profileImage: { url: 'https://images.unsplash.com/photo-1537511446984-935f663eb1f4?w=400&h=400&fit=crop', isDefault: false } },
 ];
 
 export default function AdminStaff() {

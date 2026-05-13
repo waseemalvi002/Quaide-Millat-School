@@ -11,26 +11,11 @@ import {
 import styles from '../admin.module.css';
 
 const DEMO_STUDENTS = [
-  { _id: '1', name: 'Ali Khan', fatherName: 'Imran Khan', rollNumber: 'QM-01-001', class: { name: 'Class 1' }, section: 'A', age: 7, phone: '0300-1234567', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '2', name: 'Hassan Ahmed', fatherName: 'Tariq Ahmed', rollNumber: 'QM-01-002', class: { name: 'Class 1' }, section: 'A', age: 7, phone: '0301-2345678', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '3', name: 'Muhammad Usman', fatherName: 'Abdul Rashid', rollNumber: 'QM-02-001', class: { name: 'Class 2' }, section: 'A', age: 8, phone: '0302-3456789', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '4', name: 'Bilal Hussain', fatherName: 'Sajjad Hussain', rollNumber: 'QM-02-002', class: { name: 'Class 2' }, section: 'B', age: 8, phone: '0303-4567890', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '5', name: 'Ahmed Raza', fatherName: 'Muhammad Raza', rollNumber: 'QM-03-001', class: { name: 'Class 3' }, section: 'A', age: 9, phone: '0304-5678901', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '6', name: 'Zain Abbas', fatherName: 'Ali Abbas', rollNumber: 'QM-03-002', class: { name: 'Class 3' }, section: 'A', age: 9, phone: '0305-6789012', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '7', name: 'Hamza Malik', fatherName: 'Shahid Malik', rollNumber: 'QM-04-001', class: { name: 'Class 4' }, section: 'A', age: 10, phone: '0306-7890123', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '8', name: 'Fahad Sheikh', fatherName: 'Nadeem Sheikh', rollNumber: 'QM-05-001', class: { name: 'Class 5' }, section: 'A', age: 11, phone: '0307-8901234', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '9', name: 'Owais Qureshi', fatherName: 'Farooq Qureshi', rollNumber: 'QM-06-001', class: { name: 'Class 6' }, section: 'A', age: 12, phone: '0308-9012345', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '10', name: 'Saad Butt', fatherName: 'Tahir Butt', rollNumber: 'QM-07-001', class: { name: 'Class 7' }, section: 'A', age: 13, phone: '0309-0123456', status: 'inactive', profileImage: { url: '', isDefault: true } },
-  { _id: '11', name: 'Umar Khalid', fatherName: 'Khalid Mehmood', rollNumber: 'QM-08-001', class: { name: 'Class 8' }, section: 'A', age: 14, phone: '0310-1112233', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '12', name: 'Zohaib Tariq', fatherName: 'Tariq Jamil', rollNumber: 'QM-09-001', class: { name: 'Class 9' }, section: 'B', age: 15, phone: '0311-2223344', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '13', name: 'Daniyal Zafar', fatherName: 'Zafar Iqbal', rollNumber: 'QM-10-001', class: { name: 'Class 10' }, section: 'A', age: 16, phone: '0312-3334455', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '14', name: 'Ammar Yaseen', fatherName: 'Muhammad Yaseen', rollNumber: 'QM-01-003', class: { name: 'Class 1' }, section: 'B', age: 7, phone: '0313-4445566', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '15', name: 'Shahmeer Ali', fatherName: 'Ali Nawaz', rollNumber: 'QM-02-003', class: { name: 'Class 2' }, section: 'C', age: 8, phone: '0314-5556677', status: 'inactive', profileImage: { url: '', isDefault: true } },
-  { _id: '16', name: 'Rayan Ahmed', fatherName: 'Ahmed Bilal', rollNumber: 'QM-03-003', class: { name: 'Class 3' }, section: 'B', age: 9, phone: '0315-6667788', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '17', name: 'Mustafa Khan', fatherName: 'Kamran Khan', rollNumber: 'QM-04-003', class: { name: 'Class 4' }, section: 'A', age: 10, phone: '0316-7778899', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '18', name: 'Haris Mehmood', fatherName: 'Mehmood Butt', rollNumber: 'QM-05-003', class: { name: 'Class 5' }, section: 'A', age: 11, phone: '0317-8889900', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '19', name: 'Samiullah', fatherName: 'Abdullah', rollNumber: 'QM-06-003', class: { name: 'Class 6' }, section: 'B', age: 12, phone: '0318-9990011', status: 'active', profileImage: { url: '', isDefault: true } },
-  { _id: '20', name: 'Abdullah Qazi', fatherName: 'Qazi Anwar', rollNumber: 'QM-07-003', class: { name: 'Class 7' }, section: 'A', age: 13, phone: '0319-0001122', status: 'active', profileImage: { url: '', isDefault: true } },
+  { _id: '1', name: 'Ali Khan', fatherName: 'Imran Khan', rollNumber: 'QM-01-001', class: { name: 'Class 1' }, section: 'A', age: 7, phone: '0300-1234567', status: 'active', profileImage: { url: 'https://images.unsplash.com/photo-1503945438517-f65904a52ce6?w=400&h=400&fit=crop', isDefault: false } },
+  { _id: '2', name: 'Hassan Ahmed', fatherName: 'Tariq Ahmed', rollNumber: 'QM-01-002', class: { name: 'Class 1' }, section: 'A', age: 7, phone: '0301-2345678', status: 'active', profileImage: { url: 'https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=400&h=400&fit=crop', isDefault: false } },
+  { _id: '3', name: 'Muhammad Usman', fatherName: 'Abdul Rashid', rollNumber: 'QM-02-001', class: { name: 'Class 2' }, section: 'A', age: 8, phone: '0302-3456789', status: 'active', profileImage: { url: 'https://images.unsplash.com/photo-1540346030739-1d44ea3e77c2?w=400&h=400&fit=crop', isDefault: false } },
+  { _id: '4', name: 'Bilal Hussain', fatherName: 'Sajjad Hussain', rollNumber: 'QM-02-002', class: { name: 'Class 2' }, section: 'B', age: 8, phone: '0303-4567890', status: 'active', profileImage: { url: 'https://images.unsplash.com/photo-1513956589380-bad6acb9b9d4?w=400&h=400&fit=crop', isDefault: false } },
+  { _id: '5', name: 'Ahmed Raza', fatherName: 'Muhammad Raza', rollNumber: 'QM-03-001', class: { name: 'Class 3' }, section: 'A', age: 9, phone: '0304-5678901', status: 'active', profileImage: { url: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=400&h=400&fit=crop', isDefault: false } },
 ];
 
 export default function AdminStudents() {
