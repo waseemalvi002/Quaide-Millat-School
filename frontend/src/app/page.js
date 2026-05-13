@@ -121,9 +121,9 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section className="hero">
-        <div className="hero-overlay" style={{ background: 'linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.6))', zIndex: -1 }}></div>
-        <div className="hero-image" style={{ backgroundImage: 'url("/homepage-hero.jpg")', backgroundPosition: 'center 20%' }}></div>
-        <div className="container hero-content">
+        <div className="hero-overlay" style={{ background: 'linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.6))', zIndex: 1 }}></div>
+        <div className="hero-image" style={{ backgroundImage: 'url("/homepage-hero.jpg")', backgroundPosition: 'center 20%', zIndex: 0 }}></div>
+        <div className="container hero-content" style={{ position: 'relative', zIndex: 10 }}>
           <div className="hero-badge">WELCOME TO</div>
           <h2 className="hero-title">
             Quaid-e-Millat <br />
@@ -362,19 +362,18 @@ export default function LandingPage() {
           align-items: center;
           color: #fff;
           overflow: hidden;
+          background: #0f172a; /* Fallback dark background */
+          z-index: 1;
         }
         .hero-image {
           position: absolute;
           inset: 0;
           background-size: cover;
           background-position: center;
-          z-index: -2;
         }
         .hero-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(90deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.4) 100%);
-          z-index: -1;
         }
         .hero-badge {
           background: rgba(255,255,255,0.1);
