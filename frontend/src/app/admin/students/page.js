@@ -327,7 +327,10 @@ export default function AdminStudents() {
                 </div>
               </div>
               <div className={styles.modalFooter}>
-                <button className={styles.vibrantBtn} onClick={() => setShowViewModal(false)}>Close</button>
+                <button className="btn btn-secondary" onClick={() => setShowViewModal(false)}>{t('close')}</button>
+                <button className={styles.vibrantBtn} onClick={() => { setShowViewModal(false); handleEdit(selectedStudent); }}>
+                  <Edit size={16} /> {t('update_profile')}
+                </button>
               </div>
             </div>
           </div>
