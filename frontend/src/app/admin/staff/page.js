@@ -17,6 +17,7 @@ export default function AdminStaff() {
   const [staff, setStaff] = useState(DEMO_STAFF);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [showViewModal, setShowViewModal] = useState(false);
   const [selected, setSelected] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const { t } = useThemeLang();
@@ -113,6 +114,7 @@ export default function AdminStaff() {
                     <td><span className={`badge ${item.status === 'active' ? 'badge-success' : 'badge-danger'}`} style={item.status === 'active' ? { background: 'rgba(16, 185, 129, 0.2)', color: '#10b981' } : { background: 'rgba(239, 68, 68, 0.2)', color: '#f87171' }}>{t(item.status)}</span></td>
                     <td>
                       <div style={{ display: 'flex', gap: '8px' }}>
+                        <button className="btn btn-sm btn-secondary" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }} onClick={() => { setSelected(item); setShowViewModal(true); }}><Eye size={16} /></button>
                         <button className="btn btn-sm btn-secondary" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }} onClick={() => handleEdit(item)}><Edit size={16} /></button>
                         <button className="btn btn-sm btn-danger" style={{ boxShadow: '0 4px 10px rgba(239, 68, 68, 0.2)' }} onClick={() => { if (confirm('Delete?')) setStaff(prev => prev.filter(s => s._id !== item._id)); }}><Trash2 size={16} /></button>
                       </div>
@@ -173,6 +175,56 @@ export default function AdminStaff() {
                   <button type="submit" className={styles.vibrantBtn}>{selected ? t('save') : t('add_new')}</button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+        {showViewModal && selected && (
+          <div className={styles.modalOverlay}>
+            <div className={styles.modalContent} style={{ maxWidth: '500px' }}>
+              <div className={styles.modalHeader}>
+                <h3>{t('staff_profile')}</h3>
+                <button onClick={() => setShowViewModal(false)} style={{ background: 'rgba(255,255,255,0.05)', border: 'none', color: '#fff', borderRadius: '50%', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><X size={20} /></button>
+              </div>
+              <div className={styles.modalBody}>
+                <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+                  <div className="profile-img-container" style={{ width: 120, height: 120, margin: '0 auto 16px', border: '4px solid #3b82f6' }}>
+                    <img src={selected.profileImage?.url && !selected.profileImage?.isDefault ? selected.profileImage.url : 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <div className="profile-img-overlay" style={{ gap: '12px' }}>
+                      <label style={{ cursor: 'pointer' }} title="Upload New">
+                        <Upload size={20} />
+                        <input type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => {
+                          if (e.target.files?.[0]) {
+                            const url = URL.createObjectURL(e.target.files[0]);
+                            const updated = { ...selected, profileImage: { url, isDefault: false } };
+                            setStaff(prev => prev.map(s => s._id === selected._id ? updated : s));
+                            setSelected(updated);
+                          }
+                        }} />
+                      </label>
+                      <button style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer' }} title="Delete Image" onClick={() => {
+                        if (confirm('Delete image?')) {
+                          const updated = { ...selected, profileImage: { url: '', isDefault: true } };
+                          setStaff(prev => prev.map(s => s._id === selected._id ? updated : s));
+                          setSelected(updated);
+                        }
+                      }}><Trash2 size={20} /></button>
+                    </div>
+                  </div>
+                  <h2 style={{ fontSize: '1.5rem', color: '#fff', fontWeight: 800 }}>{selected.name}</h2>
+                  <p style={{ color: '#facc15', fontWeight: 700 }}>{selected.role}</p>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                  {[[t('cnic'), selected.cnic], [t('phone'), selected.phone], [t('salary'), `Rs ${selected.salary?.toLocaleString()}`], [t('join_date'), selected.joinDate], [t('status'), t(selected.status)]].map(([l, v], i) => (
+                    <div key={i} style={{ padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                      <p style={{ fontSize: '0.75rem', color: '#94a3b8', marginBottom: '6px', fontWeight: 600, textTransform: 'uppercase' }}>{l}</p>
+                      <p style={{ fontWeight: 700, color: '#fff', fontSize: '1rem' }}>{v}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className={styles.modalFooter}>
+                <button className={styles.vibrantBtn} onClick={() => setShowViewModal(false)}>Close</button>
+              </div>
             </div>
           </div>
         )}

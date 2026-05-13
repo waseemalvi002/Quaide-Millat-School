@@ -223,8 +223,30 @@ export default function AdminTeachers() {
               </div>
               <div className={styles.modalBody}>
                 <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-                  <div style={{ width: 100, height: 100, borderRadius: '50%', margin: '0 auto 16px', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '3px solid #3b82f6' }}>
+                  <div className="profile-img-container" style={{ width: 120, height: 120, margin: '0 auto 16px', border: '4px solid #3b82f6' }}>
                     <img src={selectedTeacher.profileImage?.url && !selectedTeacher.profileImage?.isDefault ? selectedTeacher.profileImage.url : 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <div className="profile-img-overlay" style={{ gap: '12px' }}>
+                      <label style={{ cursor: 'pointer' }} title="Upload New">
+                        <Upload size={20} />
+                        <input type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => {
+                          if (e.target.files?.[0]) {
+                            const url = URL.createObjectURL(e.target.files[0]);
+                            const updated = { ...selectedTeacher, profileImage: { url, isDefault: false } };
+                            setTeachers(prev => prev.map(t => t._id === selectedTeacher._id ? updated : t));
+                            setSelectedTeacher(updated);
+                          }
+                        }} />
+                      </label>
+                      <button style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer' }} title="Delete Image" onClick={() => {
+                        if (confirm('Delete image?')) {
+                          const updated = { ...selectedTeacher, profileImage: { url: '', isDefault: true } };
+                          setTeachers(prev => prev.map(t => t._id === selectedTeacher._id ? updated : t));
+                          setSelectedTeacher(updated);
+                        }
+                      }}>
+                        <Trash2 size={20} />
+                      </button>
+                    </div>
                   </div>
                   <h2 style={{ fontSize: '1.5rem', color: '#fff', fontWeight: 800 }}>{selectedTeacher.name}</h2>
                   <p style={{ color: '#facc15', fontWeight: 700 }}>{selectedTeacher.designation}</p>
