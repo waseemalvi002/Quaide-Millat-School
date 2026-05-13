@@ -17,10 +17,10 @@
   --primary-900: #1e3a8a;
 
   /* Neutral Colors */
-  --white: #ffffff;
+  --white: #f8fafc;
   --bg-color: #f1f5f9;
   --bg-dark: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #0f172a 100%);
-  --card-bg: #ffffff;
+  --card-bg: #f8fafc;
   --card-bg-dark: rgba(18, 27, 54, 0.6);
   --text-main: #1e293b;
   --text-main-dark: #f8fafc;
@@ -80,6 +80,9 @@
   --bg-dark: linear-gradient(-45deg, #020617, #064e3b, #0a1128, #052e16);
   --card-bg: rgba(255, 255, 255, 0.05);
   --sidebar-bg: rgba(10, 15, 30, 0.95);
+  --sidebar-text: #94a3b8;
+  --sidebar-text-active: #ffffff;
+  --logo-text: #ffffff;
   --header-bg: rgba(10, 15, 30, 0.8);
   --border-color: rgba(255, 255, 255, 0.1);
   --heading-accent: #facc15;
@@ -106,8 +109,11 @@
 
 /* Light Mode Dashboard Defaults */
 :root {
-  --sidebar-bg: #ffffff;
-  --header-bg: rgba(255, 255, 255, 0.8);
+  --sidebar-bg: #f1f5f9;
+  --sidebar-text: #475569;
+  --sidebar-text-active: #2563eb;
+  --logo-text: #1e293b;
+  --header-bg: rgba(248, 250, 252, 0.8);
   --border-color: #e2e8f0;
   --heading-accent: var(--primary);
 }
