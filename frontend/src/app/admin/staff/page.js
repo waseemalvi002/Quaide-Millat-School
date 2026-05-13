@@ -96,7 +96,7 @@ export default function AdminStaff() {
         <div className="card" style={{ marginTop: '24px', overflow: 'hidden' }}>
           <div className="table-wrapper" style={{ overflowX: 'auto' }}>
             <table className="table" style={{ minWidth: '1000px' }}>
-              <thead><tr><th style={{ color: '#fff' }}>{t('staff')}</th><th style={{ color: '#fff' }}>{t('cnic')}</th><th style={{ color: '#fff' }}>{t('role')}</th><th style={{ color: '#fff' }}>{t('phone')}</th><th style={{ color: '#fff' }}>{t('salary')}</th><th style={{ color: '#fff' }}>{t('status')}</th><th style={{ color: '#fff' }}>{t('actions')}</th></tr></thead>
+              <thead><tr><th style={{ color: '#fff' }}>{t('staff')}</th><th style={{ color: '#fff' }}>{t('cnic')}</th><th style={{ color: '#fff' }}>{t('role')}</th><th style={{ color: '#fff' }}>{t('phone')}</th><th style={{ color: '#fff' }}>{t('salary')}</th><th style={{ color: '#fff' }}>{t('actions')}</th></tr></thead>
               <tbody>
                 {filtered.map(item => (
                   <tr key={item._id}>
@@ -111,7 +111,6 @@ export default function AdminStaff() {
                     </td>
                     <td style={{ color: '#e2e8f0' }}>{item.cnic}</td><td><span className="badge" style={{ background: 'rgba(59, 130, 246, 0.2)', color: '#60a5fa' }}>{item.role}</span></td><td style={{ color: '#e2e8f0' }}>{item.phone}</td>
                     <td style={{ fontWeight: 800, color: '#facc15' }}>Rs {item.salary?.toLocaleString()}</td>
-                    <td><span className={`badge ${item.status === 'active' ? 'badge-success' : 'badge-danger'}`} style={item.status === 'active' ? { background: 'rgba(16, 185, 129, 0.2)', color: '#10b981' } : { background: 'rgba(239, 68, 68, 0.2)', color: '#f87171' }}>{t(item.status)}</span></td>
                     <td>
                       <div style={{ display: 'flex', gap: '8px' }}>
                         <button className="btn btn-sm btn-secondary" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }} onClick={() => { setSelected(item); setShowViewModal(true); }}><Eye size={16} /></button>
@@ -214,7 +213,7 @@ export default function AdminStaff() {
                   <p style={{ color: '#facc15', fontWeight: 700 }}>{selected.role}</p>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                  {[[t('cnic'), selected.cnic], [t('phone'), selected.phone], [t('salary'), `Rs ${selected.salary?.toLocaleString()}`], [t('join_date'), selected.joinDate], [t('status'), t(selected.status)]].map(([l, v], i) => (
+                  {[[t('cnic'), selected.cnic], [t('phone'), selected.phone], [t('salary'), `Rs ${selected.salary?.toLocaleString()}`], [t('join_date'), selected.joinDate]].map(([l, v], i) => (
                     <div key={i} style={{ padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
                       <p style={{ fontSize: '0.75rem', color: '#94a3b8', marginBottom: '6px', fontWeight: 600, textTransform: 'uppercase' }}>{l}</p>
                       <p style={{ fontWeight: 700, color: '#fff', fontSize: '1rem' }}>{v}</p>

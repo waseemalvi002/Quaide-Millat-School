@@ -130,7 +130,6 @@ export default function AdminTeachers() {
                   <th style={{ color: '#fff' }}>{t('subjects')}</th>
                   <th style={{ color: '#fff' }}>{t('classes')}</th>
                   <th style={{ color: '#fff' }}>{t('salary')}</th>
-                  <th style={{ color: '#fff' }}>{t('status')}</th>
                   <th style={{ color: '#fff' }}>{t('actions')}</th>
                 </tr>
               </thead>
@@ -151,7 +150,6 @@ export default function AdminTeachers() {
                     <td>{teacher.subjects.map((s, i) => <span key={i} className="badge" style={{ background: 'rgba(96, 165, 250, 0.2)', color: '#60a5fa', marginRight: '4px', marginBottom: '2px' }}>{s}</span>)}</td>
                     <td>{teacher.classes.map((c, i) => <span key={i} className="badge" style={{ background: 'rgba(59, 130, 246, 0.2)', color: '#60a5fa', marginRight: '4px', marginBottom: '2px' }}>{c}</span>)}</td>
                     <td style={{ fontWeight: 800, color: '#facc15' }}>Rs {teacher.salary?.toLocaleString()}</td>
-                    <td><span className={`badge ${teacher.status === 'active' ? 'badge-success' : 'badge-danger'}`} style={teacher.status === 'active' ? { background: 'rgba(16, 185, 129, 0.2)', color: '#10b981' } : { background: 'rgba(239, 68, 68, 0.2)', color: '#f87171' }}>{t(teacher.status)}</span></td>
                     <td>
                       <div style={{ display: 'flex', gap: '8px' }}>
                         <button className="btn btn-sm btn-secondary" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }} onClick={() => { setSelectedTeacher(teacher); setShowViewModal(true); }}><Eye size={16} /></button>
@@ -252,7 +250,7 @@ export default function AdminTeachers() {
                   <p style={{ color: '#facc15', fontWeight: 700 }}>{selectedTeacher.designation}</p>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                  {[[t('email'), selectedTeacher.email], [t('phone'), selectedTeacher.phone], [t('qualification'), selectedTeacher.qualification], [t('salary'), `Rs ${selectedTeacher.salary?.toLocaleString()}`], [t('join_date'), selectedTeacher.joinDate], [t('status'), t(selectedTeacher.status)]].map(([l, v], i) => (
+                  {[[t('email'), selectedTeacher.email], [t('phone'), selectedTeacher.phone], [t('qualification'), selectedTeacher.qualification], [t('salary'), `Rs ${selectedTeacher.salary?.toLocaleString()}`], [t('join_date'), selectedTeacher.joinDate]].map(([l, v], i) => (
                     <div key={i} style={{ padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
                       <p style={{ fontSize: '0.75rem', color: '#94a3b8', marginBottom: '6px', fontWeight: 600, textTransform: 'uppercase' }}>{l}</p>
                       <p style={{ fontWeight: 700, color: '#fff', fontSize: '1rem' }}>{v}</p>

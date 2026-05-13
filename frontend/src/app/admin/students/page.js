@@ -165,7 +165,6 @@ export default function AdminStudents() {
                   <th style={{ color: '#fff' }}>{t('section')}</th>
                   <th style={{ color: '#fff' }}>{t('age')}</th>
                   <th style={{ color: '#fff' }}>{t('phone')}</th>
-                  <th style={{ color: '#fff' }}>{t('status')}</th>
                   <th style={{ color: '#fff' }}>{t('actions')}</th>
                 </tr>
               </thead>
@@ -187,11 +186,6 @@ export default function AdminStudents() {
                     <td style={{ color: '#e2e8f0' }}>{student.section}</td>
                     <td style={{ color: '#e2e8f0' }}>{student.age}</td>
                     <td style={{ color: '#e2e8f0' }}>{student.phone}</td>
-                    <td>
-                      <span className={`badge ${student.status === 'active' ? 'badge-success' : 'badge-danger'}`} style={student.status === 'active' ? { background: 'rgba(16, 185, 129, 0.2)', color: '#10b981' } : { background: 'rgba(239, 68, 68, 0.2)', color: '#f87171' }}>
-                        {t(student.status)}
-                      </span>
-                    </td>
                     <td>
                       <div style={{ display: 'flex', gap: '8px' }}>
                         <button className="btn btn-sm btn-secondary" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }} onClick={() => { setSelectedStudent(student); setShowViewModal(true); }}><Eye size={16} /></button>
@@ -324,7 +318,6 @@ export default function AdminStudents() {
                     [t('section'), selectedStudent.section],
                     [t('age'), selectedStudent.age],
                     [t('phone'), selectedStudent.phone],
-                    [t('status'), t(selectedStudent.status)],
                   ].map(([label, val], i) => (
                     <div key={i} style={{ padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
                       <p style={{ fontSize: '0.75rem', color: '#94a3b8', marginBottom: '6px', fontWeight: 600, textTransform: 'uppercase' }}>{label}</p>
