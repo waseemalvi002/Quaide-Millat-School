@@ -8,11 +8,11 @@ import { GraduationCap, Search, Plus, Edit, Trash2, Eye, X, Upload, BookOpen, Aw
 import styles from '../admin.module.css';
 
 const DEMO_TEACHERS = [
-  { _id: '1', name: 'Ahmed Khan', email: 'ahmed.khan@qmschool.edu.pk', phone: '0300-1111111', qualification: 'M.Ed', designation: 'Senior Teacher', subjects: ['Urdu', 'Islamiat'], classes: ['Class 1', 'Class 2'], salary: 45000, status: 'active', joinDate: '2020-01-15', profileImage: { url: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop', isDefault: false } },
-  { _id: '2', name: 'Muhammad Farooq', email: 'farooq@qmschool.edu.pk', phone: '0301-2222222', qualification: 'M.Sc Mathematics', designation: 'Head Teacher', subjects: ['Mathematics'], classes: ['Class 5', 'Class 6'], salary: 55000, status: 'active', joinDate: '2018-06-01', profileImage: { url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop', isDefault: false } },
-  { _id: '3', name: 'Sajid Ali', email: 'sajid@qmschool.edu.pk', phone: '0302-3333333', qualification: 'M.A English', designation: 'Teacher', subjects: ['English'], classes: ['Class 3', 'Class 4'], salary: 40000, status: 'active', joinDate: '2021-03-10', profileImage: { url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop', isDefault: false } },
-  { _id: '4', name: 'Kashif Iqbal', email: 'kashif@qmschool.edu.pk', phone: '0303-4444444', qualification: 'M.Sc Physics', designation: 'Teacher', subjects: ['Science', 'Physics'], classes: ['Class 7', 'Class 8'], salary: 42000, status: 'active', joinDate: '2019-09-01', profileImage: { url: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&h=400&fit=crop', isDefault: false } },
-  { _id: '5', name: 'Asif Mahmood', email: 'asif@qmschool.edu.pk', phone: '0304-5555555', qualification: 'M.A Urdu', designation: 'Teacher', subjects: ['Urdu'], classes: ['Class 9', 'Class 10'], salary: 38000, status: 'active', joinDate: '2022-01-15', profileImage: { url: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop', isDefault: false } },
+  { _id: '1', name: 'Ahmed Khan', email: 'ahmed.khan@qmschool.edu.pk', phone: '0300-1111111', qualification: 'M.Ed', designation: 'Senior Teacher', subjects: ['Urdu'], classes: ['Class 1', 'Class 2'], salary: 45000, status: 'active', joinDate: '2020-01-15', profileImage: { url: '', isDefault: true } },
+  { _id: '2', name: 'Muhammad Farooq', email: 'farooq@qmschool.edu.pk', phone: '0301-2222222', qualification: 'M.Sc Mathematics', designation: 'Head Teacher', subjects: ['Mathematics'], classes: ['Class 5', 'Class 6'], salary: 55000, status: 'active', joinDate: '2018-06-01', profileImage: { url: '', isDefault: true } },
+  { _id: '3', name: 'Sajid Ali', email: 'sajid@qmschool.edu.pk', phone: '0302-3333333', qualification: 'M.A English', designation: 'Teacher', subjects: ['English'], classes: ['Class 3', 'Class 4'], salary: 40000, status: 'active', joinDate: '2021-03-10', profileImage: { url: '', isDefault: true } },
+  { _id: '4', name: 'Kashif Iqbal', email: 'kashif@qmschool.edu.pk', phone: '0303-4444444', qualification: 'M.Sc Physics', designation: 'Teacher', subjects: ['Physics'], classes: ['Class 7', 'Class 8'], salary: 42000, status: 'active', joinDate: '2019-09-01', profileImage: { url: '', isDefault: true } },
+  { _id: '5', name: 'Asif Mahmood', email: 'asif@qmschool.edu.pk', phone: '0304-5555555', qualification: 'M.A Urdu', designation: 'Teacher', subjects: ['Urdu'], classes: ['Class 9', 'Class 10'], salary: 38000, status: 'active', joinDate: '2022-01-15', profileImage: { url: '', isDefault: true } },
 ];
 
 export default function AdminTeachers() {
@@ -36,7 +36,7 @@ export default function AdminTeachers() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = { ...formData, subjects: formData.subjects.split(',').map(s => s.trim()), classes: formData.classes.split(',').map(s => s.trim()) };
+    const data = { ...formData, subjects: [formData.subjects.trim()], classes: formData.classes.split(',').map(s => s.trim()) };
     if (selectedTeacher) {
       setTeachers(prev => prev.map(t => t._id === selectedTeacher._id ? { ...t, ...data } : t));
     } else {
@@ -120,8 +120,8 @@ export default function AdminTeachers() {
         </div>
 
         <div className="card" style={{ marginTop: '24px', overflow: 'hidden' }}>
-          <div className="table-wrapper">
-            <table className="table">
+          <div className="table-wrapper" style={{ overflowX: 'auto' }}>
+            <table className="table" style={{ minWidth: '1000px' }}>
               <thead>
                 <tr>
                   <th style={{ color: '#fff' }}>{t('teachers')}</th>
@@ -182,7 +182,7 @@ export default function AdminTeachers() {
                   <div className="form-group"><label className="form-label">{t('designation')}</label><input className="form-input" value={formData.designation} onChange={e => setFormData({ ...formData, designation: e.target.value })} /></div>
                   <div className="form-group"><label className="form-label">{t('salary')} (Rs)</label><input type="number" className="form-input" value={formData.salary} onChange={e => setFormData({ ...formData, salary: e.target.value })} /></div>
                 </div>
-                <div className="form-group"><label className="form-label">{t('subjects')} (comma separated)</label><input className="form-input" value={formData.subjects} onChange={e => setFormData({ ...formData, subjects: e.target.value })} placeholder="e.g. Math, Science, English" /></div>
+                <div className="form-group"><label className="form-label">{t('subjects')} *</label><input className="form-input" required value={formData.subjects} onChange={e => setFormData({ ...formData, subjects: e.target.value })} placeholder="e.g. Mathematics" /></div>
                 <div className="form-group"><label className="form-label">{t('classes')} (comma separated)</label><input className="form-input" value={formData.classes} onChange={e => setFormData({ ...formData, classes: e.target.value })} placeholder="e.g. Class 5, Class 6" /></div>
                 <div className="form-group">
                   <label className="form-label">{t('profile_image')}</label>
