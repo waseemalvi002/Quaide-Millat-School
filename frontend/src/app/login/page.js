@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { GraduationCap, User, Lock, Mail, ShieldCheck, CheckCircle2, ArrowRight, Send, Upload, XCircle } from 'lucide-react';
+import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 
 export default function Home() {
@@ -166,6 +167,9 @@ export default function Home() {
               <div className="pulse-dot" style={{ width: 14, height: 14, borderRadius: '50%', background: '#3b82f6', boxShadow: '0 0 15px #3b82f6' }}></div>
               <span>System Online</span>
             </div>
+            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#60a5fa', fontWeight: 700, background: 'rgba(59, 130, 246, 0.1)', padding: '12px 24px', borderRadius: '16px', transition: 'all 0.3s' }} className="exit-btn-hover">
+              <ArrowRight size={20} style={{ transform: 'rotate(180deg)' }} /> <span>Exit to Home</span>
+            </Link>
           </div>
         </div>
 
@@ -479,6 +483,10 @@ export default function Home() {
         @keyframes fadeInUp {
           from { opacity: 0; transform: translateY(200px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+        .exit-btn-hover:hover {
+          background: rgba(59, 130, 246, 0.2) !important;
+          transform: translateX(-5px);
         }
         .floating-orb { animation: floatOrb linear infinite; }
         @keyframes floatOrb {

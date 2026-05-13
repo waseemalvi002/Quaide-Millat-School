@@ -121,8 +121,8 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section className="hero">
-        <div className="hero-overlay"></div>
-        <div className="hero-image" style={{ backgroundImage: 'url("/homepage-hero.jpg")' }}></div>
+        <div className="hero-overlay" style={{ background: 'linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.6))', zIndex: -1 }}></div>
+        <div className="hero-image" style={{ backgroundImage: 'url("/homepage-hero.jpg")', backgroundPosition: 'center 20%' }}></div>
         <div className="container hero-content">
           <div className="hero-badge">WELCOME TO</div>
           <h2 className="hero-title">
