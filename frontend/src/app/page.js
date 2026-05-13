@@ -1,491 +1,504 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { GraduationCap, User, Lock, Mail, ShieldCheck, CheckCircle2, ArrowRight, Send, Upload, XCircle } from 'lucide-react';
-import { useAuth } from '@/context/AuthContext';
+import Link from 'next/link';
+import { 
+  GraduationCap, BookOpen, Award, Users, Calendar, 
+  MapPin, Phone, Mail, Facebook, Twitter, Youtube, 
+  Instagram, ArrowRight, Menu, X, Info, ShieldCheck,
+  User, CheckCircle2, ChevronRight, Bell
+} from 'lucide-react';
 
-export default function Home() {
-  const router = useRouter();
-  const { login } = useAuth();
-  const [activeTab, setActiveTab] = useState('login'); // login, register, feedback
-  const [role, setRole] = useState('student');
-  const [imageFile, setImageFile] = useState(null);
-  const [showAdminModal, setShowAdminModal] = useState(false);
-  const [adminPass, setAdminPass] = useState('');
-  const [adminError, setAdminError] = useState(false);
-  const [mounted, setMounted] = useState(false);
+export default function LandingPage() {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Form states
-  const [formData, setFormData] = useState({
-    name: '', email: '', password: '', phone: '', message: ''
-  });
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState('');
+  const stats = [
+    { icon: <Users size={28} />, count: "850+", label: "Students Enrolled" },
+    { icon: <User size={28} />, count: "45+", label: "Qualified Teachers" },
+    { icon: <GraduationCap size={28} />, count: "20+", label: "Classes" },
+    { icon: <Award size={28} />, count: "15+", label: "Years of Excellence" },
+    { icon: <CheckCircle2 size={28} />, count: "98%", label: "Pass Percentage" }
+  ];
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    if (token && user.role) {
-      router.push(`/${user.role}`);
+  const features = [
+    { 
+      icon: <BookOpen size={32} />, 
+      title: "Quality Education", 
+      desc: "We provide high quality education to shape the future leaders." 
+    },
+    { 
+      icon: <Users size={32} />, 
+      title: "Experienced Faculty", 
+      desc: "Our teachers are highly qualified and dedicated." 
+    },
+    { 
+      icon: <MapPin size={32} />, 
+      title: "Modern Facilities", 
+      desc: "Well-equipped classrooms, labs, library and sports facilities." 
+    },
+    { 
+      icon: <ShieldCheck size={32} />, 
+      title: "Islamic Values", 
+      desc: "We focus on moral values along with academic excellence." 
     }
-  }, [router]);
+  ];
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-  
-  const handleImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setImageFile(e.target.files[0]);
+  const news = [
+    { 
+      date: "10 May, 2024", 
+      title: "Annual Sports Gala 2024", 
+      image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=250&fit=crop" 
+    },
+    { 
+      date: "5 May, 2024", 
+      title: "Science Exhibition", 
+      image: "https://images.unsplash.com/photo-1564066341310-59d5dc334f47?w=400&h=250&fit=crop" 
+    },
+    { 
+      date: "1 May, 2024", 
+      title: "Admission Open", 
+      image: "https://images.unsplash.com/photo-1523050853063-bd8012fec040?w=400&h=250&fit=crop" 
     }
-  };
+  ];
 
-  const [error, setError] = useState('');
-  const [showChangePass, setShowChangePass] = useState(false);
-  const [newAdminPass, setNewAdminPass] = useState('');
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setSuccess('');
-    setError('');
-
-    if (activeTab === 'login') {
-      if (formData.email === 'admin@qmschool.edu.pk') {
-        const storedPass = localStorage.getItem('admin_pass') || 'admin786';
-        if (formData.password === storedPass) {
-          const result = await login(formData.email, formData.password);
-          setLoading(false);
-          if (result && !result.success) {
-            setError(result.message || 'Login failed.');
-          }
-        } else {
-          setLoading(false);
-          setError('Invalid Admin Credentials');
-        }
-      } else {
-        setTimeout(() => {
-          setLoading(false);
-          localStorage.setItem('token', 'mock_token');
-          localStorage.setItem('user', JSON.stringify({ name: formData.email.split('@')[0], email: formData.email, role: role, avatar: { url: imageFile ? URL.createObjectURL(imageFile) : '' } }));
-          window.location.href = `/${role}`;
-        }, 1000);
-      }
-    } else if (activeTab === 'register') {
-      setTimeout(() => {
-        setLoading(false);
-        setSuccess('Account created successfully! Awaiting Admin Approval.');
-        setTimeout(() => setActiveTab('login'), 2000);
-      }, 1000);
-    } else if (activeTab === 'feedback') {
-      setTimeout(() => {
-        setLoading(false);
-        setSuccess('Thank you for your feedback!');
-        setFormData({ ...formData, message: '' });
-        setTimeout(() => setSuccess(''), 3000);
-      }, 1000);
-    }
-  };
+  const notices = [
+    { date: "05 May, 2024", title: "Fee Submission Deadline" },
+    { date: "04 May, 2024", title: "Holiday Announcement" },
+    { date: "03 May, 2024", title: "Parent Teacher Meeting" }
+  ];
 
   return (
-    <div className="animated-bg" style={{ 
-      minHeight: '100vh', 
-      color: 'white', 
-      fontFamily: "'Inter', sans-serif", 
-      overflow: 'hidden', 
-      position: 'relative', 
-      display: 'flex', 
-      alignItems: 'center', 
-      justifyContent: 'center' 
-    }}>
-      
-      {/* Floating 3D Background Elements */}
-      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', zIndex: 0 }}>
-        {mounted && [...Array(15)].map((_, i) => (
-          <div
-            key={i}
-            className="floating-orb"
-            style={{
-              position: 'absolute',
-              width: `${200 + i * 30}px`,
-              height: `${200 + i * 30}px`,
-              borderRadius: '40%',
-              background: `radial-gradient(circle, ${['#3b82f622', '#8b5cf622', '#10b98122', '#f59e0b22'][i % 4]} 0%, rgba(0,0,0,0) 70%)`,
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              filter: 'blur(80px)',
-              animationDelay: `${i * 0.2}s`,
-              animationDuration: `${20 + i}s`
-            }}
-          />
-        ))}
-      </div>
-
-      <div style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '1200px', padding: '24px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '64px', alignItems: 'center' }}>
-        
-        {/* Left Hero Section */}
-        <div className="fade-in-left">
-          <div className="title-container-3d" style={{ display: 'inline-flex', alignItems: 'center', gap: '20px', padding: '20px 28px', borderRadius: '28px', background: 'rgba(0,0,0,0.4)', position: 'relative', marginBottom: '40px', overflow: 'hidden', backdropFilter: 'blur(10px)' }}>
-            <div className="rotating-border"></div>
-            
-            <div className="logo-3d-anim" style={{ width: 80, height: 80, borderRadius: '22px', background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 20px 40px rgba(37,99,235,0.4)', position: 'relative', zIndex: 2 }}>
-              <GraduationCap size={44} color="white" />
-            </div>
-            <div style={{ position: 'relative', zIndex: 2 }}>
-              <h1 style={{ fontSize: '2.2rem', fontWeight: 900, margin: 0, background: 'linear-gradient(90deg, #fff, #93c5fd)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-1px' }}>Quaid-e-Millat</h1>
-              <p style={{ margin: 0, color: '#60a5fa', fontSize: '0.85rem', fontWeight: 800, letterSpacing: '5px', textTransform: 'uppercase' }}>Management System</p>
-            </div>
+    <div className="landing-container">
+      {/* Top Bar */}
+      <div className="top-bar">
+        <div className="container top-bar-content">
+          <div className="contact-info">
+            <span><Mail size={14} /> info@qmpbhs.edu.pk</span>
+            <span><Phone size={14} /> +92 301 6031213</span>
           </div>
-          
-          <h2 style={{ fontSize: 'clamp(3rem, 6vw, 5.5rem)', fontWeight: 900, lineHeight: 0.95, marginBottom: '32px', letterSpacing: '-4px' }}>
-            The Future of <span style={{ color: '#facc15', textShadow: '0 0 40px rgba(250,204,21,0.6)' }}>Learning</span>
-          </h2>
-          <p style={{ fontSize: '1.3rem', color: '#cbd5e1', lineHeight: 1.6, marginBottom: '48px', maxWidth: '550px', fontWeight: 500 }}>
-            Empowering minds through state-of-the-art innovation and academic excellence.
-          </p>
-
-          <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
-            <button 
-              type="button"
-              onClick={() => setShowAdminModal(true)}
-              className="admin-btn-3d-glow"
-              style={{ 
-                display: 'flex', alignItems: 'center', gap: '12px', color: '#fff', 
-                background: 'linear-gradient(135deg, #059669, #10b981)', border: 'none', 
-                cursor: 'pointer', padding: '16px 32px', borderRadius: '20px', transition: 'all 0.4s',
-                fontWeight: 900, boxShadow: '0 10px 0 #065f46, 0 20px 40px rgba(16,185,129,0.4)',
-                textTransform: 'uppercase', letterSpacing: '2px', fontSize: '1rem'
-              }}
-            >
-              <ShieldCheck size={24} /> <span>Admin Panel</span>
-            </button>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#94a3b8', fontWeight: 700, background: 'rgba(255,255,255,0.05)', padding: '12px 20px', borderRadius: '16px' }}>
-              <div className="pulse-dot" style={{ width: 14, height: 14, borderRadius: '50%', background: '#3b82f6', boxShadow: '0 0 15px #3b82f6' }}></div>
-              <span>System Online</span>
-            </div>
+          <div className="portal-links">
+            <Link href="/login" className="portal-link"><ShieldCheck size={14} /> Admin Panel</Link>
+            <Link href="/login" className="portal-link"><User size={14} /> Student</Link>
+            <Link href="/login" className="portal-link"><User size={14} /> Teacher</Link>
+            <Link href="/login" className="portal-link"><User size={14} /> Staff</Link>
           </div>
         </div>
+      </div>
 
-        {/* Right Auth Section with Full 3D Mouse Tilt & Rotating Border */}
-        <div className="perspective-container">
-          <div className="auth-card-3d-interactive auth-card-floating" style={{ position: 'relative', padding: '32px', background: 'rgba(10, 15, 30, 0.95)', backdropFilter: 'blur(40px)', borderRadius: '40px', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 40px 100px -20px rgba(0,0,0,0.8)', maxWidth: '420px', margin: '0 auto' }}>
-            <div className="rotating-border-auth"></div>
-            
-            <div style={{ position: 'relative', zIndex: 2 }}>
-              {/* Tabs with Zoom */}
-              <div style={{ display: 'flex', background: 'rgba(0,0,0,0.6)', borderRadius: '22px', padding: '8px', marginBottom: '40px', boxShadow: 'inset 0 4px 20px rgba(0,0,0,0.6)' }}>
-                {['login', 'register', 'feedback'].map(tab => (
-                  <button
-                    key={tab}
-                    onClick={() => { setActiveTab(tab); setSuccess(''); }}
-                    className="tab-zoom-3d"
-                    style={{
-                      flex: 1, padding: '16px', borderRadius: '18px', border: 'none',
-                      background: activeTab === tab ? 'linear-gradient(135deg, #3b82f6, #2563eb)' : 'transparent',
-                      color: activeTab === tab ? 'white' : '#4b5563',
-                      fontWeight: 900, cursor: 'pointer', transition: 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)', textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '1.5px',
-                      boxShadow: activeTab === tab ? '0 10px 20px rgba(37,99,235,0.4)' : 'none'
-                    }}
-                  >
-                    {tab}
-                  </button>
+      {/* Navbar */}
+      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+        <div className="container nav-content">
+          <Link href="/" className="logo">
+            <div className="logo-icon"><GraduationCap size={28} /></div>
+            <div className="logo-text">
+              <h1>Quaid-e-Millat</h1>
+              <p>PUBLIC BOYS HIGH SCHOOL</p>
+            </div>
+          </Link>
+
+          <div className={`nav-links ${mobileMenu ? 'active' : ''}`}>
+            <Link href="/">Home</Link>
+            <Link href="#about">About Us</Link>
+            <Link href="#academics">Academics</Link>
+            <Link href="/admission">Admission</Link>
+            <Link href="/login">Portal</Link>
+            <Link href="#contact">Contact Us</Link>
+            <Link href="/admission" className="fee-btn">Online Fee Payment</Link>
+          </div>
+
+          <button className="mobile-toggle" onClick={() => setMobileMenu(!mobileMenu)}>
+            {mobileMenu ? <X /> : <Menu />}
+          </button>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="hero">
+        <div className="hero-overlay"></div>
+        <div className="hero-image" style={{ backgroundImage: 'url("/homepage-hero.jpg")' }}></div>
+        <div className="container hero-content">
+          <div className="hero-badge">WELCOME TO</div>
+          <h2 className="hero-title">
+            Quaid-e-Millat <br />
+            <span>Public Boys High School</span>
+          </h2>
+          <p className="hero-desc">
+            Building a strong foundation for a brighter future. <br />
+            Quality Education, Discipline and Excellence.
+          </p>
+          <div className="hero-btns">
+            <Link href="#about" className="btn btn-primary btn-lg">About Our School</Link>
+            <Link href="/admission" className="btn btn-outline btn-lg">Admission Open</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="features">
+        <div className="container">
+          <div className="features-grid">
+            {features.map((f, i) => (
+              <div key={i} className="feature-card">
+                <div className="feature-icon">{f.icon}</div>
+                <div className="feature-info">
+                  <h3>{f.title}</h3>
+                  <p>{f.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* News & Events Section */}
+      <section className="news-events">
+        <div className="container">
+          <div className="section-header">
+            <div>
+              <h2 className="section-title">Latest News & Events</h2>
+              <div className="section-line"></div>
+            </div>
+            <Link href="#" className="view-all">View All <ChevronRight size={18} /></Link>
+          </div>
+
+          <div className="news-grid">
+            {news.map((n, i) => (
+              <div key={i} className="news-card">
+                <div className="news-img" style={{ backgroundImage: `url(${n.image})` }}></div>
+                <div className="news-content">
+                  <span className="news-date">{n.date}</span>
+                  <h3>{n.title}</h3>
+                  <p>Check out our latest activities and upcoming programs at QMPBHS.</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Notices Section */}
+      <section className="notices-stats">
+        <div className="container">
+          <div className="notices-stats-grid">
+            {/* Notices */}
+            <div className="notices-card">
+              <div className="section-header">
+                <h2 className="section-title">Important Notices</h2>
+                <Link href="#" className="view-all">View All</Link>
+              </div>
+              <div className="notices-list">
+                {notices.map((n, i) => (
+                  <div key={i} className="notice-item">
+                    <div className="notice-icon"><Bell size={20} /></div>
+                    <div className="notice-info">
+                      <span className="notice-date">{n.date}</span>
+                      <h4>{n.title}</h4>
+                    </div>
+                  </div>
                 ))}
               </div>
+            </div>
 
-              <form onSubmit={handleSubmit} className="fade-in">
-                {/* Error/Success alerts */}
-                {success && (
-                  <div style={{ padding: '18px', background: 'rgba(16, 185, 129, 0.15)', border: '1px solid #10b981', color: '#34d399', borderRadius: '18px', marginBottom: '28px', display: 'flex', alignItems: 'center', gap: '12px', fontWeight: 800 }}>
-                    <CheckCircle2 size={24} /> {success}
-                  </div>
-                )}
-
-                {error && (
-                  <div style={{ padding: '18px', background: 'rgba(239, 68, 68, 0.15)', border: '1px solid #ef4444', color: '#f87171', borderRadius: '18px', marginBottom: '28px', display: 'flex', alignItems: 'center', gap: '12px', fontWeight: 800 }}>
-                    <XCircle size={24} /> {error}
-                  </div>
-                )}
-
-                {/* Role Selection */}
-                {activeTab !== 'feedback' && (
-                  <div style={{ marginBottom: '36px' }}>
-                    <label style={{ display: 'block', marginBottom: '16px', color: '#4b5563', fontSize: '0.85rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '3px' }}>Select Role</label>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '12px' }}>
-                      {['admin', 'student', 'teacher', 'staff', "Parents"].map(r => (
-                        <button
-                          key={r} type="button" onClick={() => setRole(r === "Parents" ? 'parent' : r)}
-                          className="role-zoom-btn-v2"
-                          style={{
-                            padding: '14px', borderRadius: '16px', background: (role === r || (r === "Parents" && role === 'parent')) ? 'rgba(59,130,246,0.15)' : 'rgba(255,255,255,0.03)',
-                            border: `2px solid ${(role === r || (r === "Parents" && role === 'parent')) ? '#3b82f6' : 'transparent'}`,
-                            color: (role === r || (r === "Parents" && role === 'parent')) ? '#fff' : '#4b5563', textTransform: 'capitalize', cursor: 'pointer', transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                            fontWeight: 800, fontSize: '0.9rem'
-                          }}
-                        >
-                          {r}
-                        </button>
-                      ))}
+            {/* Stats */}
+            <div className="stats-card">
+              <div className="stats-grid">
+                {stats.map((s, i) => (
+                  <div key={i} className="stat-item">
+                    <div className="stat-icon">{s.icon}</div>
+                    <div className="stat-info">
+                      <h3>{s.count}</h3>
+                      <p>{s.label}</p>
                     </div>
                   </div>
-                )}
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                  {(activeTab === 'register' || activeTab === 'feedback') && (
-                    <div style={{ position: 'relative' }}>
-                      <User size={20} style={{ position: 'absolute', left: '18px', top: '50%', transform: 'translateY(-50%)', color: '#3b82f6' }} />
-                      <input required className="input-premium-3d" type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} style={{ width: '100%', padding: '18px 18px 18px 52px', boxSizing: 'border-box' }} />
-                    </div>
-                  )}
-
-                  <div style={{ position: 'relative' }}>
-                    <Mail size={20} style={{ position: 'absolute', left: '18px', top: '50%', transform: 'translateY(-50%)', color: '#3b82f6' }} />
-                    <input required className="input-premium-3d" type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} style={{ width: '100%', padding: '18px 18px 18px 52px', boxSizing: 'border-box' }} />
-                  </div>
-
-                  {activeTab !== 'feedback' && (
-                    <div style={{ position: 'relative' }}>
-                      <Lock size={20} style={{ position: 'absolute', left: '18px', top: '50%', transform: 'translateY(-50%)', color: '#3b82f6' }} />
-                      <input required className="input-premium-3d" type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} style={{ width: '100%', padding: '18px 18px 18px 52px', boxSizing: 'border-box' }} />
-                    </div>
-                  )}
-
-                  {activeTab === 'feedback' && (
-                    <textarea required className="input-premium-3d" name="message" placeholder="How can we help?" rows={4} value={formData.message} onChange={handleChange} style={{ width: '100%', padding: '20px', boxSizing: 'border-box', resize: 'none' }} />
-                  )}
-                </div>
-
-                <button type="submit" className="submit-btn-premium animated-pulse-v2" disabled={loading} style={{ width: '100%', padding: '22px', fontSize: '1.3rem', fontWeight: 900, letterSpacing: '3px', marginTop: '40px', background: 'linear-gradient(135deg, #3b82f6, #1e40af)', color: 'white', border: 'none', borderRadius: '24px', cursor: 'pointer', boxShadow: '0 10px 0 #1e3a8a, 0 20px 40px rgba(37,99,235,0.5)', transition: 'all 0.3s', textTransform: 'uppercase', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px' }}>
-                  {loading ? 'PROCESSING...' : (
-                    <>
-                      <span>{activeTab === 'login' ? 'Access Portal' : (activeTab === 'register' ? 'Join Now' : 'Send Feedback')}</span>
-                      <ArrowRight size={24} className="arrow-anim" />
-                    </>
-                  )}
-                </button>
-              </form>
+                ))}
+              </div>
             </div>
           </div>
         </div>
+      </section>
 
-      </div>
-
-      {/* Admin Password & Settings Modal */}
-      {showAdminModal && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(20px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div className="fade-in-up" style={{ background: '#0a0f1e', border: '1px solid rgba(255,255,255,0.1)', padding: '48px', borderRadius: '40px', width: '100%', maxWidth: '480px', boxShadow: '0 40px 100px rgba(0,0,0,1)' }}>
-            {!showChangePass ? (
-              <>
-                <div style={{ textAlign: 'center', marginBottom: '36px' }}>
-                  <div className="logo-3d-anim" style={{ width: 90, height: 90, borderRadius: '28px', background: 'rgba(59,130,246,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
-                    <ShieldCheck size={48} color="#3b82f6" />
-                  </div>
-                  <h3 style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '10px', letterSpacing: '-1px' }}>Admin Controls</h3>
-                  <p style={{ color: '#64748b', fontSize: '1rem', fontWeight: 500 }}>Secure access to the core management system.</p>
+      {/* Footer */}
+      <footer className="footer" id="contact">
+        <div className="container">
+          <div className="footer-grid">
+            <div className="footer-brand">
+              <Link href="/" className="logo inverted">
+                <div className="logo-icon"><GraduationCap size={28} /></div>
+                <div className="logo-text">
+                  <h1>Quaid-e-Millat</h1>
+                  <p>PUBLIC BOYS HIGH SCHOOL</p>
                 </div>
+              </Link>
+              <p className="footer-desc">
+                Quality education, strong values and a brighter future.
+              </p>
+              <div className="social-links">
+                <Link href="#"><Facebook size={20} /></Link>
+                <Link href="#"><Twitter size={20} /></Link>
+                <Link href="#"><Youtube size={20} /></Link>
+                <Link href="#"><Instagram size={20} /></Link>
+              </div>
+            </div>
 
-                <form onSubmit={(e) => {
-                  e.preventDefault();
-                  const storedPass = localStorage.getItem('admin_pass') || 'admin786';
-                  if (adminPass === storedPass) {
-                    window.location.href = '/admin';
-                  } else {
-                    setAdminError(true);
-                    setAdminPass('');
-                    setTimeout(() => setAdminError(false), 2000);
-                  }
-                }}>
-                  <input
-                    autoFocus type="password" placeholder="••••••••" value={adminPass} onChange={(e) => setAdminPass(e.target.value)}
-                    style={{ 
-                      width: '100%', padding: '20px', borderRadius: '20px', background: 'rgba(0,0,0,0.5)', 
-                      border: `2px solid ${adminError ? '#ef4444' : 'rgba(255,255,255,0.1)'}`, color: 'white', fontSize: '1.4rem',
-                      outline: 'none', transition: 'all 0.3s', textAlign: 'center', letterSpacing: '10px', marginBottom: '32px'
-                    }}
-                  />
-                  
-                  <div style={{ display: 'flex', gap: '20px' }}>
-                    <button type="button" onClick={() => { setShowAdminModal(false); setAdminPass(''); }} style={{ flex: 1, padding: '18px', borderRadius: '20px', background: 'rgba(255,255,255,0.05)', border: 'none', color: '#94a3b8', fontWeight: 800, cursor: 'pointer' }}>Cancel</button>
-                    <button type="submit" className="submit-btn-premium" style={{ flex: 1.5, padding: '18px', borderRadius: '20px', fontSize: '1rem' }}>Enter Admin</button>
-                  </div>
+            <div className="footer-links">
+              <h4>Quick Links</h4>
+              <ul>
+                <li><Link href="#">About Us</Link></li>
+                <li><Link href="#">Academics</Link></li>
+                <li><Link href="/admission">Admission</Link></li>
+                <li><Link href="#">Gallery</Link></li>
+                <li><Link href="#">Contact Us</Link></li>
+              </ul>
+            </div>
 
-                  <div style={{ marginTop: '24px', textAlign: 'center' }}>
-                    <button type="button" onClick={() => setShowChangePass(true)} style={{ background: 'none', border: 'none', color: '#3b82f6', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 700, textDecoration: 'underline' }}>
-                      Change Admin Credentials
-                    </button>
-                  </div>
-                </form>
-              </>
-            ) : (
-              <>
-                <div style={{ textAlign: 'center', marginBottom: '36px' }}>
-                  <h3 style={{ fontSize: '1.8rem', fontWeight: 900, marginBottom: '10px' }}>Update Credentials</h3>
-                  <p style={{ color: '#64748b' }}>Set a new master password for the Admin Panel.</p>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                  <input
-                    type="password" placeholder="Enter New Password" value={newAdminPass} onChange={(e) => setNewAdminPass(e.target.value)}
-                    style={{ width: '100%', padding: '20px', borderRadius: '20px', background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', fontSize: '1.1rem' }}
-                  />
-                  <div style={{ display: 'flex', gap: '16px' }}>
-                    <button onClick={() => setShowChangePass(false)} style={{ flex: 1, padding: '16px', borderRadius: '16px', background: 'rgba(255,255,255,0.05)', color: '#94a3b8', border: 'none', fontWeight: 700 }}>Back</button>
-                    <button onClick={() => {
-                      if (newAdminPass.length < 4) return alert('Password too short!');
-                      localStorage.setItem('admin_pass', newAdminPass);
-                      setSuccess('Admin credentials updated!');
-                      setShowChangePass(false);
-                      setNewAdminPass('');
-                      setTimeout(() => setSuccess(''), 3000);
-                    }} style={{ flex: 2, padding: '16px', borderRadius: '16px', background: '#3b82f6', color: 'white', border: 'none', fontWeight: 800 }}>Save & Update</button>
-                  </div>
-                </div>
-              </>
-            )}
+            <div className="footer-links">
+              <h4>Portals</h4>
+              <ul>
+                <li><Link href="/login">Student Portal</Link></li>
+                <li><Link href="/login">Parent Portal</Link></li>
+                <li><Link href="/login">Staff Login</Link></li>
+                <li><Link href="/admission">Online Fee Payment</Link></li>
+              </ul>
+            </div>
+
+            <div className="footer-contact">
+              <h4>Contact Info</h4>
+              <p><MapPin size={18} /> 123 School Road, Your City, Pakistan</p>
+              <p><Mail size={18} /> info@qmpbhs.edu.pk</p>
+              <p><Phone size={18} /> +92 301 6031213</p>
+              <p><Calendar size={18} /> Mon - Sat: 8:00 AM - 2:00 PM</p>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <p>&copy; 2024 Quaid-e-Millat Public Boys High School. All Rights Reserved.</p>
           </div>
         </div>
-      )}
+      </footer>
 
       <style jsx>{`
-        .animated-bg {
-          background: linear-gradient(-45deg, #020617, #064e3b, #0a1128, #052e16);
-          background-size: 400% 400%;
-          animation: gradientBG 12s ease infinite;
+        .landing-container {
+          min-height: 100vh;
+          background: #f8fafc;
+          color: #1e293b;
+          font-family: 'Inter', sans-serif;
         }
-        @keyframes gradientBG {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
+
+        .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 24px;
         }
-        .rotating-border, .rotating-border-auth {
-          position: absolute;
-          inset: -100%;
-          background: conic-gradient(from 0deg, transparent, #3b82f6, transparent 40%, #10b981, transparent 70%);
-          animation: rotateLine 6s linear infinite;
-          z-index: 1;
+
+        /* Top Bar */
+        .top-bar {
+          background: #0f172a;
+          color: rgba(255,255,255,0.7);
+          padding: 8px 0;
+          font-size: 0.8rem;
+          border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        .rotating-border-auth { animation-duration: 8s; opacity: 0.7; }
-        @keyframes rotateLine {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+        .top-bar-content {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
         }
-        .title-container-3d:after, .auth-card-3d-interactive:after {
-          content: '';
-          position: absolute;
-          inset: 3px;
-          background: #020617;
-          border-radius: 25px;
-          z-index: 1;
+        .contact-info { display: flex; gap: 20px; }
+        .contact-info span { display: flex; alignItems: center; gap: 6px; }
+        .portal-links { display: flex; gap: 15px; }
+        .portal-link { 
+          display: flex; alignItems: center; gap: 4px; 
+          color: rgba(255,255,255,0.8); transition: color 0.3s;
         }
-        .auth-card-3d-interactive:after { border-radius: 45px; inset: 4px; background: rgba(2, 6, 23, 0.98); }
-        .logo-3d-anim {
-          animation: logoFloat 6s ease-in-out infinite;
-          transform-style: preserve-3d;
+        .portal-link:hover { color: #3b82f6; }
+
+        /* Navbar */
+        .navbar {
+          position: sticky;
+          top: 0;
+          z-index: 1000;
+          background: #fff;
+          padding: 15px 0;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+          transition: all 0.3s;
         }
-        @keyframes logoFloat {
-          0%, 100% { transform: translateY(0) rotateY(0deg) rotateX(0deg); }
-          50% { transform: translateY(-20px) rotateY(25deg) rotateX(15deg); }
+        .navbar.scrolled { padding: 10px 0; }
+        .nav-content {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
         }
-        .perspective-container { perspective: 3000px; }
-        .auth-card-3d-interactive {
-          transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-          transform-style: preserve-3d;
+        .logo { display: flex; alignItems: center; gap: 12px; color: #1e3a8a; }
+        .logo-icon { 
+          width: 45px; height: 45px; background: #1e3a8a; 
+          border-radius: 10px; display: flex; alignItems: center; 
+          justify-content: center; color: #fff;
         }
-        .auth-card-3d-interactive:hover {
-          transform: rotateY(-18deg) rotateX(12deg) scale(1.05);
+        .logo-text h1 { font-size: 1.4rem; margin: 0; line-height: 1; letter-spacing: -1px; }
+        .logo-text p { font-size: 0.6rem; margin: 0; font-weight: 800; letter-spacing: 1px; color: #64748b; }
+
+        .nav-links { display: flex; alignItems: center; gap: 25px; }
+        .nav-links a { 
+          color: #1e293b; font-weight: 600; font-size: 0.95rem; 
+          transition: color 0.3s;
         }
-        .auth-card-floating {
-          animation: cardFloat 8s ease-in-out infinite;
+        .nav-links a:hover { color: #3b82f6; }
+        .fee-btn { 
+          background: #1e3a8a; color: #fff !important; 
+          padding: 10px 20px; borderRadius: 8px; font-weight: 700 !important;
         }
-        .auth-card-floating:hover {
-          animation-play-state: paused;
-        }
-        @keyframes cardFloat {
-          0%, 100% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
-          50% { transform: translateY(-15px) rotateX(5deg) rotateY(-5deg); }
-        }
-        .tab-zoom-3d:hover {
-          transform: scale(1.15) translateZ(20px);
-          color: #fff !important;
-        }
-        .role-zoom-btn-v2:hover {
-          transform: scale(1.25) translateZ(30px);
-          background: rgba(59,130,246,0.2) !important;
-          z-index: 10;
-        }
-        .admin-btn-3d-glow {
+
+        /* Hero */
+        .hero {
           position: relative;
+          height: 600px;
+          display: flex;
+          align-items: center;
+          color: #fff;
           overflow: hidden;
-          animation: adminBtn3d 4s ease-in-out infinite;
-          transform-style: preserve-3d;
         }
-        @keyframes adminBtn3d {
-          0%, 100% { transform: perspective(500px) rotateX(0deg) translateY(0); }
-          50% { transform: perspective(500px) rotateX(15deg) translateY(-5px); }
-        }
-        .admin-btn-3d-glow:after {
-          content: '';
+        .hero-image {
           position: absolute;
-          top: -50%; left: -50%; width: 200%; height: 200%;
-          background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
-          animation: glowMove 4s linear infinite;
+          inset: 0;
+          background-size: cover;
+          background-position: center;
+          z-index: -2;
         }
-        @keyframes glowMove {
-          from { transform: translate(-30%, -30%); }
-          to { transform: translate(30%, 30%); }
+        .hero-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(90deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.4) 100%);
+          z-index: -1;
         }
-        .animated-pulse-v2 {
-          animation: buttonPulseV2 3s infinite;
-        }
-        @keyframes buttonPulseV2 {
-          0% { box-shadow: 0 10px 0 #1e3a8a, 0 0 0 0 rgba(59,130,246,0.5); }
-          70% { box-shadow: 0 10px 0 #1e3a8a, 0 0 0 30px rgba(59,130,246,0); }
-          100% { box-shadow: 0 10px 0 #1e3a8a, 0 0 0 0 rgba(59,130,246,0); }
-        }
-        .submit-btn-premium:hover {
-          transform: translateY(-6px) scale(1.03);
-          box-shadow: 0 16px 0 #1e3a8a, 0 30px 60px rgba(37,99,235,0.6);
-        }
-        .submit-btn-premium:hover .arrow-anim {
-          transform: translateX(8px);
-        }
-        .arrow-anim { transition: transform 0.3s; }
-        .input-premium-3d {
-          background: rgba(0,0,0,0.5);
-          border: 1px solid rgba(255,255,255,0.15);
-          color: white;
+        .hero-badge {
+          background: rgba(255,255,255,0.1);
+          border: 1px solid rgba(255,255,255,0.2);
+          padding: 5px 15px;
           border-radius: 20px;
-          transition: all 0.4s;
-          outline: none;
+          display: inline-block;
+          font-size: 0.8rem;
+          font-weight: 800;
+          letter-spacing: 2px;
+          margin-bottom: 20px;
         }
-        .input-premium-3d:focus {
-          border-color: #3b82f6;
-          background: rgba(0,0,0,0.7);
-          box-shadow: inset 0 4px 15px rgba(0,0,0,0.7), 0 0 30px rgba(59,130,246,0.4);
+        .hero-title { font-size: 4rem; font-weight: 900; line-height: 1.1; margin-bottom: 25px; letter-spacing: -2px; }
+        .hero-title span { color: #fff; opacity: 0.9; }
+        .hero-desc { font-size: 1.2rem; color: rgba(255,255,255,0.8); margin-bottom: 40px; max-width: 600px; }
+        .hero-btns { display: flex; gap: 20px; }
+        .btn-outline { 
+          border: 2px solid #fff; color: #fff; 
+          padding: 12px 30px; borderRadius: 10px; font-weight: 700;
         }
-        .pulse-dot { animation: pulse 2s infinite; }
-        @keyframes pulse {
-          0% { transform: scale(1); opacity: 1; }
-          50% { transform: scale(1.6); opacity: 0.6; }
-          100% { transform: scale(1); opacity: 1; }
+        .btn-outline:hover { background: #fff; color: #1e3a8a; }
+
+        /* Features */
+        .features { margin-top: -60px; position: relative; z-index: 10; }
+        .features-grid { 
+          display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+          gap: 24px;
         }
-        .fade-in-left { animation: fadeInLeft 1.5s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
-        @keyframes fadeInLeft {
-          from { opacity: 0; transform: translateX(-200px); }
-          to { opacity: 1; transform: translateX(0); }
+        .feature-card {
+          background: #fff; padding: 30px; border-radius: 20px;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.05); display: flex; gap: 20px;
+          transition: transform 0.3s;
         }
-        .fade-in-up { animation: fadeInUp 1.5s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(200px); }
-          to { opacity: 1; transform: translateY(0); }
+        .feature-card:hover { transform: translateY(-5px); }
+        .feature-icon { color: #1e3a8a; }
+        .feature-info h3 { font-size: 1.1rem; margin-bottom: 8px; }
+        .feature-info p { font-size: 0.9rem; color: #64748b; line-height: 1.5; }
+
+        /* News */
+        .news-events { padding: 100px 0; }
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
+        .section-title { font-size: 2rem; font-weight: 800; color: #1e3a8a; margin: 0; }
+        .section-line { width: 60px; height: 4px; background: #facc15; margin-top: 10px; }
+        .view-all { color: #3b82f6; font-weight: 700; display: flex; alignItems: center; gap: 5px; }
+
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .news-card { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .news-img { height: 200px; background-size: cover; background-position: center; }
+        .news-content { padding: 25px; }
+        .news-date { color: #3b82f6; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
+        .news-content h3 { margin: 10px 0; font-size: 1.25rem; }
+        .news-content p { color: #64748b; font-size: 0.95rem; line-height: 1.6; }
+
+        /* Notices & Stats */
+        .notices-stats { padding: 60px 0 100px; background: #f1f5f9; }
+        .notices-stats-grid { display: grid; grid-template-columns: 1.2fr 1.8fr; gap: 40px; }
+        .notices-card { background: #fff; padding: 40px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .notices-list { display: flex; flexDirection: column; gap: 20px; margin-top: 30px; }
+        .notice-item { display: flex; gap: 20px; padding-bottom: 20px; border-bottom: 1px solid #f1f5f9; }
+        .notice-item:last-child { border: none; }
+        .notice-icon { width: 45px; height: 45px; background: #f1f5f9; border-radius: 12px; display: flex; alignItems: center; justifyContent: center; color: #1e3a8a; }
+        .notice-info h4 { margin: 0; font-size: 1rem; }
+        .notice-date { font-size: 0.75rem; color: #64748b; font-weight: 700; }
+
+        .stats-card { background: #1e3a8a; border-radius: 30px; padding: 40px; color: #fff; }
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
+        .stat-item { display: flex; gap: 20px; align-items: center; }
+        .stat-icon { color: #facc15; }
+        .stat-info h3 { font-size: 2.2rem; margin: 0; font-weight: 900; }
+        .stat-info p { margin: 0; font-size: 0.9rem; opacity: 0.8; font-weight: 600; }
+
+        /* Footer */
+        .footer { background: #0f172a; color: #fff; padding: 100px 0 30px; }
+        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.5fr; gap: 50px; margin-bottom: 80px; }
+        .footer-brand .logo { margin-bottom: 25px; }
+        .logo.inverted { color: #fff; }
+        .logo.inverted .logo-icon { background: #3b82f6; }
+        .footer-desc { color: rgba(255,255,255,0.6); line-height: 1.8; margin-bottom: 30px; }
+        .social-links { display: flex; gap: 15px; }
+        .social-links a { 
+          width: 40px; height: 40px; background: rgba(255,255,255,0.05); 
+          border-radius: 10px; display: flex; alignItems: center; 
+          justify-content: center; transition: all 0.3s;
         }
-        .floating-orb { animation: floatOrb linear infinite; }
-        @keyframes floatOrb {
-          0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-          33% { transform: translate(50px, -80px) scale(1.3) rotate(120deg); }
-          66% { transform: translate(-40px, 40px) scale(0.7) rotate(240deg); }
-          100% { transform: translate(0, 0) scale(1) rotate(360deg); }
+        .social-links a:hover { background: #3b82f6; transform: translateY(-3px); }
+
+        .footer-links h4, .footer-contact h4 { font-size: 1.2rem; margin-bottom: 30px; position: relative; }
+        .footer-links h4::after, .footer-contact h4::after {
+          content: ''; position: absolute; left: 0; bottom: -10px; 
+          width: 40px; height: 3px; background: #3b82f6;
+        }
+        .footer-links ul { list-style: none; padding: 0; }
+        .footer-links li { margin-bottom: 15px; }
+        .footer-links a { color: rgba(255,255,255,0.6); transition: color 0.3s; }
+        .footer-links a:hover { color: #fff; padding-left: 5px; }
+
+        .footer-contact p { 
+          display: flex; gap: 15px; color: rgba(255,255,255,0.6); 
+          margin-bottom: 20px; align-items: center;
+        }
+
+        .footer-bottom { 
+          border-top: 1px solid rgba(255,255,255,0.05); 
+          padding-top: 30px; text-align: center; color: rgba(255,255,255,0.4); 
+          font-size: 0.9rem;
+        }
+
+        @media (max-width: 992px) {
+          .footer-grid { grid-template-columns: repeat(2, 1fr); }
+          .notices-stats-grid { grid-template-columns: 1fr; }
+          .hero-title { font-size: 3rem; }
+        }
+
+        @media (max-width: 768px) {
+          .top-bar { display: none; }
+          .nav-links { 
+            position: fixed; top: 75px; left: -100%; width: 100%; 
+            height: calc(100vh - 75px); background: #fff; 
+            flex-direction: column; padding: 40px; transition: 0.3s;
+          }
+          .nav-links.active { left: 0; }
+          .hero-title { font-size: 2.5rem; }
+          .hero-btns { flex-direction: column; }
+          .footer-grid { grid-template-columns: 1fr; }
         }
       `}</style>
     </div>
