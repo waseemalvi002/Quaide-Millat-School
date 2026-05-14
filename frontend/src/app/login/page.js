@@ -32,7 +32,7 @@ export default function Home() {
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     if (token && user.role) {
-      router.push(`/${user.role}`);
+      router.push(`/${user.role}/dashboard`);
     }
   }, [router]);
 
@@ -62,6 +62,8 @@ export default function Home() {
           setLoading(false);
           if (result && !result.success) {
             setError(result.message || 'Login failed.');
+          } else {
+            window.location.href = '/admin/dashboard';
           }
         } else {
           setLoading(false);
@@ -72,7 +74,7 @@ export default function Home() {
           setLoading(false);
           localStorage.setItem('token', 'mock_token');
           localStorage.setItem('user', JSON.stringify({ name: formData.email.split('@')[0], email: formData.email, role: role, avatar: { url: imageFile ? URL.createObjectURL(imageFile) : '' } }));
-          window.location.href = `/${role}`;
+          window.location.href = `/${role}/dashboard`;
         }, 1000);
       }
     } else if (activeTab === 'register') {
@@ -132,8 +134,8 @@ export default function Home() {
           <div className="title-container-3d" style={{ display: 'inline-flex', alignItems: 'center', gap: '20px', padding: '20px 28px', borderRadius: '28px', background: 'rgba(0,0,0,0.4)', position: 'relative', marginBottom: '40px', overflow: 'hidden', backdropFilter: 'blur(10px)' }}>
             <div className="rotating-border"></div>
             
-            <div className="logo-3d-anim" style={{ width: 80, height: 80, borderRadius: '22px', background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 20px 40px rgba(37,99,235,0.4)', position: 'relative', zIndex: 2 }}>
-              <GraduationCap size={44} color="white" />
+            <div className="logo-3d-anim" style={{ width: 80, height: 80, borderRadius: '50%', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 20px 40px rgba(37,99,235,0.4)', position: 'relative', zIndex: 2 }}>
+              <img src="/school-logo.png" alt="Logo" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
             </div>
             <div style={{ position: 'relative', zIndex: 2 }}>
               <h1 style={{ fontSize: '2.2rem', fontWeight: 900, margin: 0, background: 'linear-gradient(90deg, #fff, #93c5fd)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-1px' }}>Quaid-e-Millat</h1>
@@ -294,7 +296,7 @@ export default function Home() {
                   e.preventDefault();
                   const storedPass = localStorage.getItem('admin_pass') || 'admin786';
                   if (adminPass === storedPass) {
-                    window.location.href = '/admin';
+                    window.location.href = '/admin/dashboard';
                   } else {
                     setAdminError(true);
                     setAdminPass('');

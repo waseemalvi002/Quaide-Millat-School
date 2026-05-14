@@ -19,6 +19,19 @@ export default function LandingPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const [showSplash, setShowSplash] = useState(false);
+
+  useEffect(() => {
+    const hasSeenSplash = sessionStorage.getItem('seenSplash');
+    if (!hasSeenSplash) {
+      setShowSplash(true);
+      setTimeout(() => {
+        setShowSplash(false);
+        sessionStorage.setItem('seenSplash', 'true');
+      }, 3500);
+    }
+  }, []);
+
   const stats = [
     { icon: <Users size={28} />, count: "850+", label: "Students Enrolled" },
     { icon: <User size={28} />, count: "45+", label: "Qualified Teachers" },
@@ -76,6 +89,19 @@ export default function LandingPage() {
 
   return (
     <div className="landing-container">
+      {/* Splash Screen */}
+      <div className={`splash-screen ${!showSplash ? 'hide' : ''}`}>
+        <div className="splash-content">
+          <div className="splash-logo">
+            <img src="/school-logo.png" alt="Logo" style={{ width: 120, height: 120, borderRadius: '50%' }} />
+          </div>
+          <h2>Welcome to</h2>
+          <h1>Quaid-e-Millat</h1>
+          <h3>Public Boys High School</h3>
+          <p>Building a strong foundation for a brighter future.<br/>Quality Education, Discipline and Excellence.</p>
+        </div>
+      </div>
+
       {/* Top Bar */}
       <div className="top-bar">
         <div className="container top-bar-content">
@@ -84,10 +110,10 @@ export default function LandingPage() {
             <span><Phone size={14} /> +92 301 6031213</span>
           </div>
           <div className="portal-links">
-            <Link href="/login" className="portal-link"><ShieldCheck size={14} /> Admin Panel</Link>
-            <Link href="/login" className="portal-link"><User size={14} /> Student</Link>
-            <Link href="/login" className="portal-link"><User size={14} /> Teacher</Link>
-            <Link href="/login" className="portal-link"><User size={14} /> Staff</Link>
+            <Link href="/admin" className="portal-link"><ShieldCheck size={14} /> Admin Panel</Link>
+            <Link href="/login" className="portal-link"><User size={14} /> Login</Link>
+            <Link href="/register" className="portal-link"><User size={14} /> Register</Link>
+            <Link href="/feedback" className="portal-link"><User size={14} /> Feedback</Link>
           </div>
         </div>
       </div>
@@ -95,8 +121,10 @@ export default function LandingPage() {
       {/* Navbar */}
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="container nav-content">
-          <Link href="/" className="logo">
-            <div className="logo-icon"><GraduationCap size={28} /></div>
+          <Link href="#home" className="logo">
+            <div className="logo-icon" style={{ background: 'transparent', padding: 0 }}>
+              <img src="/school-logo.png" alt="Logo" style={{ width: '100%', height: '100%', borderRadius: '10px', objectFit: 'cover' }} />
+            </div>
             <div className="logo-text">
               <h1>Quaid-e-Millat</h1>
               <p>PUBLIC BOYS HIGH SCHOOL</p>
@@ -104,13 +132,13 @@ export default function LandingPage() {
           </Link>
 
           <div className={`nav-links ${mobileMenu ? 'active' : ''}`}>
-            <Link href="/">Home</Link>
-            <Link href="#about">About Us</Link>
-            <Link href="#academics">Academics</Link>
-            <Link href="/admission">Admission</Link>
-            <Link href="/login">Portal</Link>
-            <Link href="#contact">Contact Us</Link>
-            <Link href="/admission" className="fee-btn">Online Fee Payment</Link>
+            <Link href="#home" onClick={() => setMobileMenu(false)}>Home</Link>
+            <Link href="#about" onClick={() => setMobileMenu(false)}>About Us</Link>
+            <Link href="#academics" onClick={() => setMobileMenu(false)}>Academics</Link>
+            <Link href="#admission" onClick={() => setMobileMenu(false)}>Admission</Link>
+            <Link href="/login" onClick={() => setMobileMenu(false)}>Portal</Link>
+            <Link href="#contact" onClick={() => setMobileMenu(false)}>Contact Us</Link>
+            <Link href="#admission" className="fee-btn" onClick={() => setMobileMenu(false)}>Online Fee Payment</Link>
           </div>
 
           <button className="mobile-toggle" onClick={() => setMobileMenu(!mobileMenu)}>
@@ -120,9 +148,9 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="hero">
+      <section className="hero" id="home">
         <div className="hero-overlay" style={{ background: 'linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.6))', zIndex: 1 }}></div>
-        <div className="hero-image" style={{ backgroundImage: 'url("/homepage-hero.jpg")', backgroundPosition: 'center 20%', zIndex: 0 }}></div>
+        <div className="hero-image" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop")', backgroundPosition: 'center 20%', zIndex: 0 }}></div>
         <div className="container hero-content" style={{ position: 'relative', zIndex: 10 }}>
           <div className="hero-badge">WELCOME TO</div>
           <h2 className="hero-title">
@@ -141,7 +169,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="features">
+      <section className="features" id="about">
         <div className="container">
           <div className="features-grid">
             {features.map((f, i) => (
@@ -158,7 +186,7 @@ export default function LandingPage() {
       </section>
 
       {/* News & Events Section */}
-      <section className="news-events">
+      <section className="news-events" id="academics">
         <div className="container">
           <div className="section-header">
             <div>
@@ -184,7 +212,7 @@ export default function LandingPage() {
       </section>
 
       {/* Notices Section */}
-      <section className="notices-stats">
+      <section className="notices-stats" id="admission">
         <div className="container">
           <div className="notices-stats-grid">
             {/* Notices */}
@@ -229,8 +257,10 @@ export default function LandingPage() {
         <div className="container">
           <div className="footer-grid">
             <div className="footer-brand">
-              <Link href="/" className="logo inverted">
-                <div className="logo-icon"><GraduationCap size={28} /></div>
+              <Link href="#home" className="logo inverted">
+                <div className="logo-icon" style={{ background: 'transparent', padding: 0 }}>
+                  <img src="/school-logo.png" alt="Logo" style={{ width: '100%', height: '100%', borderRadius: '10px', objectFit: 'cover' }} />
+                </div>
                 <div className="logo-text">
                   <h1>Quaid-e-Millat</h1>
                   <p>PUBLIC BOYS HIGH SCHOOL</p>
@@ -240,10 +270,10 @@ export default function LandingPage() {
                 Quality education, strong values and a brighter future.
               </p>
               <div className="social-links">
-                <Link href="#"><Facebook size={20} /></Link>
-                <Link href="#"><Twitter size={20} /></Link>
-                <Link href="#"><Youtube size={20} /></Link>
-                <Link href="#"><Instagram size={20} /></Link>
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><Facebook size={20} /></a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><Twitter size={20} /></a>
+                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"><Youtube size={20} /></a>
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><Instagram size={20} /></a>
               </div>
             </div>
 
@@ -294,6 +324,27 @@ export default function LandingPage() {
           max-width: 1200px;
           margin: 0 auto;
           padding: 0 24px;
+        }
+
+        /* Splash Screen */
+        .splash-screen {
+          position: fixed; inset: 0; background: #0f172a; z-index: 9999;
+          display: flex; align-items: center; justify-content: center;
+          color: white; text-align: center;
+          transition: opacity 0.8s ease-in-out, visibility 0.8s;
+        }
+        .splash-screen.hide { opacity: 0; visibility: hidden; }
+        .splash-content { animation: scaleUp 1s ease-out forwards; padding: 20px; }
+        .splash-content h2 { color: #facc15; font-size: 1.5rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
+        .splash-content h1 { font-size: 4rem; font-weight: 900; margin: 0; background: linear-gradient(90deg, #fff, #93c5fd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .splash-content h3 { font-size: 1.8rem; margin: 10px 0 20px; font-weight: 300; }
+        .splash-content p { font-size: 1.1rem; color: #94a3b8; line-height: 1.6; max-width: 600px; margin: 0 auto; }
+        .splash-logo { margin-bottom: 30px; animation: pulseLogo 2s infinite; }
+        @keyframes scaleUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes pulseLogo { 
+          0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59,130,246,0.4); border-radius: 50%; } 
+          70% { transform: scale(1.05); box-shadow: 0 0 0 30px rgba(59,130,246,0); border-radius: 50%; } 
+          100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59,130,246,0); border-radius: 50%; } 
         }
 
         /* Top Bar */
@@ -357,7 +408,7 @@ export default function LandingPage() {
         /* Hero */
         .hero {
           position: relative;
-          height: 600px;
+          min-height: 100vh;
           display: flex;
           align-items: center;
           color: #fff;

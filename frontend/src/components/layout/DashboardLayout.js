@@ -84,8 +84,8 @@ export default function DashboardLayout({ children }) {
       <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`}>
         <div className={styles.sidebarHeader}>
           <div className={styles.logo}>
-            <div className={styles.logo3d}>
-              <GraduationCap size={24} color="white" />
+            <div className={styles.logo3d} style={{ background: 'transparent', padding: 0 }}>
+              <img src="/school-logo.png" alt="Logo" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
             </div>
             <div>
               <h2>QM School</h2>
