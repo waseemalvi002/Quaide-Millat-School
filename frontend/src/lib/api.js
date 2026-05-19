@@ -29,9 +29,12 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       if (typeof window !== 'undefined') {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.href = '/login';
+        const token = localStorage.getItem('token');
+        if (token && token !== 'demo_token') {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = '/login';
+        }
       }
     }
     return Promise.reject(error);
@@ -147,6 +150,7 @@ export const galleryAPI = {
   delete: (id) => api.delete(`/gallery/${id}`),
   addImage: (id, data) => api.post(`/gallery/${id}/images`, data),
   removeImage: (id, imageId) => api.delete(`/gallery/${id}/images/${imageId}`),
+  updateImageCaption: (id, imageId, data) => api.put(`/gallery/${id}/images/${imageId}/caption`, data),
   getStats: () => api.get('/gallery/stats'),
 };
 

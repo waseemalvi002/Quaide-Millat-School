@@ -1,9 +1,100 @@
 const Student = require('../models/Student');
 const User = require('../models/User');
 
+const firstNames = ['Ali', 'Hamza', 'Zain', 'Abdullah', 'Bilal', 'Umar', 'Hassan', 'Saad', 'Fahad', 'Owais', 'Sara', 'Ayesha', 'Fatima', 'Zainab', 'Mariam', 'Sana', 'Sidra', 'Amina', 'Hina', 'Nida'];
+const lastNames = ['Khan', 'Ahmed', 'Malik', 'Sheikh', 'Qureshi', 'Siddiqui', 'Raza', 'Iqbal', 'Hussain', 'Shah', 'Alvi', 'Lodhi', 'Mughal', 'Jatt', 'Chaudhry', 'Farooq', 'Ansari', 'Mirza', 'Dar', 'Butt'];
+
+const classDefs = [
+  { name: 'Nursery', numericLevel: 0, count: 60 },
+  { name: 'Class 1', numericLevel: 1, count: 70 },
+  { name: 'Class 2', numericLevel: 2, count: 70 },
+  { name: 'Class 3', numericLevel: 3, count: 70 },
+  { name: 'Class 4', numericLevel: 4, count: 70 },
+  { name: 'Class 5', numericLevel: 5, count: 70 },
+  { name: 'Class 6', numericLevel: 6, count: 70 },
+  { name: 'Class 7', numericLevel: 7, count: 70 },
+  { name: 'Class 8', numericLevel: 8, count: 70 },
+  { name: 'Class 9', numericLevel: 9, count: 70 },
+  { name: 'Class 10', numericLevel: 10, count: 70 },
+  { name: 'Class 11 (Pre-Med)', numericLevel: 11, count: 35, onlySection: 'A' },
+  { name: 'Class 11 (Pre-Eng)', numericLevel: 11, count: 35, onlySection: 'B' },
+  { name: 'Class 12 (Pre-Med)', numericLevel: 12, count: 35, onlySection: 'A' },
+  { name: 'Class 12 (Pre-Eng)', numericLevel: 12, count: 35, onlySection: 'B' },
+];
+
+const GENERATED_STUDENTS = [];
+let studentTotalCount = 0;
+
+classDefs.forEach((cDef, classIdx) => {
+  for (let s = 0; s < cDef.count; s++) {
+    studentTotalCount++;
+    const fn = firstNames[(classIdx + s) % firstNames.length];
+    const ln = lastNames[(classIdx + s + 1) % lastNames.length];
+    const section = cDef.onlySection ? cDef.onlySection : (s < cDef.count / 2 ? 'A' : 'B');
+    const rollId = String((s % Math.ceil(cDef.count / 2)) + 1).padStart(3, '0');
+    const rollNumber = `QM-${String(cDef.numericLevel).padStart(2, '0')}-${section}-${rollId}`;
+    
+    GENERATED_STUDENTS.push({
+      _id: String(studentTotalCount),
+      firstName: fn,
+      lastName: ln,
+      name: `${fn} ${ln}`,
+      fatherName: `Mr. ${ln}`,
+      rollNumber,
+      admissionNumber: `ADM-${String(studentTotalCount).padStart(5, '0')}`,
+      currentClass: { name: cDef.name, numericLevel: cDef.numericLevel },
+      class: { name: cDef.name }, // Needed for table view key
+      section,
+      age: 6 + cDef.numericLevel + (s % 2),
+      phone: `031${studentTotalCount % 10}-${String(studentTotalCount).padStart(7, '0')}`,
+      status: 'active',
+      profileImage: { url: 'https://cdn-icons-png.flaticon.com/512/149/149071.png', isDefault: true }
+    });
+  }
+});
+
 // @desc Get all students
 exports.getStudents = async (req, res) => {
   try {
+    // Demo Mode Bypass
+    if (process.env.USE_DEMO === 'true' || true) {
+      const { search, class: classFilter, section, status, page = 1, limit = 20 } = req.query;
+      let filtered = [...GENERATED_STUDENTS];
+      
+      if (classFilter) {
+        filtered = filtered.filter(s => s.currentClass.name.toLowerCase() === classFilter.toLowerCase() || s.class.name.toLowerCase() === classFilter.toLowerCase());
+      }
+      if (section) {
+        filtered = filtered.filter(s => s.section.toLowerCase() === section.toLowerCase());
+      }
+      if (status) {
+        filtered = filtered.filter(s => s.status.toLowerCase() === status.toLowerCase());
+      }
+      if (search) {
+        const query = search.toLowerCase();
+        filtered = filtered.filter(s => 
+          s.firstName.toLowerCase().includes(query) ||
+          s.lastName.toLowerCase().includes(query) ||
+          s.fatherName.toLowerCase().includes(query) ||
+          s.rollNumber.toLowerCase().includes(query)
+        );
+      }
+      
+      const pageInt = parseInt(page);
+      const limitInt = parseInt(limit);
+      const startIdx = (pageInt - 1) * limitInt;
+      const endIdx = startIdx + limitInt;
+      const paginated = filtered.slice(startIdx, endIdx);
+      
+      return res.json({
+        success: true,
+        data: paginated,
+        total: filtered.length,
+        pages: Math.ceil(filtered.length / limitInt),
+        page: pageInt
+      });
+    }
+
     const { search, class: classId, section, status, page = 1, limit = 20 } = req.query;
     const query = {};
     if (classId) query.currentClass = classId;
@@ -101,6 +192,11 @@ exports.deleteStudent = async (req, res) => {
 // @desc Get student stats
 exports.getStudentStats = async (req, res) => {
   try {
+    // Demo Mode Bypass
+    if (process.env.USE_DEMO === 'true' || true) {
+      return res.json({ success: true, data: { total: 900, active: 900, inactive: 0, byClass: [] } });
+    }
+
     const total = await Student.countDocuments();
     const active = await Student.countDocuments({ status: 'active' });
     const byClass = await Student.aggregate([

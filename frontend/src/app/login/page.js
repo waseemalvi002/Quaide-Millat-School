@@ -1,16 +1,30 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { GraduationCap, User, Lock, Mail, ShieldCheck, CheckCircle2, ArrowRight, Send, Upload, XCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 
-export default function Home() {
+import { Suspense } from 'react';
+
+function LoginContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { login } = useAuth();
   const [activeTab, setActiveTab] = useState('login'); // login, register, feedback
   const [role, setRole] = useState('student');
+
+  useEffect(() => {
+    const roleParam = searchParams.get('role');
+    const tabParam = searchParams.get('tab');
+    if (roleParam) {
+      setRole(roleParam);
+    }
+    if (tabParam) {
+      setActiveTab(tabParam);
+    }
+  }, [searchParams]);
   const [imageFile, setImageFile] = useState(null);
   const [showAdminModal, setShowAdminModal] = useState(false);
   const [adminPass, setAdminPass] = useState('');
@@ -32,7 +46,7 @@ export default function Home() {
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     if (token && user.role) {
-      router.push(`/${user.role}/dashboard`);
+      router.push(`/${user.role}`);
     }
   }, [router]);
 
@@ -63,7 +77,7 @@ export default function Home() {
           if (result && !result.success) {
             setError(result.message || 'Login failed.');
           } else {
-            window.location.href = '/admin/dashboard';
+            window.location.href = '/admin';
           }
         } else {
           setLoading(false);
@@ -74,15 +88,21 @@ export default function Home() {
           setLoading(false);
           localStorage.setItem('token', 'mock_token');
           localStorage.setItem('user', JSON.stringify({ name: formData.email.split('@')[0], email: formData.email, role: role, avatar: { url: imageFile ? URL.createObjectURL(imageFile) : '' } }));
-          window.location.href = `/${role}/dashboard`;
+          window.location.href = `/${role}`;
         }, 1000);
       }
     } else if (activeTab === 'register') {
+      if (!formData.name) {
+        setLoading(false);
+        setError('Please enter your full name.');
+        return;
+      }
       setTimeout(() => {
         setLoading(false);
-        setSuccess('Account created successfully! Awaiting Admin Approval.');
-        setTimeout(() => setActiveTab('login'), 2000);
-      }, 1000);
+        setSuccess(`Registration successful for ${formData.name} as ${role.toUpperCase()}! Awaiting Admin Approval.`);
+        console.log('Admin Notification Sent:', { name: formData.name, role: role, date: new Date() });
+        setTimeout(() => setActiveTab('login'), 3000);
+      }, 1500);
     } else if (activeTab === 'feedback') {
       setTimeout(() => {
         setLoading(false);
@@ -135,7 +155,7 @@ export default function Home() {
             <div className="rotating-border"></div>
             
             <div className="logo-3d-anim" style={{ width: 80, height: 80, borderRadius: '50%', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 20px 40px rgba(37,99,235,0.4)', position: 'relative', zIndex: 2 }}>
-              <img src="/school-logo.png" alt="Logo" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+              <img src="/logo.jpg" alt="Logo" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
             </div>
             <div style={{ position: 'relative', zIndex: 2 }}>
               <h1 style={{ fontSize: '2.2rem', fontWeight: 900, margin: 0, background: 'linear-gradient(90deg, #fff, #93c5fd)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-1px' }}>Quaid-e-Millat</h1>
@@ -296,7 +316,7 @@ export default function Home() {
                   e.preventDefault();
                   const storedPass = localStorage.getItem('admin_pass') || 'admin786';
                   if (adminPass === storedPass) {
-                    window.location.href = '/admin/dashboard';
+                    window.location.href = '/admin';
                   } else {
                     setAdminError(true);
                     setAdminPass('');
@@ -499,5 +519,13 @@ export default function Home() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#020617', color: 'white' }}>Loading...</div>}>
+      <LoginContent />
+    </Suspense>
   );
 }

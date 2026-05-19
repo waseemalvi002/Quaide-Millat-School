@@ -507,17 +507,9 @@ select.form-input option {
 }
 
 .table th:last-child, .table td:last-child {
-  position: sticky;
-  right: 0;
-  background: #1e293b; /* Match card background exactly */
-  z-index: 10;
-  box-shadow: -10px 0 20px rgba(0,0,0,0.1);
+  background: transparent;
+  z-index: 1;
   min-width: 150px;
-}
-
-[data-theme="dark"] .table th:last-child, 
-[data-theme="dark"] .table td:last-child {
-  background: #121b36; /* Match dark theme card background */
 }
 
 /* ===== RESPONSIVE ===== */

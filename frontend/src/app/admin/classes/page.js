@@ -6,21 +6,21 @@ import { BookOpen, Plus, Edit, Trash2, X, Users, FileText } from 'lucide-react';
 import styles from '../admin.module.css';
 
 const DEMO_CLASSES = [
-  { _id: '1', name: 'Class 1', numericLevel: 1, category: 'primary', sections: ['A', 'B'], subjects: ['English', 'Urdu', 'Math', 'Islamiat'], monthlyFee: 2000, students: 12, teacher: 'Ahmed Khan' },
-  { _id: '2', name: 'Class 2', numericLevel: 2, category: 'primary', sections: ['A', 'B'], subjects: ['English', 'Urdu', 'Math', 'Islamiat', 'General Knowledge'], monthlyFee: 2000, students: 10, teacher: 'Ahmed Khan' },
-  { _id: '3', name: 'Class 3', numericLevel: 3, category: 'primary', sections: ['A'], subjects: ['English', 'Urdu', 'Math', 'Islamiat', 'General Knowledge'], monthlyFee: 2200, students: 8, teacher: 'Sajid Ali' },
-  { _id: '4', name: 'Class 4', numericLevel: 4, category: 'primary', sections: ['A'], subjects: ['English', 'Urdu', 'Math', 'Islamiat', 'Social Studies', 'Science'], monthlyFee: 2200, students: 7, teacher: 'Sajid Ali' },
-  { _id: '5', name: 'Class 5', numericLevel: 5, category: 'primary', sections: ['A'], subjects: ['English', 'Urdu', 'Math', 'Islamiat', 'Social Studies', 'Science'], monthlyFee: 2500, students: 6, teacher: 'Muhammad Farooq' },
-  { _id: '6', name: 'Class 6', numericLevel: 6, category: 'middle', sections: ['A'], subjects: ['English', 'Urdu', 'Math', 'Islamiat', 'Pak Studies', 'Science', 'Computer'], monthlyFee: 2800, students: 5, teacher: 'Muhammad Farooq' },
-  { _id: '7', name: 'Class 7', numericLevel: 7, category: 'middle', sections: ['A'], subjects: ['English', 'Urdu', 'Math', 'Islamiat', 'Pak Studies', 'Science', 'Computer'], monthlyFee: 2800, students: 4, teacher: 'Kashif Iqbal' },
-  { _id: '8', name: 'Class 8', numericLevel: 8, category: 'middle', sections: ['A'], subjects: ['English', 'Urdu', 'Math', 'Islamiat', 'Pak Studies', 'Science', 'Computer'], monthlyFee: 3000, students: 5, teacher: 'Kashif Iqbal' },
-  { _id: '9', name: 'Class 9', numericLevel: 9, category: 'high', sections: ['A'], subjects: ['English', 'Urdu', 'Math', 'Islamiat', 'Pak Studies', 'Physics', 'Chemistry', 'Biology', 'Computer'], monthlyFee: 3500, students: 4, teacher: 'Tahir Mehmood' },
-  { _id: '10', name: 'Class 10', numericLevel: 10, category: 'high', sections: ['A'], subjects: ['English', 'Urdu', 'Math', 'Islamiat', 'Pak Studies', 'Physics', 'Chemistry', 'Biology', 'Computer'], monthlyFee: 3500, students: 3, teacher: 'Tahir Mehmood' },
-  { _id: '11', name: 'Class 11 (Pre-Med)', numericLevel: 11, category: 'high', sections: ['A'], subjects: ['English', 'Urdu', 'Biology', 'Physics', 'Chemistry', 'Islamiat'], monthlyFee: 4500, students: 2, teacher: 'Kamran Shah' },
-  { _id: '12', name: 'Class 11 (Pre-Eng)', numericLevel: 11, category: 'high', sections: ['B'], subjects: ['English', 'Urdu', 'Math', 'Physics', 'Chemistry', 'Islamiat'], monthlyFee: 4500, students: 2, teacher: 'Kamran Shah' },
-  { _id: '13', name: 'Class 12 (Pre-Med)', numericLevel: 12, category: 'high', sections: ['A'], subjects: ['English', 'Urdu', 'Biology', 'Physics', 'Chemistry', 'Pak Studies'], monthlyFee: 5000, students: 3, teacher: 'Tahir Mehmood' },
-  { _id: '14', name: 'Class 12 (Pre-Eng)', numericLevel: 12, category: 'high', sections: ['B'], subjects: ['English', 'Urdu', 'Math', 'Physics', 'Chemistry', 'Pak Studies'], monthlyFee: 5000, students: 3, teacher: 'Tahir Mehmood' },
-  { _id: '15', name: 'Nursery', numericLevel: 0, category: 'primary', sections: ['A', 'B'], subjects: ['English Oral', 'Urdu Oral', 'Math Oral', 'General Knowledge', 'Art'], monthlyFee: 1500, students: 15, teacher: 'Rehman Gul' },
+  { _id: '1', name: 'Class 1', numericLevel: 1, category: 'primary', sections: ['A', 'B'], subjects: ['English', 'Urdu', 'Math', 'Islamiat'], monthlyFee: 2000, students: 70, teacher: 'Ahmed Khan' },
+  { _id: '2', name: 'Class 2', numericLevel: 2, category: 'primary', sections: ['A', 'B'], subjects: ['English', 'Urdu', 'Math', 'Islamiat', 'General Knowledge'], monthlyFee: 2000, students: 70, teacher: 'Ahmed Khan' },
+  { _id: '3', name: 'Class 3', numericLevel: 3, category: 'primary', sections: ['A', 'B'], subjects: ['English', 'Urdu', 'Math', 'Islamiat', 'General Knowledge'], monthlyFee: 2200, students: 70, teacher: 'Sajid Ali' },
+  { _id: '4', name: 'Class 4', numericLevel: 4, category: 'primary', sections: ['A', 'B'], subjects: ['English', 'Urdu', 'Math', 'Islamiat', 'Social Studies', 'Science'], monthlyFee: 2200, students: 70, teacher: 'Sajid Ali' },
+  { _id: '5', name: 'Class 5', numericLevel: 5, category: 'primary', sections: ['A', 'B'], subjects: ['English', 'Urdu', 'Math', 'Islamiat', 'Social Studies', 'Science'], monthlyFee: 2500, students: 70, teacher: 'Muhammad Farooq' },
+  { _id: '6', name: 'Class 6', numericLevel: 6, category: 'middle', sections: ['A', 'B'], subjects: ['English', 'Urdu', 'Math', 'Islamiat', 'Pak Studies', 'Science', 'Computer'], monthlyFee: 2800, students: 70, teacher: 'Muhammad Farooq' },
+  { _id: '7', name: 'Class 7', numericLevel: 7, category: 'middle', sections: ['A', 'B'], subjects: ['English', 'Urdu', 'Math', 'Islamiat', 'Pak Studies', 'Science', 'Computer'], monthlyFee: 2800, students: 70, teacher: 'Kashif Iqbal' },
+  { _id: '8', name: 'Class 8', numericLevel: 8, category: 'middle', sections: ['A', 'B'], subjects: ['English', 'Urdu', 'Math', 'Islamiat', 'Pak Studies', 'Science', 'Computer'], monthlyFee: 3000, students: 70, teacher: 'Kashif Iqbal' },
+  { _id: '9', name: 'Class 9', numericLevel: 9, category: 'high', sections: ['A', 'B'], subjects: ['English', 'Urdu', 'Math', 'Islamiat', 'Pak Studies', 'Physics', 'Chemistry', 'Biology', 'Computer'], monthlyFee: 3500, students: 70, teacher: 'Tahir Mehmood' },
+  { _id: '10', name: 'Class 10', numericLevel: 10, category: 'high', sections: ['A', 'B'], subjects: ['English', 'Urdu', 'Math', 'Islamiat', 'Pak Studies', 'Physics', 'Chemistry', 'Biology', 'Computer'], monthlyFee: 3500, students: 70, teacher: 'Tahir Mehmood' },
+  { _id: '11', name: 'Class 11 (Pre-Med)', numericLevel: 11, category: 'high', sections: ['A'], subjects: ['English', 'Urdu', 'Biology', 'Physics', 'Chemistry', 'Islamiat'], monthlyFee: 4500, students: 35, teacher: 'Kamran Shah' },
+  { _id: '12', name: 'Class 11 (Pre-Eng)', numericLevel: 11, category: 'high', sections: ['B'], subjects: ['English', 'Urdu', 'Math', 'Physics', 'Chemistry', 'Islamiat'], monthlyFee: 4500, students: 35, teacher: 'Kamran Shah' },
+  { _id: '13', name: 'Class 12 (Pre-Med)', numericLevel: 12, category: 'high', sections: ['A'], subjects: ['English', 'Urdu', 'Biology', 'Physics', 'Chemistry', 'Pak Studies'], monthlyFee: 5000, students: 35, teacher: 'Tahir Mehmood' },
+  { _id: '14', name: 'Class 12 (Pre-Eng)', numericLevel: 12, category: 'high', sections: ['B'], subjects: ['English', 'Urdu', 'Math', 'Physics', 'Chemistry', 'Pak Studies'], monthlyFee: 5000, students: 35, teacher: 'Tahir Mehmood' },
+  { _id: '15', name: 'Nursery', numericLevel: 0, category: 'primary', sections: ['A', 'B'], subjects: ['English Oral', 'Urdu Oral', 'Math Oral', 'General Knowledge', 'Art'], monthlyFee: 1500, students: 60, teacher: 'Rehman Gul' },
 ];
 
 export default function AdminClasses() {

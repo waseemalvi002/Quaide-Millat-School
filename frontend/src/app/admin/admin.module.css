@@ -5,21 +5,22 @@
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 32px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 8px;
 }
 
 .header h1 {
-  font-size: 2rem;
+  font-size: 1.7rem;
   color: #facc15;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   font-weight: 800;
   text-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
 .header p {
   color: #cbd5e1;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
 }
 
@@ -49,18 +50,18 @@
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
-  margin-bottom: 32px;
+  gap: 14px;
+  margin-bottom: 16px;
 }
 
 .statCard {
   background: rgba(10, 15, 30, 0.8);
   backdrop-filter: blur(20px);
-  border-radius: 20px;
-  padding: 24px;
+  border-radius: 16px;
+  padding: 14px 18px;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
   animation: fadeIn 0.5s ease forwards;
@@ -75,9 +76,9 @@
 }
 
 .statIcon {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -109,8 +110,8 @@
 .mainGrid {
   display: grid;
   grid-template-columns: 1.8fr 1fr;
-  gap: 24px;
-  margin-bottom: 32px;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .card {
@@ -355,7 +356,9 @@
 
 /* Class List */
 .classList {
-  padding: 20px 24px;
+  padding: 10px 24px;
+  max-height: 380px;
+  overflow-y: auto;
 }
 
 .classItem {
@@ -381,11 +384,9 @@
 }
 
 /* Dashboard Grid & Activity */
-.dashboardGrid {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 24px;
-  margin-top: 2rem;
+.fullWidthCard {
+  width: 100%;
+  margin-top: 3rem;
 }
 
 @media (max-width: 1024px) {

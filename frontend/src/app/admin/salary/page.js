@@ -2,19 +2,29 @@
 
 import { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { DollarSign, Search, Download, Eye, CheckCircle, X, Clock, Plus } from 'lucide-react';
+import { DollarSign, Search, Download, Eye, CheckCircle, X, Clock, Plus, Upload, Edit, Trash2, Save } from 'lucide-react';
 import styles from '../admin.module.css';
 
 const DEMO_SALARIES = [
-  { _id: '1', employee: 'Ahmed Khan', type: 'Teacher', month: 'January', year: 2025, basic: 45000, allowances: 5000, deductions: 2000, netSalary: 48000, workingDays: 26, presentDays: 25, status: 'paid', paidDate: '2025-02-01' },
-  { _id: '2', employee: 'Muhammad Farooq', type: 'Teacher', month: 'January', year: 2025, basic: 55000, allowances: 8000, deductions: 3000, netSalary: 60000, workingDays: 26, presentDays: 26, status: 'paid', paidDate: '2025-02-01' },
-  { _id: '3', employee: 'Sajid Ali', type: 'Teacher', month: 'January', year: 2025, basic: 40000, allowances: 4000, deductions: 1500, netSalary: 42500, workingDays: 26, presentDays: 24, status: 'pending', paidDate: null },
-  { _id: '4', employee: 'Kashif Iqbal', type: 'Teacher', month: 'January', year: 2025, basic: 42000, allowances: 5000, deductions: 2000, netSalary: 45000, workingDays: 26, presentDays: 26, status: 'approved', paidDate: null },
-  { _id: '5', employee: 'Rashid Peon', type: 'Staff', month: 'January', year: 2025, basic: 20000, allowances: 2000, deductions: 500, netSalary: 21500, workingDays: 26, presentDays: 24, status: 'paid', paidDate: '2025-02-01' },
-  { _id: '6', employee: 'Akbar Ali', type: 'Staff', month: 'January', year: 2025, basic: 18000, allowances: 1500, deductions: 500, netSalary: 19000, workingDays: 26, presentDays: 25, status: 'pending', paidDate: null },
-  { _id: '7', employee: 'Nasir Ahmed', type: 'Staff', month: 'January', year: 2025, basic: 25000, allowances: 3000, deductions: 1000, netSalary: 27000, workingDays: 26, presentDays: 26, status: 'paid', paidDate: '2025-02-01' },
-  { _id: '8', employee: 'Asif Mahmood', type: 'Teacher', month: 'January', year: 2025, basic: 38000, allowances: 4000, deductions: 1500, netSalary: 40500, workingDays: 26, presentDays: 23, status: 'pending', paidDate: null },
+  { _id: '1', employee: 'Ahmed Khan', type: 'Teacher', month: 'January', year: 2025, basic: 45000, allowances: 5000, deductions: 2000, netSalary: 48000, workingDays: 26, presentDays: 25, status: 'paid', paidDate: '2025-02-01', profileImage: '/teacher_1.png' },
+  { _id: '2', employee: 'Muhammad Farooq', type: 'Teacher', month: 'January', year: 2025, basic: 55000, allowances: 8000, deductions: 3000, netSalary: 60000, workingDays: 26, presentDays: 26, status: 'paid', paidDate: '2025-02-01', profileImage: '/teacher_2.png' },
+  { _id: '3', employee: 'Sajid Ali', type: 'Teacher', month: 'January', year: 2025, basic: 40000, allowances: 4000, deductions: 1500, netSalary: 42500, workingDays: 26, presentDays: 24, status: 'pending', paidDate: null, profileImage: '/teacher_1.png' },
+  { _id: '4', employee: 'Kashif Iqbal', type: 'Teacher', month: 'January', year: 2025, basic: 42000, allowances: 5000, deductions: 2000, netSalary: 45000, workingDays: 26, presentDays: 26, status: 'approved', paidDate: null, profileImage: '/teacher_2.png' },
+  { _id: '5', employee: 'Rashid Peon', type: 'Staff', month: 'January', year: 2025, basic: 20000, allowances: 2000, deductions: 500, netSalary: 21500, workingDays: 26, presentDays: 24, status: 'paid', paidDate: '2025-02-01', profileImage: '/teacher_1.png' },
+  { _id: '6', employee: 'Akbar Ali', type: 'Staff', month: 'January', year: 2025, basic: 18000, allowances: 1500, deductions: 500, netSalary: 19000, workingDays: 26, presentDays: 25, status: 'pending', paidDate: null, profileImage: '/teacher_2.png' },
+  { _id: '7', employee: 'Nasir Ahmed', type: 'Staff', month: 'January', year: 2025, basic: 25000, allowances: 3000, deductions: 1000, netSalary: 27000, workingDays: 26, presentDays: 26, status: 'paid', paidDate: '2025-02-01', profileImage: '/teacher_1.png' },
+  { _id: '8', employee: 'Asif Mahmood', type: 'Teacher', month: 'January', year: 2025, basic: 38000, allowances: 4000, deductions: 1500, netSalary: 40500, workingDays: 26, presentDays: 23, status: 'pending', paidDate: null, profileImage: '/teacher_2.png' },
 ];
+
+const getEmployeeAvatar = (salary, index) => {
+  if (!salary) return '/teacher_1.png';
+  if (salary.profileImage) return salary.profileImage;
+  const name = salary.employee || '';
+  const isFemale = name.includes('Nida') || name.includes('Hina') || name.includes('Sara') || name.includes('Ayesha') || name.includes('Fatima');
+  return isFemale ? `/teacher_2.png` : `/teacher_1.png`;
+};
+
+
 
 export default function AdminSalary() {
   const [salaries, setSalaries] = useState(DEMO_SALARIES);
@@ -85,9 +95,39 @@ export default function AdminSalary() {
             <table className="table">
               <thead><tr><th>Employee</th><th>Type</th><th>Month</th><th>Basic</th><th>Allowances</th><th>Deductions</th><th>Net Salary</th><th>Days</th><th>Status</th><th>Actions</th></tr></thead>
               <tbody>
-                {filtered.map(salary => (
-                  <tr key={salary._id}>
-                    <td style={{ fontWeight: 600 }}>{salary.employee}</td>
+                {filtered.map((salary, index) => {
+                  const displayAvatar = getEmployeeAvatar(salary, index);
+                  return (
+                    <tr key={salary._id}>
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <div 
+                            style={{ position: 'relative', width: '45px', height: '45px', cursor: 'pointer', flexShrink: 0 }} 
+                            onClick={() => document.getElementById(`s-img-input-${salary._id}`).click()}
+                            title="Click to change image"
+                          >
+                            <div style={{ width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden', border: '2px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 4px 10px rgba(0,0,0,0.3)' }}>
+                              <img src={displayAvatar} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                              <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0, transition: '0.2s', borderRadius: '50%' }} onMouseEnter={e => e.currentTarget.style.opacity = 1} onMouseLeave={e => e.currentTarget.style.opacity = 0}>
+                                <Upload size={14} color="#fff" />
+                              </div>
+                            </div>
+                          <input 
+                            id={`s-img-input-${salary._id}`}
+                            type="file" 
+                            hidden 
+                            accept="image/*"
+                            onChange={(e) => {
+                              if (e.target.files?.[0]) {
+                                const url = URL.createObjectURL(e.target.files[0]);
+                                setSalaries(prev => prev.map(s => s._id === salary._id ? { ...s, profileImage: url } : s));
+                              }
+                            }}
+                          />
+                        </div>
+                        <span style={{ fontWeight: 600 }}>{salary.employee}</span>
+                      </div>
+                    </td>
                     <td><span className={`badge ${salary.type === 'Teacher' ? 'badge-info' : 'badge-warning'}`}>{salary.type}</span></td>
                     <td>{salary.month} {salary.year}</td>
                     <td>Rs {salary.basic.toLocaleString()}</td>
@@ -96,58 +136,99 @@ export default function AdminSalary() {
                     <td style={{ fontWeight: 700 }}>Rs {salary.netSalary.toLocaleString()}</td>
                     <td>{salary.presentDays}/{salary.workingDays}</td>
                     <td>
-                      <span className="badge" style={{ background: statusStyles[salary.status]?.bg, color: statusStyles[salary.status]?.color, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                        {statusStyles[salary.status]?.icon} {salary.status}
+                      <span 
+                        onClick={() => {
+                          const nextStatus = salary.status === 'pending' ? 'approved' : salary.status === 'approved' ? 'paid' : 'pending';
+                          setSalaries(prev => prev.map(s => s._id === salary._id ? { ...s, status: nextStatus, paidDate: nextStatus === 'paid' ? new Date().toISOString().split('T')[0] : null } : s));
+                        }}
+                        className="badge" 
+                        style={{ 
+                          background: statusStyles[salary.status]?.bg, 
+                          color: statusStyles[salary.status]?.color, 
+                          display: 'inline-flex', 
+                          alignItems: 'center', 
+                          gap: '4px',
+                          cursor: 'pointer',
+                          minWidth: '90px',
+                          justifyContent: 'center'
+                        }}
+                        title="Click to toggle status"
+                      >
+                        {statusStyles[salary.status]?.icon} {salary.status.toUpperCase()}
                       </span>
                     </td>
                     <td>
                       <div style={{ display: 'flex', gap: '6px' }}>
-                        <button className="btn btn-sm btn-secondary" onClick={() => { setSelected(salary); setShowViewModal(true); }}><Eye size={14} /></button>
-                        {salary.status === 'pending' && (
-                          <button className="btn btn-sm btn-success" style={{ background: '#10b981', color: '#fff' }}
-                            onClick={() => setSalaries(prev => prev.map(s => s._id === salary._id ? { ...s, status: 'approved' } : s))}>Approve</button>
-                        )}
-                        {salary.status === 'approved' && (
-                          <button className="btn btn-sm btn-primary"
-                            onClick={() => setSalaries(prev => prev.map(s => s._id === salary._id ? { ...s, status: 'paid', paidDate: new Date().toISOString().split('T')[0] } : s))}>Pay</button>
-                        )}
+                        <button className="btn btn-sm btn-secondary" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#60a5fa' }} onClick={() => { setSelected(salary); setShowViewModal(true); }}><Edit size={14} /></button>
+                        <button className="btn btn-sm btn-danger" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#f87171' }} onClick={() => { if(confirm('Delete this record?')) setSalaries(prev => prev.filter(s => s._id !== salary._id)) }}><Trash2 size={14} /></button>
                         <button className="btn btn-sm btn-secondary"><Download size={14} /></button>
                       </div>
                     </td>
                   </tr>
-                ))}
+                );
+              })}
               </tbody>
             </table>
           </div>
         </div>
 
         {showViewModal && selected && (
-          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }}>
-            <div className="card" style={{ width: '100%', maxWidth: '450px' }}>
-              <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <h3>Salary Slip</h3>
-                <button onClick={() => setShowViewModal(false)} style={{ background: 'none', border: 'none' }}><X size={20} /></button>
+          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px', backdropFilter: 'blur(5px)' }}>
+            <div className="card" style={{ width: '100%', maxWidth: '500px', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}>
+              <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h3>Edit Salary Details</h3>
+                <button onClick={() => setShowViewModal(false)} style={{ background: 'rgba(255,255,255,0.05)', border: 'none', color: '#fff', borderRadius: '50%', width: '32px', height: '32px' }}><X size={20} /></button>
               </div>
-              <div className="card-body">
-                <div style={{ textAlign: 'center', padding: '16px', background: 'linear-gradient(135deg, #1a56db, #3b82f6)', borderRadius: '12px', color: '#fff', marginBottom: '20px' }}>
-                  <h2 style={{ fontSize: '1rem' }}>Quaid-e-Millat Public Boys High School</h2>
-                  <p style={{ opacity: 0.8, fontSize: '0.85rem' }}>Salary Slip - {selected.month} {selected.year}</p>
-                </div>
-                <div style={{ display: 'grid', gap: '8px' }}>
-                  {[['Employee', selected.employee], ['Type', selected.type], ['Basic Salary', `Rs ${selected.basic.toLocaleString()}`], ['Allowances', `+Rs ${selected.allowances.toLocaleString()}`], ['Deductions', `-Rs ${selected.deductions.toLocaleString()}`], ['Working Days', `${selected.presentDays}/${selected.workingDays}`]].map(([l, v], i) => (
-                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 12px', background: i % 2 === 0 ? '#f8fafc' : '#fff', borderRadius: '6px' }}>
-                      <span style={{ color: '#64748b', fontSize: '0.85rem' }}>{l}</span>
-                      <span style={{ fontWeight: 600 }}>{v}</span>
-                    </div>
-                  ))}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px', background: '#1e293b', borderRadius: '8px', color: '#fff', marginTop: '8px' }}>
-                    <span style={{ fontWeight: 600 }}>Net Salary</span>
-                    <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>Rs {selected.netSalary.toLocaleString()}</span>
+              <div className="card-body" style={{ padding: '24px' }}>
+                <div style={{ display: 'grid', gap: '16px' }}>
+                  <div className="form-group">
+                    <label className="form-label" style={{ color: '#94a3b8' }}>Employee Name</label>
+                    <input className="form-input" value={selected.employee} onChange={(e) => setSelected({...selected, employee: e.target.value})} />
                   </div>
-                </div>
-                <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '16px' }}>
-                  <button className="btn btn-secondary"><Download size={16} /> Download PDF</button>
-                  <button className="btn btn-primary" onClick={() => setShowViewModal(false)}>Close</button>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                    <div className="form-group">
+                      <label className="form-label" style={{ color: '#94a3b8' }}>Basic Salary</label>
+                      <input type="number" className="form-input" value={selected.basic} onChange={(e) => {
+                        const basic = parseInt(e.target.value) || 0;
+                        setSelected({...selected, basic, netSalary: basic + selected.allowances - selected.deductions});
+                      }} />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label" style={{ color: '#94a3b8' }}>Allowances</label>
+                      <input type="number" className="form-input" value={selected.allowances} onChange={(e) => {
+                        const allowances = parseInt(e.target.value) || 0;
+                        setSelected({...selected, allowances, netSalary: selected.basic + allowances - selected.deductions});
+                      }} />
+                    </div>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                    <div className="form-group">
+                      <label className="form-label" style={{ color: '#94a3b8' }}>Deductions</label>
+                      <input type="number" className="form-input" value={selected.deductions} onChange={(e) => {
+                        const deductions = parseInt(e.target.value) || 0;
+                        setSelected({...selected, deductions, netSalary: selected.basic + selected.allowances - deductions});
+                      }} />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label" style={{ color: '#94a3b8' }}>Working Days</label>
+                      <input type="number" className="form-input" value={selected.presentDays} onChange={(e) => setSelected({...selected, presentDays: parseInt(e.target.value) || 0})} />
+                    </div>
+                  </div>
+                  
+                  <div style={{ background: 'rgba(59, 130, 246, 0.1)', padding: '16px', borderRadius: '12px', marginTop: '8px', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ color: '#60a5fa', fontWeight: 600 }}>Calculated Net Salary</span>
+                      <span style={{ fontSize: '1.25rem', fontWeight: 700, color: '#facc15' }}>Rs {selected.netSalary?.toLocaleString()}</span>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
+                    <button className="btn btn-secondary" style={{ flex: 1 }} onClick={() => setShowViewModal(false)}>Cancel</button>
+                    <button className="btn btn-primary" style={{ flex: 1, background: '#3b82f6' }} onClick={() => {
+                      setSalaries(prev => prev.map(s => s._id === selected._id ? selected : s));
+                      setShowViewModal(false);
+                    }}><Save size={18} /> Save Changes</button>
+                  </div>
                 </div>
               </div>
             </div>

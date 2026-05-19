@@ -2,172 +2,176 @@
 
 import { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { FileText, Search, Plus, Eye, Download, X, Award, TrendingUp } from 'lucide-react';
+import { FileText, Search, Plus, Eye, Download, X, Award, TrendingUp, Pencil, Trash2, Upload } from 'lucide-react';
 import styles from '../admin.module.css';
 
+const CLASSES = ['Class 1','Class 2','Class 3','Class 4','Class 5','Class 6','Class 7','Class 8','Class 9','Class 10','Class 11','Class 12'];
+
 const DEMO_RESULTS = [
-  { _id: '1', student: 'Ali Khan', rollNumber: 'QM-01-001', class: 'Class 1', examType: 'Monthly', term: 'January 2025', totalMarks: 450, obtainedMarks: 380, percentage: 84.4, grade: 'A', position: 1, subjects: [{ name: 'English', total: 100, obtained: 85 }, { name: 'Urdu', total: 100, obtained: 78 }, { name: 'Math', total: 100, obtained: 92 }, { name: 'Islamiat', total: 100, obtained: 88 }, { name: 'GK', total: 50, obtained: 37 }] },
-  { _id: '2', student: 'Hassan Ahmed', rollNumber: 'QM-01-002', class: 'Class 1', examType: 'Monthly', term: 'January 2025', totalMarks: 450, obtainedMarks: 340, percentage: 75.6, grade: 'B+', position: 2, subjects: [{ name: 'English', total: 100, obtained: 72 }, { name: 'Urdu', total: 100, obtained: 68 }, { name: 'Math', total: 100, obtained: 80 }, { name: 'Islamiat', total: 100, obtained: 82 }, { name: 'GK', total: 50, obtained: 38 }] },
-  { _id: '3', student: 'Muhammad Usman', rollNumber: 'QM-02-001', class: 'Class 2', examType: 'Monthly', term: 'January 2025', totalMarks: 500, obtainedMarks: 420, percentage: 84.0, grade: 'A', position: 1, subjects: [{ name: 'English', total: 100, obtained: 88 }, { name: 'Urdu', total: 100, obtained: 82 }, { name: 'Math', total: 100, obtained: 90 }, { name: 'Islamiat', total: 100, obtained: 85 }, { name: 'Science', total: 100, obtained: 75 }] },
-  { _id: '4', student: 'Ahmed Raza', rollNumber: 'QM-03-001', class: 'Class 3', examType: 'Weekly', term: 'Week 1 Jan', totalMarks: 250, obtainedMarks: 198, percentage: 79.2, grade: 'B+', position: 1, subjects: [{ name: 'English', total: 50, obtained: 42 }, { name: 'Urdu', total: 50, obtained: 38 }, { name: 'Math', total: 50, obtained: 45 }, { name: 'Science', total: 50, obtained: 35 }, { name: 'Islamiat', total: 50, obtained: 38 }] },
-  { _id: '5', student: 'Hamza Malik', rollNumber: 'QM-04-001', class: 'Class 4', examType: 'Monthly', term: 'January 2025', totalMarks: 600, obtainedMarks: 480, percentage: 80.0, grade: 'A-', position: 1, subjects: [{ name: 'English', total: 100, obtained: 82 }, { name: 'Urdu', total: 100, obtained: 78 }, { name: 'Math', total: 100, obtained: 88 }, { name: 'Science', total: 100, obtained: 75 }, { name: 'Islamiat', total: 100, obtained: 85 }, { name: 'Social Studies', total: 100, obtained: 72 }] },
-  { _id: '6', student: 'Fahad Sheikh', rollNumber: 'QM-05-001', class: 'Class 5', examType: 'Monthly', term: 'January 2025', totalMarks: 600, obtainedMarks: 522, percentage: 87.0, grade: 'A', position: 1, subjects: [{ name: 'English', total: 100, obtained: 90 }, { name: 'Urdu', total: 100, obtained: 85 }, { name: 'Math', total: 100, obtained: 92 }, { name: 'Science', total: 100, obtained: 88 }, { name: 'Islamiat', total: 100, obtained: 82 }, { name: 'Social Studies', total: 100, obtained: 85 }] },
+  { _id: '1',  student: 'Ali Hassan',       rollNumber: 'QM-2024-101', class: 'Class 1',  examType: 'Monthly', term: 'Jan 2025', totalMarks: 300, obtainedMarks: 270, percentage: 90.0, grade: 'A', subjects: [{ name: 'Urdu', total: 100, obtained: 95 }, { name: 'English', total: 100, obtained: 88 }, { name: 'Maths', total: 100, obtained: 87 }], profileImage: { url: '/boy_1.png' } },
+  { _id: '2',  student: 'Umar Farooq',      rollNumber: 'QM-2024-102', class: 'Class 2',  examType: 'Monthly', term: 'Jan 2025', totalMarks: 300, obtainedMarks: 255, percentage: 85.0, grade: 'A', subjects: [{ name: 'Urdu', total: 100, obtained: 90 }, { name: 'English', total: 100, obtained: 82 }, { name: 'Maths', total: 100, obtained: 83 }], profileImage: { url: '/boy_2.png' } },
+  { _id: '3',  student: 'Hamza Tariq',      rollNumber: 'QM-2024-103', class: 'Class 3',  examType: 'Monthly', term: 'Jan 2025', totalMarks: 400, obtainedMarks: 320, percentage: 80.0, grade: 'A', subjects: [{ name: 'Urdu', total: 100, obtained: 85 }, { name: 'English', total: 100, obtained: 78 }, { name: 'Maths', total: 100, obtained: 80 }, { name: 'Science', total: 100, obtained: 77 }], profileImage: { url: '/boy_3.png' } },
+  { _id: '4',  student: 'Bilal Sheikh',     rollNumber: 'QM-2024-104', class: 'Class 4',  examType: 'Monthly', term: 'Jan 2025', totalMarks: 400, obtainedMarks: 300, percentage: 75.0, grade: 'B', subjects: [{ name: 'Urdu', total: 100, obtained: 80 }, { name: 'English', total: 100, obtained: 72 }, { name: 'Maths', total: 100, obtained: 75 }, { name: 'Science', total: 100, obtained: 73 }], profileImage: { url: '/boy_1.png' } },
+  { _id: '5',  student: 'Zain Malik',       rollNumber: 'QM-2024-105', class: 'Class 5',  examType: 'Monthly', term: 'Jan 2025', totalMarks: 400, obtainedMarks: 340, percentage: 85.0, grade: 'A', subjects: [{ name: 'Urdu', total: 100, obtained: 88 }, { name: 'English', total: 100, obtained: 84 }, { name: 'Maths', total: 100, obtained: 86 }, { name: 'Science', total: 100, obtained: 82 }], profileImage: { url: '/boy_2.png' } },
+  { _id: '6',  student: 'Faizan Ahmed',     rollNumber: 'QM-2024-106', class: 'Class 6',  examType: 'Monthly', term: 'Jan 2025', totalMarks: 500, obtainedMarks: 390, percentage: 78.0, grade: 'B', subjects: [{ name: 'Urdu', total: 100, obtained: 82 }, { name: 'English', total: 100, obtained: 76 }, { name: 'Maths', total: 100, obtained: 80 }, { name: 'Science', total: 100, obtained: 76 }, { name: 'S.St', total: 100, obtained: 76 }], profileImage: { url: '/boy_3.png' } },
+  { _id: '7',  student: 'Saad Riaz',        rollNumber: 'QM-2024-107', class: 'Class 7',  examType: 'Monthly', term: 'Jan 2025', totalMarks: 500, obtainedMarks: 410, percentage: 82.0, grade: 'A', subjects: [{ name: 'Urdu', total: 100, obtained: 88 }, { name: 'English', total: 100, obtained: 80 }, { name: 'Maths', total: 100, obtained: 84 }, { name: 'Science', total: 100, obtained: 82 }, { name: 'S.St', total: 100, obtained: 76 }], profileImage: { url: '/boy_1.png' } },
+  { _id: '8',  student: 'Daniyal Khan',     rollNumber: 'QM-2024-108', class: 'Class 8',  examType: 'Monthly', term: 'Jan 2025', totalMarks: 500, obtainedMarks: 360, percentage: 72.0, grade: 'B', subjects: [{ name: 'Urdu', total: 100, obtained: 75 }, { name: 'English', total: 100, obtained: 70 }, { name: 'Maths', total: 100, obtained: 72 }, { name: 'Science', total: 100, obtained: 73 }, { name: 'S.St', total: 100, obtained: 70 }], profileImage: { url: '/boy_2.png' } },
+  { _id: '9',  student: 'Muhammad Ali',     rollNumber: 'QM-2024-109', class: 'Class 9',  examType: 'Monthly', term: 'Jan 2025', totalMarks: 500, obtainedMarks: 425, percentage: 85.0, grade: 'A', subjects: [{ name: 'Math', total: 100, obtained: 92 }, { name: 'Physics', total: 100, obtained: 88 }, { name: 'Chemistry', total: 100, obtained: 85 }, { name: 'English', total: 100, obtained: 78 }, { name: 'Urdu', total: 100, obtained: 82 }], profileImage: { url: '/boy_3.png' } },
+  { _id: '10', student: 'Ahmed Raza',       rollNumber: 'QM-2024-110', class: 'Class 10', examType: 'Monthly', term: 'Jan 2025', totalMarks: 500, obtainedMarks: 380, percentage: 76.0, grade: 'B', subjects: [{ name: 'Math', total: 100, obtained: 72 }, { name: 'Physics', total: 100, obtained: 68 }, { name: 'Chemistry', total: 100, obtained: 80 }, { name: 'English', total: 100, obtained: 82 }, { name: 'Urdu', total: 100, obtained: 78 }], profileImage: { url: '/boy_1.png' } },
+  { _id: '11', student: 'Kamran Butt',      rollNumber: 'QM-2024-111', class: 'Class 11', examType: 'Monthly', term: 'Jan 2025', totalMarks: 550, obtainedMarks: 462, percentage: 84.0, grade: 'A', subjects: [{ name: 'Math', total: 100, obtained: 90 }, { name: 'Physics', total: 100, obtained: 85 }, { name: 'Chemistry', total: 100, obtained: 88 }, { name: 'Biology', total: 100, obtained: 82 }, { name: 'English', total: 100, obtained: 82 }, { name: 'Urdu', total: 50, obtained: 35 }], profileImage: { url: '/boy_2.png' } },
+  { _id: '12', student: 'Shahzaib Noor',    rollNumber: 'QM-2024-112', class: 'Class 12', examType: 'Annual',  term: 'Annual 2025', totalMarks: 550, obtainedMarks: 495, percentage: 90.0, grade: 'A', subjects: [{ name: 'Math', total: 100, obtained: 95 }, { name: 'Physics', total: 100, obtained: 92 }, { name: 'Chemistry', total: 100, obtained: 90 }, { name: 'Biology', total: 100, obtained: 88 }, { name: 'English', total: 100, obtained: 88 }, { name: 'Urdu', total: 50, obtained: 42 }], profileImage: { url: '/boy_3.png' } },
 ];
+
+const getStudentAvatar = (res, index) => {
+  if (!res) return '/boy_1.png';
+  const imageUrl = res.profileImage?.url;
+  if (imageUrl) return imageUrl;
+  const name = res.student || '';
+  const isFemale = name.includes('Sara') || name.includes('Ayesha') || name.includes('Fatima') || name.includes('Zainab') || name.includes('Mariam');
+  return isFemale ? `/girl_${(index % 3) + 1}.png` : `/boy_${(index % 3) + 1}.png`;
+};
+
+
 
 export default function AdminResults() {
   const [results, setResults] = useState(DEMO_RESULTS);
   const [search, setSearch] = useState('');
   const [filterClass, setFilterClass] = useState('');
-  const [filterExam, setFilterExam] = useState('');
-  const [showViewModal, setShowViewModal] = useState(false);
-  const [selectedResult, setSelectedResult] = useState(null);
-  const [showUploadModal, setShowUploadModal] = useState(false);
-
-  const filtered = results.filter(r => {
-    const m1 = r.student.toLowerCase().includes(search.toLowerCase()) || r.rollNumber.toLowerCase().includes(search.toLowerCase());
-    const m2 = !filterClass || r.class === filterClass;
-    const m3 = !filterExam || r.examType === filterExam;
-    return m1 && m2 && m3;
+  const [showFormModal, setShowFormModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    student: '', rollNumber: '', class: 'Class 1', examType: 'Monthly', term: 'Jan 2025', 
+    subjects: [{ name: 'Math', total: 100, obtained: 0 }]
   });
 
-  const gradeColors = { 'A+': '#059669', 'A': '#10b981', 'A-': '#34d399', 'B+': '#3b82f6', 'B': '#60a5fa', 'C': '#f59e0b', 'D': '#ef4444', 'F': '#dc2626' };
+  const handleSave = () => {
+    const totalMarks = formData.subjects.reduce((s, sub) => s + Number(sub.total || 0), 0);
+    const obtainedMarks = formData.subjects.reduce((s, sub) => s + Number(sub.obtained || 0), 0);
+    const percentage = totalMarks > 0 ? Number(((obtainedMarks / totalMarks) * 100).toFixed(1)) : 0;
+    
+    const newResult = { ...formData, totalMarks, obtainedMarks, percentage, grade: percentage >= 80 ? 'A' : 'B' };
+    if (isEditing) setResults(prev => prev.map(r => r._id === formData._id ? newResult : r));
+    else setResults(prev => [{ ...newResult, _id: Date.now().toString() }, ...prev]);
+    setShowFormModal(false);
+  };
+
+  const filtered = results.filter(r => (r.student.toLowerCase().includes(search.toLowerCase()) || r.rollNumber.toLowerCase().includes(search.toLowerCase())) && (!filterClass || r.class === filterClass));
 
   return (
     <DashboardLayout>
       <div className={styles.dashboard}>
         <div className={styles.header}>
-          <div><h1>Result Management</h1><p>Upload and manage academic results</p></div>
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <button className="btn btn-secondary"><Download size={18} /> Export PDF</button>
-            <button className="btn btn-primary" onClick={() => setShowUploadModal(true)}><Plus size={18} /> Upload Results</button>
-          </div>
-        </div>
-
-        <div className={styles.statsGrid}>
-          <div className={styles.statCard}>
-            <div className={styles.statIcon} style={{ background: '#d1fae5', color: '#10b981' }}><Award size={24} /></div>
-            <div className={styles.statInfo}><h3>{results.length}</h3><p>Total Results</p></div>
-          </div>
-          <div className={styles.statCard}>
-            <div className={styles.statIcon} style={{ background: '#eff6ff', color: '#3b82f6' }}><TrendingUp size={24} /></div>
-            <div className={styles.statInfo}><h3>{(results.reduce((s, r) => s + r.percentage, 0) / results.length).toFixed(1)}%</h3><p>Avg Percentage</p></div>
-          </div>
-          <div className={styles.statCard}>
-            <div className={styles.statIcon} style={{ background: '#fef3c7', color: '#f59e0b' }}><FileText size={24} /></div>
-            <div className={styles.statInfo}><h3>{results.filter(r => r.percentage >= 80).length}</h3><p>A Grade Students</p></div>
-          </div>
+          <div><h1>Result Management</h1><p>Edit and update all student report cards</p></div>
+          <button className="btn btn-primary" onClick={() => { setIsEditing(false); setFormData({ student: '', rollNumber: '', class: 'Class 1', examType: 'Monthly', term: 'Jan 2025', subjects: [{ name: 'Math', total: 100, obtained: 0 }] }); setShowFormModal(true); }}><Plus size={18} /> Add Result</button>
         </div>
 
         <div style={{ display: 'flex', gap: '12px', margin: '24px 0', flexWrap: 'wrap' }}>
-          <div style={{ flex: 1, minWidth: '250px', position: 'relative' }}>
+          <div style={{ flex: 1, minWidth: '200px', position: 'relative' }}>
             <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
-            <input type="text" placeholder="Search student..." value={search} onChange={(e) => setSearch(e.target.value)} className="form-input" style={{ paddingLeft: '40px' }} />
+            <input type="text" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} className="form-input" style={{ paddingLeft: '40px', width: '100%' }} />
           </div>
           <select value={filterClass} onChange={(e) => setFilterClass(e.target.value)} className="form-input" style={{ width: '160px' }}>
-            <option value="">All Classes</option>{[...Array(10)].map((_, i) => <option key={i} value={`Class ${i + 1}`}>Class {i + 1}</option>)}
-          </select>
-          <select value={filterExam} onChange={(e) => setFilterExam(e.target.value)} className="form-input" style={{ width: '160px' }}>
-            <option value="">All Exams</option><option value="Weekly">Weekly</option><option value="15-Days">15-Days</option><option value="Monthly">Monthly</option><option value="Mid-Term">Mid-Term</option><option value="Final">Final</option>
+            <option value="">All Classes</option>
+            {CLASSES.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
 
         <div className="card">
           <div className="table-wrapper">
             <table className="table">
-              <thead><tr><th>Student</th><th>Roll No</th><th>Class</th><th>Exam</th><th>Marks</th><th>%</th><th>Grade</th><th>Position</th><th>Actions</th></tr></thead>
+              <thead><tr><th>Student</th><th>Roll No</th><th>Class</th><th>Marks</th><th>%</th><th>Actions</th></tr></thead>
               <tbody>
-                {filtered.map(result => (
-                  <tr key={result._id}>
-                    <td style={{ fontWeight: 600 }}>{result.student}</td>
-                    <td><span className="badge badge-primary">{result.rollNumber}</span></td>
-                    <td>{result.class}</td>
-                    <td><span className="badge badge-info">{result.examType}</span></td>
-                    <td>{result.obtainedMarks}/{result.totalMarks}</td>
-                    <td style={{ fontWeight: 700, color: result.percentage >= 80 ? '#10b981' : result.percentage >= 60 ? '#f59e0b' : '#ef4444' }}>{result.percentage}%</td>
-                    <td><span style={{ fontWeight: 700, color: gradeColors[result.grade] || '#64748b', fontSize: '1rem' }}>{result.grade}</span></td>
-                    <td><span className="badge badge-warning">#{result.position}</span></td>
+                {filtered.map((res, index) => {
+                  const displayAvatar = getStudentAvatar(res, index);
+                  return (
+                    <tr key={res._id}>
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <div 
+                            style={{ position: 'relative', width: '45px', height: '45px', cursor: 'pointer', flexShrink: 0 }} 
+                            onClick={() => document.getElementById(`r-img-input-${res._id}`).click()}
+                            title="Click to change image"
+                          >
+                            <div style={{ width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden', border: '2px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 4px 10px rgba(0,0,0,0.3)' }}>
+                              <img src={displayAvatar} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                              <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0, transition: '0.2s', borderRadius: '50%' }} onMouseEnter={e => e.currentTarget.style.opacity = 1} onMouseLeave={e => e.currentTarget.style.opacity = 0}>
+                                <Upload size={14} color="#fff" />
+                              </div>
+                            </div>
+                          <input 
+                            id={`r-img-input-${res._id}`}
+                            type="file" 
+                            hidden 
+                            accept="image/*"
+                            onChange={(e) => {
+                              if (e.target.files?.[0]) {
+                                const url = URL.createObjectURL(e.target.files[0]);
+                                setResults(prev => prev.map(r => r._id === res._id ? { ...r, profileImage: { ...r.profileImage, url } } : r));
+                              }
+                            }}
+                          />
+                        </div>
+                        <span style={{ fontWeight: 600 }}>{res.student}</span>
+                      </div>
+                    </td>
+                    <td><span className="badge badge-primary">{res.rollNumber}</span></td>
+                    <td>{res.class}</td>
+                    <td>{res.obtainedMarks}/{res.totalMarks}</td>
+                    <td>{res.percentage}%</td>
                     <td>
-                      <div style={{ display: 'flex', gap: '6px' }}>
-                        <button className="btn btn-sm btn-secondary" onClick={() => { setSelectedResult(result); setShowViewModal(true); }}><Eye size={14} /></button>
-                        <button className="btn btn-sm btn-secondary"><Download size={14} /></button>
+                      <div style={{ display: 'flex', gap: '10px' }}>
+                        <button className="btn btn-sm btn-info" onClick={() => { setIsEditing(true); setFormData({ ...res }); setShowFormModal(true); }}><Pencil size={16} /> Edit</button>
+                        <button className="btn btn-sm btn-danger" onClick={() => setResults(results.filter(r => r._id !== res._id))}><Trash2 size={16} /></button>
                       </div>
                     </td>
                   </tr>
-                ))}
+                );
+              })}
               </tbody>
             </table>
           </div>
         </div>
 
-        {/* View Result Card */}
-        {showViewModal && selectedResult && (
-          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }}>
-            <div className="card" style={{ width: '100%', maxWidth: '600px', maxHeight: '90vh', overflow: 'auto' }}>
-              <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <h3>Report Card - {selectedResult.student}</h3>
-                <button onClick={() => setShowViewModal(false)} style={{ background: 'none', border: 'none' }}><X size={20} /></button>
+        {showFormModal && (
+          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(5px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }}>
+            <div style={{ background: '#1e293b', maxWidth: '800px', width: '100%', maxHeight: '90vh', overflowY: 'auto', borderRadius: '30px', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <div style={{ padding: '30px', borderBottom: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h3 style={{ margin: 0, color: 'white' }}>{isEditing ? 'Edit Result' : 'Add Result'}</h3>
+                <button onClick={() => setShowFormModal(false)} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}><X size={24} /></button>
               </div>
-              <div className="card-body">
-                <div style={{ textAlign: 'center', padding: '16px', background: 'linear-gradient(135deg, #1a56db, #3b82f6)', borderRadius: '12px', color: '#fff', marginBottom: '20px' }}>
-                  <h2 style={{ fontSize: '1rem', marginBottom: '4px' }}>Quaid-e-Millat Public Boys High School</h2>
-                  <p style={{ opacity: 0.8, fontSize: '0.85rem' }}>{selectedResult.examType} Exam - {selectedResult.term}</p>
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', marginBottom: '20px' }}>
-                  <div style={{ padding: '12px', background: '#f8fafc', borderRadius: '8px', textAlign: 'center' }}>
-                    <p style={{ fontSize: '0.7rem', color: '#64748b' }}>Roll No</p><p style={{ fontWeight: 700 }}>{selectedResult.rollNumber}</p>
+              <div style={{ padding: '30px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '20px' }}>
+                  <div className="form-group"><label style={{ color: '#94a3b8', fontSize: '0.9rem' }}>Student Name</label><input className="form-input" style={{ width: '100%', background: '#0f172a', color: 'white', padding: '12px', borderRadius: '12px', border: '1px solid #334155' }} value={formData.student} onChange={e => setFormData({ ...formData, student: e.target.value })} /></div>
+                  <div className="form-group"><label style={{ color: '#94a3b8', fontSize: '0.9rem' }}>Roll No</label><input className="form-input" style={{ width: '100%', background: '#0f172a', color: 'white', padding: '12px', borderRadius: '12px', border: '1px solid #334155' }} value={formData.rollNumber} onChange={e => setFormData({ ...formData, rollNumber: e.target.value })} /></div>
+                  <div className="form-group"><label style={{ color: '#94a3b8', fontSize: '0.9rem' }}>Class</label>
+                    <select className="form-input" style={{ width: '100%', background: '#0f172a', color: 'white', padding: '12px', borderRadius: '12px', border: '1px solid #334155' }} value={formData.class} onChange={e => setFormData({ ...formData, class: e.target.value })}>
+                      {CLASSES.map(c => <option key={c} value={c}>{c}</option>)}
+                    </select>
                   </div>
-                  <div style={{ padding: '12px', background: '#f8fafc', borderRadius: '8px', textAlign: 'center' }}>
-                    <p style={{ fontSize: '0.7rem', color: '#64748b' }}>Grade</p><p style={{ fontWeight: 700, color: gradeColors[selectedResult.grade], fontSize: '1.2rem' }}>{selectedResult.grade}</p>
-                  </div>
-                  <div style={{ padding: '12px', background: '#f8fafc', borderRadius: '8px', textAlign: 'center' }}>
-                    <p style={{ fontSize: '0.7rem', color: '#64748b' }}>Position</p><p style={{ fontWeight: 700 }}>#{selectedResult.position}</p>
+                  <div className="form-group"><label style={{ color: '#94a3b8', fontSize: '0.9rem' }}>Exam Type</label>
+                    <select className="form-input" style={{ width: '100%', background: '#0f172a', color: 'white', padding: '12px', borderRadius: '12px', border: '1px solid #334155' }} value={formData.examType} onChange={e => setFormData({ ...formData, examType: e.target.value })}>
+                      <option>Monthly</option><option>Mid-Term</option><option>Annual</option>
+                    </select>
                   </div>
                 </div>
-                <table className="table" style={{ marginBottom: '20px' }}>
-                  <thead><tr><th>Subject</th><th>Total</th><th>Obtained</th><th>%</th></tr></thead>
-                  <tbody>
-                    {selectedResult.subjects.map((sub, i) => (
-                      <tr key={i}>
-                        <td style={{ fontWeight: 600 }}>{sub.name}</td><td>{sub.total}</td><td>{sub.obtained}</td>
-                        <td style={{ fontWeight: 600, color: (sub.obtained / sub.total * 100) >= 60 ? '#10b981' : '#ef4444' }}>{(sub.obtained / sub.total * 100).toFixed(0)}%</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 16px', background: '#1e293b', borderRadius: '8px', color: '#fff' }}>
-                  <span>Total: {selectedResult.obtainedMarks}/{selectedResult.totalMarks}</span>
-                  <span>Percentage: {selectedResult.percentage}%</span>
-                  <span>Grade: {selectedResult.grade}</span>
-                </div>
-                <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '16px' }}>
-                  <button className="btn btn-secondary"><Download size={16} /> Download PDF</button>
-                  <button className="btn btn-primary" onClick={() => setShowViewModal(false)}>Close</button>
+                <div style={{ borderTop: '1px solid #334155', paddingTop: '20px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+                    <h4 style={{ color: '#60a5fa', margin: 0 }}>Subjects</h4>
+                    <button className="btn btn-sm btn-primary" onClick={() => setFormData({ ...formData, subjects: [...formData.subjects, { name: '', total: 100, obtained: 0 }] })}>+ Add Subject</button>
+                  </div>
+                  {formData.subjects.map((sub, idx) => (
+                    <div key={idx} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 50px', gap: '15px', marginBottom: '10px' }}>
+                      <input className="form-input" style={{ background: '#0f172a', color: 'white', border: '1px solid #334155', padding: '10px', borderRadius: '8px' }} placeholder="Subject" value={sub.name} onChange={e => { const s = [...formData.subjects]; s[idx].name = e.target.value; setFormData({ ...formData, subjects: s }); }} />
+                      <input className="form-input" type="number" style={{ background: '#0f172a', color: 'white', border: '1px solid #334155', padding: '10px', borderRadius: '8px' }} placeholder="Total" value={sub.total} onChange={e => { const s = [...formData.subjects]; s[idx].total = e.target.value; setFormData({ ...formData, subjects: s }); }} />
+                      <input className="form-input" type="number" style={{ background: '#0f172a', color: 'white', border: '1px solid #334155', padding: '10px', borderRadius: '8px' }} placeholder="Obtained" value={sub.obtained} onChange={e => { const s = [...formData.subjects]; s[idx].obtained = e.target.value; setFormData({ ...formData, subjects: s }); }} />
+                      <button className="btn btn-sm btn-danger" onClick={() => setFormData({ ...formData, subjects: formData.subjects.filter((_, i) => i !== idx) })}>X</button>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
-          </div>
-        )}
-
-        {/* Upload Modal */}
-        {showUploadModal && (
-          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }}>
-            <div className="card" style={{ width: '100%', maxWidth: '500px' }}>
-              <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <h3>Upload Results</h3>
-                <button onClick={() => setShowUploadModal(false)} style={{ background: 'none', border: 'none' }}><X size={20} /></button>
-              </div>
-              <div className="card-body">
-                <div className="form-group"><label className="form-label">Class *</label>
-                  <select className="form-input"><option value="">Select Class</option>{[...Array(10)].map((_, i) => <option key={i} value={`Class ${i + 1}`}>Class {i + 1}</option>)}</select>
-                </div>
-                <div className="form-group"><label className="form-label">Exam Type *</label>
-                  <select className="form-input"><option value="">Select Type</option><option value="Weekly">Weekly</option><option value="15-Days">15-Days</option><option value="Monthly">Monthly</option><option value="Mid-Term">Mid-Term</option><option value="Final">Final</option></select>
-                </div>
-                <div className="form-group"><label className="form-label">Term/Month</label><input className="form-input" placeholder="e.g. January 2025" /></div>
-                <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '16px' }}>
-                  <button className="btn btn-secondary" onClick={() => setShowUploadModal(false)}>Cancel</button>
-                  <button className="btn btn-primary" onClick={() => setShowUploadModal(false)}>Continue</button>
-                </div>
+              <div style={{ padding: '20px 30px', borderTop: '1px solid #334155', display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                <button className="btn btn-secondary" onClick={() => setShowFormModal(false)}>Cancel</button>
+                <button className="btn btn-primary" onClick={handleSave}>Save Changes</button>
               </div>
             </div>
           </div>

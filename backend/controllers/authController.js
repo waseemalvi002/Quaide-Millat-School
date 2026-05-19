@@ -32,6 +32,25 @@ exports.login = async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({ success: false, message: 'Please provide email and password' });
     }
+
+    // Demo Mode Bypass - allow login without DB for development
+    const demoUsers = {
+      'admin@qmschool.edu.pk': { id: 'demo-admin-id', name: 'Admin User', role: 'admin', pass: 'admin123' },
+      'student1@qmschool.edu.pk': { id: 'demo-student-id', name: 'Student One', role: 'student', pass: 'student123' },
+      'ahmed.khan@qmschool.edu.pk': { id: 'demo-teacher-id', name: 'Ahmed Khan', role: 'teacher', pass: 'teacher123' },
+      'rashid@qmschool.edu.pk': { id: 'demo-staff-id', name: 'Rashid Staff', role: 'staff', pass: 'staff123' }
+    };
+
+    if (demoUsers[email] && demoUsers[email].pass === password) {
+      const demoUser = demoUsers[email];
+      const token = generateToken(demoUser.id);
+      return res.json({
+        success: true,
+        token,
+        user: { id: demoUser.id, name: demoUser.name, email: email, role: demoUser.role, avatar: null }
+      });
+    }
+
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
@@ -56,6 +75,11 @@ exports.login = async (req, res) => {
 // @desc Get current user
 exports.getMe = async (req, res) => {
   try {
+    // Demo Mode Bypass
+    if (req.user && req.user._id.startsWith('demo-')) {
+      return res.json({ success: true, user: req.user });
+    }
+
     const user = await User.findById(req.user.id);
     res.json({ success: true, user });
   } catch (error) {

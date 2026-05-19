@@ -11,12 +11,30 @@ import {
 import styles from '../admin.module.css';
 
 const DEMO_STUDENTS = [
-  { _id: '1', name: 'Ali Khan', fatherName: 'Imran Khan', rollNumber: 'QM-01-001', class: { name: 'Class 1' }, section: 'A', age: 7, phone: '0300-1234567', status: 'active', profileImage: { url: 'https://images.unsplash.com/photo-1503945438517-f65904a52ce6?w=400&h=400&fit=crop', isDefault: false } },
-  { _id: '2', name: 'Hassan Ahmed', fatherName: 'Tariq Ahmed', rollNumber: 'QM-01-002', class: { name: 'Class 1' }, section: 'A', age: 7, phone: '0301-2345678', status: 'active', profileImage: { url: 'https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=400&h=400&fit=crop', isDefault: false } },
-  { _id: '3', name: 'Muhammad Usman', fatherName: 'Abdul Rashid', rollNumber: 'QM-02-001', class: { name: 'Class 2' }, section: 'A', age: 8, phone: '0302-3456789', status: 'active', profileImage: { url: 'https://images.unsplash.com/photo-1540346030739-1d44ea3e77c2?w=400&h=400&fit=crop', isDefault: false } },
-  { _id: '4', name: 'Bilal Hussain', fatherName: 'Sajjad Hussain', rollNumber: 'QM-02-002', class: { name: 'Class 2' }, section: 'B', age: 8, phone: '0303-4567890', status: 'active', profileImage: { url: 'https://images.unsplash.com/photo-1513956589380-bad6acb9b9d4?w=400&h=400&fit=crop', isDefault: false } },
-  { _id: '5', name: 'Ahmed Raza', fatherName: 'Muhammad Raza', rollNumber: 'QM-03-001', class: { name: 'Class 3' }, section: 'A', age: 9, phone: '0304-5678901', status: 'active', profileImage: { url: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=400&h=400&fit=crop', isDefault: false } },
+  { _id: '1', name: 'Ali Khan', fatherName: 'Imran Khan', rollNumber: 'QM-01-001', class: { name: 'Class 1' }, section: 'A', age: 7, phone: '0300-1234567', status: 'active', profileImage: { url: '/boy_1.png', isDefault: false } },
+  { _id: '2', name: 'Hassan Ahmed', fatherName: 'Tariq Ahmed', rollNumber: 'QM-01-002', class: { name: 'Class 2' }, section: 'A', age: 7, phone: '0301-2345678', status: 'active', profileImage: { url: '/boy_2.png', isDefault: false } },
+  { _id: '3', name: 'Muhammad Usman', fatherName: 'Abdul Rashid', rollNumber: 'QM-02-001', class: { name: 'Class 3' }, section: 'A', age: 8, phone: '0302-3456789', status: 'active', profileImage: { url: '/boy_3.png', isDefault: false } },
+  { _id: '4', name: 'Bilal Hussain', fatherName: 'Sajjad Hussain', rollNumber: 'QM-02-002', class: { name: 'Class 4' }, section: 'B', age: 8, phone: '0303-4567890', status: 'active', profileImage: { url: '/boy_1.png', isDefault: false } },
+  { _id: '5', name: 'Ahmed Raza', fatherName: 'Muhammad Raza', rollNumber: 'QM-03-001', class: { name: 'Class 5' }, section: 'A', age: 9, phone: '0304-5678901', status: 'active', profileImage: { url: '/boy_2.png', isDefault: false } },
+  { _id: '6', name: 'Zaid Ali', fatherName: 'Ghulam Abbas', rollNumber: 'QM-06-001', class: { name: 'Class 6' }, section: 'A', age: 11, phone: '0305-6789012', status: 'active', profileImage: { url: '/boy_3.png', isDefault: false } },
+  { _id: '7', name: 'Asad Malik', fatherName: 'Malik Anwar', rollNumber: 'QM-07-001', class: { name: 'Class 7' }, section: 'A', age: 12, phone: '0306-7890123', status: 'active', profileImage: { url: '/boy_1.png', isDefault: false } },
+  { _id: '8', name: 'Omar Sheikh', fatherName: 'Sheikh Zahid', rollNumber: 'QM-08-001', class: { name: 'Class 8' }, section: 'B', age: 13, phone: '0307-8901234', status: 'active', profileImage: { url: '/boy_2.png', isDefault: false } },
+  { _id: '9', name: 'Hamza Khan', fatherName: 'Muhammad Ali', rollNumber: 'QM-09-001', class: { name: 'Class 9' }, section: 'A', age: 14, phone: '0308-9012345', status: 'active', profileImage: { url: '/boy_3.png', isDefault: false } },
+  { _id: '10', name: 'Noman Niaz', fatherName: 'Niaz Ahmed', rollNumber: 'QM-10-001', class: { name: 'Class 10' }, section: 'A', age: 15, phone: '0309-0123456', status: 'active', profileImage: { url: '/boy_1.png', isDefault: false } },
+  { _id: '11', name: 'Sanaullah', fatherName: 'Habibullah', rollNumber: 'QM-11-001', class: { name: 'Class 11' }, section: 'A', age: 16, phone: '0310-1234567', status: 'active', profileImage: { url: '/boy_2.png', isDefault: false } },
+  { _id: '12', name: 'Mustafa Jatt', fatherName: 'Akram Jatt', rollNumber: 'QM-12-001', class: { name: 'Class 12' }, section: 'A', age: 17, phone: '0311-2345678', status: 'active', profileImage: { url: '/boy_3.png', isDefault: false } },
 ];
+
+const getStudentAvatar = (student, index) => {
+  if (!student) return '/boy_1.png';
+  const imageUrl = student.profileImage?.url;
+  if (imageUrl) return imageUrl;
+  const name = student.name || '';
+  const isFemale = name.includes('Sara') || name.includes('Ayesha') || name.includes('Fatima') || name.includes('Zainab') || name.includes('Mariam');
+  return isFemale ? `/girl_${(index % 3) + 1}.png` : `/boy_${(index % 3) + 1}.png`;
+};
+
+
 
 export default function AdminStudents() {
   const [students, setStudents] = useState(DEMO_STUDENTS);
@@ -39,7 +57,7 @@ export default function AdminStudents() {
 
   const fetchStudents = async () => {
     try {
-      const res = await studentAPI.getAll();
+      const res = await studentAPI.getAll({ limit: 1000 });
       if (res.data?.data?.length) setStudents(res.data.data);
     } catch { /* use demo data */ }
   };
@@ -52,7 +70,7 @@ export default function AdminStudents() {
     return matchSearch && matchClass;
   });
 
-  const perPage = 8;
+  const perPage = 12;
   const totalPages = Math.ceil(filtered.length / perPage);
   const paginated = filtered.slice((currentPage - 1) * perPage, currentPage * perPage);
 
@@ -102,9 +120,14 @@ export default function AdminStudents() {
     <DashboardLayout>
       <div className={styles.dashboard}>
         <div className={styles.header}>
-          <div>
-            <h1 style={{ color: 'var(--heading-accent)' }}>{t('student_management')}</h1>
-            <p>{t('manage_students')}</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <div style={{ width: '45px', height: '45px', borderRadius: '12px', background: 'linear-gradient(135deg, #3b82f6, #2563eb)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 16px rgba(37, 99, 235, 0.2)' }}>
+              <Users size={24} color="#fff" />
+            </div>
+            <div>
+              <h1 style={{ color: 'var(--heading-accent)', margin: 0 }}>{t('student_management')}</h1>
+              <p style={{ margin: 0 }}>{t('manage_students')}</p>
+            </div>
           </div>
           <button className={styles.vibrantBtn} onClick={() => { resetForm(); setShowModal(true); }}>
             <Plus size={20} /> {t('add_student')}
@@ -132,7 +155,7 @@ export default function AdminStudents() {
           </div>
           <select value={filterClass} onChange={(e) => setFilterClass(e.target.value)} className="form-input" style={{ width: '180px' }}>
             <option value="">{t('all_classes')}</option>
-            {[...Array(10)].map((_, i) => <option key={i} value={`Class ${i + 1}`}>Class {i + 1}</option>)}
+            {[...Array(12)].map((_, i) => <option key={i} value={`Class ${i + 1}`}>Class {i + 1}</option>)}
           </select>
         </div>
 
@@ -169,32 +192,75 @@ export default function AdminStudents() {
                 </tr>
               </thead>
               <tbody>
-                {paginated.map((student) => (
-                  <tr key={student._id}>
-                    <td>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <div className="profile-img-container" onClick={() => handleEdit(student)}>
-                          <img src={student.profileImage?.url && !student.profileImage?.isDefault ? student.profileImage.url : 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} alt="" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
-                          <div className="profile-img-overlay"><Edit size={16} /></div>
+                {paginated.map((student, index) => {
+                  const displayAvatar = getStudentAvatar(student, index);
+                  return (
+                    <tr key={student._id}>
+                          <td style={{ padding: '12px 16px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                              <div 
+                                style={{ position: 'relative', width: '45px', height: '45px', cursor: 'pointer', flexShrink: 0 }} 
+                                onClick={() => document.getElementById(`img-input-${student._id}`).click()}
+                                title="Click to change image"
+                              >
+                                <div style={{ width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden', border: '2px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 4px 10px rgba(0,0,0,0.3)' }}>
+                                  <img 
+                                    src={displayAvatar} 
+                                    alt="" 
+                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                  />
+                                  <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0, transition: '0.2s', borderRadius: '50%' }} onMouseEnter={e => e.currentTarget.style.opacity = 1} onMouseLeave={e => e.currentTarget.style.opacity = 0}>
+                                    <Upload size={14} color="#fff" />
+                                  </div>
+                                </div>
+                              </div>
+                          <input 
+                            id={`img-input-${student._id}`}
+                            type="file" 
+                            hidden 
+                            accept="image/*"
+                            onChange={(e) => {
+                              if (e.target.files?.[0]) {
+                                const url = URL.createObjectURL(e.target.files[0]);
+                                setStudents(prev => prev.map(s => s._id === student._id ? { ...s, profileImage: { ...s.profileImage, url, isDefault: false } } : s));
+                              }
+                            }}
+                          />
+                        <div>
+                          <div style={{ fontWeight: 700, color: '#fff', fontSize: '1rem' }}>{student.name}</div>
+                          <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>S/O {student.fatherName}</div>
                         </div>
-                        <span style={{ fontWeight: 700, color: '#fff' }}>{student.name}</span>
                       </div>
                     </td>
-                    <td><span className="badge badge-primary" style={{ background: 'rgba(59, 130, 246, 0.2)', color: '#60a5fa' }}>{student.rollNumber}</span></td>
-                    <td style={{ color: '#e2e8f0' }}>{student.fatherName}</td>
-                    <td style={{ color: '#e2e8f0' }}>{student.class?.name}</td>
-                    <td style={{ color: '#e2e8f0' }}>{student.section}</td>
-                    <td style={{ color: '#e2e8f0' }}>{student.age}</td>
-                    <td style={{ color: '#e2e8f0' }}>{student.phone}</td>
-                    <td>
-                      <div style={{ display: 'flex', gap: '8px' }}>
+                    <td style={{ padding: '12px 16px' }}><span className="badge" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#60a5fa', border: '1px solid rgba(59, 130, 246, 0.2)', fontWeight: 600 }}>{student.rollNumber}</span></td>
+                    <td style={{ padding: '12px 16px', color: '#cbd5e1' }}>{student.fatherName}</td>
+                    <td style={{ padding: '12px 16px' }}>
+                      <span className="badge" style={{ background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.2))', color: '#60a5fa', border: '1px solid rgba(59, 130, 246, 0.4)', fontWeight: 700 }}>
+                        {student.class?.name}
+                      </span>
+                    </td>
+                    <td style={{ padding: '12px 16px', color: '#cbd5e1' }}>{student.section}</td>
+                    <td style={{ padding: '12px 16px', color: '#cbd5e1' }}>{student.age}</td>
+                    <td style={{ padding: '12px 16px', color: '#cbd5e1' }}>{student.phone}</td>
+                    <td style={{ padding: '12px 16px' }}>
+                      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                        <span 
+                          onClick={() => setStudents(prev => prev.map(s => s._id === student._id ? { ...s, status: s.status === 'active' ? 'inactive' : 'active' } : s))}
+                          className={`badge ${student.status === 'active' ? 'badge-success' : 'badge-danger'}`} 
+                          style={{ cursor: 'pointer', transition: '0.2s', padding: '6px 12px', minWidth: '80px', textAlign: 'center' }}
+                          title="Click to toggle status"
+                        >
+                          {student.status.toUpperCase()}
+                        </span>
+                        <div style={{ width: '1px', height: '20px', background: 'rgba(255,255,255,0.1)', margin: '0 4px' }}></div>
                         <button className="btn btn-sm btn-secondary" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }} onClick={() => { setSelectedStudent(student); setShowViewModal(true); }}><Eye size={16} /></button>
                         <button className="btn btn-sm btn-secondary" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }} onClick={() => handleEdit(student)}><Edit size={16} /></button>
                         <button className="btn btn-sm btn-danger" style={{ boxShadow: '0 4px 10px rgba(239, 68, 68, 0.2)' }} onClick={() => handleDelete(student._id)}><Trash2 size={16} /></button>
                       </div>
                     </td>
                   </tr>
-                ))}
+                );
+                })}
               </tbody>
             </table>
           </div>
@@ -231,7 +297,7 @@ export default function AdminStudents() {
                     <label className="form-label">{t('class')} *</label>
                     <select className="form-input" required value={formData.class} onChange={e => setFormData({ ...formData, class: e.target.value })}>
                       <option value="">{t('class')}</option>
-                      {[...Array(10)].map((_, i) => <option key={i} value={`Class ${i + 1}`}>Class {i + 1}</option>)}
+                      {[...Array(12)].map((_, i) => <option key={i} value={`Class ${i + 1}`}>Class {i + 1}</option>)}
                     </select>
                   </div>
                   <div className="form-group">
@@ -284,7 +350,11 @@ export default function AdminStudents() {
               <div className={styles.modalBody}>
                 <div style={{ textAlign: 'center', marginBottom: '32px' }}>
                   <div className="profile-img-container" style={{ width: 120, height: 120, margin: '0 auto 16px', border: '4px solid #3b82f6' }}>
-                    <img src={selectedStudent.profileImage?.url && !selectedStudent.profileImage?.isDefault ? selectedStudent.profileImage.url : 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img 
+                      src={getStudentAvatar(selectedStudent, selectedStudent._id ? parseInt(selectedStudent._id) || 0 : 0)} 
+                      alt="" 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                    />
                     <div className="profile-img-overlay" style={{ gap: '12px' }}>
                       <label style={{ cursor: 'pointer' }} title="Upload New">
                         <Upload size={20} />

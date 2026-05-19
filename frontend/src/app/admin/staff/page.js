@@ -11,6 +11,8 @@ const DEMO_STAFF = [
   { _id: '2', name: 'Akbar Ali', cnic: '35201-2345678-2', role: 'Guard', phone: '0301-2223344', salary: 18000, status: 'active', joinDate: '2020-06-01', profileImage: { url: 'https://images.unsplash.com/photo-1531384441138-2736e62e0919?w=400&h=400&fit=crop', isDefault: false } },
   { _id: '3', name: 'Nasir Ahmed', cnic: '35201-3456789-3', role: 'Clerk', phone: '0302-3334455', salary: 25000, status: 'active', joinDate: '2018-03-10', profileImage: { url: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=400&h=400&fit=crop', isDefault: false } },
   { _id: '4', name: 'Shafiq Hussain', cnic: '35201-4567890-4', role: 'Lab Assistant', phone: '0303-4445566', salary: 22000, status: 'active', joinDate: '2021-09-01', profileImage: { url: 'https://images.unsplash.com/photo-1537511446984-935f663eb1f4?w=400&h=400&fit=crop', isDefault: false } },
+  { _id: '5', name: 'Zameer Librarian', cnic: '35201-5678901-5', role: 'Librarian', phone: '0304-5556677', salary: 24000, status: 'active', joinDate: '2022-01-20', profileImage: { url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop', isDefault: false } },
+  { _id: '6', name: 'Munir Driver', cnic: '35201-6789012-6', role: 'Driver', phone: '0305-6667788', salary: 21000, status: 'active', joinDate: '2023-02-15', profileImage: { url: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop', isDefault: false } },
 ];
 
 export default function AdminStaff() {
@@ -30,7 +32,7 @@ export default function AdminStaff() {
     if (selected) {
       setStaff(prev => prev.map(s => s._id === selected._id ? { ...s, ...formData } : s));
     } else {
-      setStaff(prev => [...prev, { ...formData, _id: Date.now().toString(), joinDate: new Date().toISOString().split('T')[0], profileImage: { url: imageFile ? URL.createObjectURL(imageFile) : '', isDefault: true } }]);
+      setStaff(prev => [...prev, { ...formData, _id: Date.now().toString(), joinDate: new Date().toISOString().split('T')[0], profileImage: { url: imageFile ? URL.createObjectURL(imageFile) : '', isDefault: !imageFile } }]);
     }
     setShowModal(false); setSelected(null); setImageFile(null);
   };
@@ -57,8 +59,12 @@ export default function AdminStaff() {
             <h1 style={{ color: 'var(--heading-accent)' }}>{t('staff_management')}</h1>
             <p>{t('manage_staff')}</p>
           </div>
-          <button className={styles.vibrantBtn} onClick={() => { setSelected(null); setImageFile(null); setFormData({ name: '', cnic: '', role: '', phone: '', salary: '', status: 'active' }); setShowModal(true); }}>
-            <Plus size={20} /> {t('add_staff')}
+          <button 
+            className={styles.vibrantBtn} 
+            onClick={() => { setSelected(null); setImageFile(null); setFormData({ name: '', cnic: '', role: '', phone: '', salary: '', status: 'active' }); setShowModal(true); }}
+            style={{ padding: '12px 24px', fontSize: '1rem', boxShadow: '0 8px 20px rgba(59, 130, 246, 0.4)' }}
+          >
+            <Plus size={22} /> {t('add_staff')}
           </button>
         </div>
 
@@ -96,30 +102,113 @@ export default function AdminStaff() {
         <div className="card" style={{ marginTop: '24px', overflow: 'hidden' }}>
           <div className="table-wrapper" style={{ overflowX: 'auto' }}>
             <table className="table" style={{ minWidth: '1000px' }}>
-              <thead><tr><th style={{ color: '#fff' }}>{t('staff')}</th><th style={{ color: '#fff' }}>{t('cnic')}</th><th style={{ color: '#fff' }}>{t('role')}</th><th style={{ color: '#fff' }}>{t('phone')}</th><th style={{ color: '#fff' }}>{t('salary')}</th><th style={{ color: '#fff' }}>{t('actions')}</th></tr></thead>
+              <thead><tr><th style={{ color: '#fff', width: '20%' }}>{t('staff')}</th><th style={{ color: '#fff', width: '15%' }}>{t('cnic')}</th><th style={{ color: '#fff', width: '15%' }}>{t('role')}</th><th style={{ color: '#fff', width: '15%' }}>{t('phone')}</th><th style={{ color: '#fff', width: '12%' }}>{t('salary')}</th><th style={{ color: '#fff', width: '10%' }}>{t('status')}</th><th style={{ color: '#fff', width: '13%' }}>{t('actions')}</th></tr></thead>
               <tbody>
-                {filtered.map(item => (
-                  <tr key={item._id}>
-                    <td>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <div className="profile-img-container" onClick={() => handleEdit(item)}>
-                          <img src={item.profileImage?.url && !item.profileImage?.isDefault ? item.profileImage.url : 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                          <div className="profile-img-overlay"><Edit size={16} /></div>
+                {filtered.map((item, index) => {
+                  const imageUrl = item.profileImage?.url;
+                  const isDummy = !imageUrl || imageUrl.includes('default') || imageUrl.includes('flaticon') || imageUrl.includes('dummy');
+                  const displayAvatar = isDummy ? `/teacher_${(index % 2) + 1}.png` : imageUrl;
+                  return (
+                    <tr key={item._id}>
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <div 
+                            style={{ position: 'relative', width: '45px', height: '45px', cursor: 'pointer', flexShrink: 0 }} 
+                            onClick={() => document.getElementById(`s-img-input-${item._id}`).click()}
+                            title="Click to change image"
+                          >
+                            <div style={{ width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden', border: '2px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 4px 10px rgba(0,0,0,0.3)' }}>
+                              <img src={displayAvatar} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                              <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0, transition: '0.2s', borderRadius: '50%' }} onMouseEnter={e => e.currentTarget.style.opacity = 1} onMouseLeave={e => e.currentTarget.style.opacity = 0}>
+                                <Upload size={14} color="#fff" />
+                              </div>
+                            </div>
+                          <input 
+                            id={`s-img-input-${item._id}`}
+                            type="file" 
+                            hidden 
+                            accept="image/*"
+                            onChange={(e) => {
+                              if (e.target.files?.[0]) {
+                                const url = URL.createObjectURL(e.target.files[0]);
+                                setStaff(prev => prev.map(s => s._id === item._id ? { ...s, profileImage: { ...s.profileImage, url } } : s));
+                              }
+                            }}
+                          />
                         </div>
-                        <div><span style={{ fontWeight: 700, color: '#fff' }}>{item.name}</span><br /><span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{t('since')} {item.joinDate}</span></div>
+                        <div>
+                          <span 
+                            contentEditable 
+                            suppressContentEditableWarning
+                            onBlur={(e) => setStaff(prev => prev.map(s => s._id === item._id ? { ...s, name: e.target.innerText } : s))}
+                            style={{ fontWeight: 700, color: '#fff', outline: 'none', borderBottom: '1px dashed rgba(255,255,255,0.1)' }}
+                          >
+                            {item.name}
+                          </span>
+                          <br />
+                          <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{t('since')} {item.joinDate}</span>
+                        </div>
                       </div>
                     </td>
-                    <td style={{ color: '#e2e8f0' }}>{item.cnic}</td><td><span className="badge" style={{ background: 'rgba(59, 130, 246, 0.2)', color: '#60a5fa' }}>{item.role}</span></td><td style={{ color: '#e2e8f0' }}>{item.phone}</td>
-                    <td style={{ fontWeight: 800, color: '#facc15' }}>Rs {item.salary?.toLocaleString()}</td>
+                    <td style={{ color: '#e2e8f0' }}>
+                      <span 
+                        contentEditable 
+                        suppressContentEditableWarning
+                        onBlur={(e) => setStaff(prev => prev.map(s => s._id === item._id ? { ...s, cnic: e.target.innerText } : s))}
+                        style={{ outline: 'none' }}
+                      >
+                        {item.cnic}
+                      </span>
+                    </td>
+                    <td>
+                      <span 
+                        contentEditable 
+                        suppressContentEditableWarning
+                        onBlur={(e) => setStaff(prev => prev.map(s => s._id === item._id ? { ...s, role: e.target.innerText } : s))}
+                        className="badge" 
+                        style={{ background: 'rgba(59, 130, 246, 0.2)', color: '#60a5fa', outline: 'none' }}
+                      >
+                        {item.role}
+                      </span>
+                    </td>
+                    <td style={{ color: '#e2e8f0' }}>
+                      <span 
+                        contentEditable 
+                        suppressContentEditableWarning
+                        onBlur={(e) => setStaff(prev => prev.map(s => s._id === item._id ? { ...s, phone: e.target.innerText } : s))}
+                        style={{ outline: 'none' }}
+                      >
+                        {item.phone}
+                      </span>
+                    </td>
+                    <td style={{ fontWeight: 800, color: '#facc15' }}>
+                      Rs <span 
+                        contentEditable 
+                        suppressContentEditableWarning
+                        onBlur={(e) => setStaff(prev => prev.map(s => s._id === item._id ? { ...s, salary: parseInt(e.target.innerText.replace(/,/g, '')) || 0 } : s))}
+                        style={{ outline: 'none' }}
+                      >
+                        {item.salary?.toLocaleString()}
+                      </span>
+                    </td>
+                    <td>
+                      <span 
+                        onClick={() => setStaff(prev => prev.map(s => s._id === item._id ? { ...s, status: s.status === 'active' ? 'inactive' : 'active' } : s))}
+                        className={`badge ${item.status === 'active' ? 'badge-success' : 'badge-danger'}`} 
+                        style={{ cursor: 'pointer', minWidth: '80px', textAlign: 'center' }}
+                      >
+                        {(item.status || 'ACTIVE').toUpperCase()}
+                      </span>
+                    </td>
                     <td>
                       <div style={{ display: 'flex', gap: '8px' }}>
-                        <button className="btn btn-sm btn-secondary" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }} onClick={() => { setSelected(item); setShowViewModal(true); }}><Eye size={16} /></button>
-                        <button className="btn btn-sm btn-secondary" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }} onClick={() => handleEdit(item)}><Edit size={16} /></button>
-                        <button className="btn btn-sm btn-danger" style={{ boxShadow: '0 4px 10px rgba(239, 68, 68, 0.2)' }} onClick={() => { if (confirm('Delete?')) setStaff(prev => prev.filter(s => s._id !== item._id)); }}><Trash2 size={16} /></button>
+                        <button className="btn btn-sm btn-secondary" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#60a5fa', display: 'flex', alignItems: 'center', gap: '4px', padding: '6px 10px' }} onClick={() => handleEdit(item)}><Edit size={14} /> Edit</button>
+                        <button className="btn btn-sm btn-danger" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#f87171', display: 'flex', alignItems: 'center', gap: '4px', padding: '6px 10px' }} onClick={() => { if (confirm('Delete?')) setStaff(prev => prev.filter(s => s._id !== item._id)); }}><Trash2 size={14} /> Del</button>
                       </div>
                     </td>
                   </tr>
-                ))}
+                );
+              })}
               </tbody>
             </table>
           </div>
@@ -187,7 +276,11 @@ export default function AdminStaff() {
               <div className={styles.modalBody}>
                 <div style={{ textAlign: 'center', marginBottom: '32px' }}>
                   <div className="profile-img-container" style={{ width: 120, height: 120, margin: '0 auto 16px', border: '4px solid #3b82f6' }}>
-                    <img src={selected.profileImage?.url && !selected.profileImage?.isDefault ? selected.profileImage.url : 'https://cdn-icons-png.flaticon.com/512/149/149071.png'} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img src={(() => {
+                      const url = selected.profileImage?.url;
+                      const isDummy = !url || url.includes('default') || url.includes('flaticon') || url.includes('dummy');
+                      return isDummy ? `/teacher_${((selected.name || '').charCodeAt(0) || 0) % 2 + 1}.png` : url;
+                    })()} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     <div className="profile-img-overlay" style={{ gap: '12px' }}>
                       <label style={{ cursor: 'pointer' }} title="Upload New">
                         <Upload size={20} />

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { Settings, Save, Upload, Shield, Database, Bell, Globe, Palette } from 'lucide-react';
+import { Settings, Save, Upload, Shield, Database, Bell, Globe, Palette, Facebook, Twitter, Youtube, Instagram, Share2 } from 'lucide-react';
 import styles from '../admin.module.css';
 
 export default function AdminSettings() {
@@ -25,17 +25,21 @@ export default function AdminSettings() {
     notifyPush: true,
     primaryColor: '#1a56db',
     darkMode: false,
+    facebook: 'https://facebook.com/qmpbhs',
+    twitter: 'https://twitter.com/qmpbhs',
+    youtube: 'https://youtube.com/qmpbhs',
+    instagram: 'https://instagram.com/qmpbhs',
   });
 
   const handleSave = () => { setSaved(true); setTimeout(() => setSaved(false), 2000); };
 
   const tabs = [
     { id: 'general', label: 'General', icon: <Globe size={18} /> },
+    { id: 'social', label: 'Social Media', icon: <Share2 size={18} /> },
     { id: 'fees', label: 'Fee Settings', icon: <Database size={18} /> },
     { id: 'notifications', label: 'Notifications', icon: <Bell size={18} /> },
     { id: 'appearance', label: 'Appearance', icon: <Palette size={18} /> },
     { id: 'security', label: 'Security', icon: <Shield size={18} /> },
-    { id: 'backup', label: 'Backup', icon: <Database size={18} /> },
   ];
 
   return (
@@ -83,6 +87,33 @@ export default function AdminSettings() {
                     <div className="form-group"><label className="form-label">Academic Year</label><input className="form-input" value={settings.academicYear} onChange={e => setSettings({ ...settings, academicYear: e.target.value })} /></div>
                   </div>
                   <div className="form-group"><label className="form-label">Address</label><textarea className="form-input" rows={2} value={settings.address} onChange={e => setSettings({ ...settings, address: e.target.value })} /></div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'social' && (
+              <div className="card">
+                <div className="card-header"><h3>Social Media Profiles</h3></div>
+                <div className="card-body">
+                  <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '24px' }}>These links will be displayed on the homepage footer and contact page.</p>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px' }}>
+                    <div className="form-group">
+                      <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Facebook size={18} color="#1877F2" /> Facebook URL</label>
+                      <input className="form-input" value={settings.facebook} onChange={e => setSettings({ ...settings, facebook: e.target.value })} placeholder="https://facebook.com/your-school" />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Twitter size={18} color="#1DA1F2" /> Twitter URL</label>
+                      <input className="form-input" value={settings.twitter} onChange={e => setSettings({ ...settings, twitter: e.target.value })} placeholder="https://twitter.com/your-school" />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Youtube size={18} color="#FF0000" /> YouTube Channel</label>
+                      <input className="form-input" value={settings.youtube} onChange={e => setSettings({ ...settings, youtube: e.target.value })} placeholder="https://youtube.com/c/your-channel" />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Instagram size={18} color="#E4405F" /> Instagram Profile</label>
+                      <input className="form-input" value={settings.instagram} onChange={e => setSettings({ ...settings, instagram: e.target.value })} placeholder="https://instagram.com/your-school" />
+                    </div>
+                  </div>
                 </div>
               </div>
             )}

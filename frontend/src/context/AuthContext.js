@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('user', JSON.stringify(data));
       setUser(data);
       if (typeof window !== 'undefined') {
-        window.location.href = `/${data.role}/dashboard`;
+        window.location.href = `/${data.role}`;
       }
       return { success: true };
     } catch (error) {
@@ -87,7 +87,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('user', JSON.stringify(demoUser));
         setUser(demoUser);
         if (typeof window !== 'undefined') {
-          window.location.href = `/${role}/dashboard`;
+          window.location.href = `/${role}`;
         }
         return { success: true };
       }

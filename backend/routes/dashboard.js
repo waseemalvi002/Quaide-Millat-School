@@ -4,5 +4,6 @@ const { getDashboardStats } = require('../controllers/dashboardController');
 const { protect, authorize } = require('../middleware/auth');
 
 router.get('/stats', protect, authorize('admin'), getDashboardStats);
+router.get('/admin', protect, authorize('admin'), getDashboardStats);
 
 module.exports = router;

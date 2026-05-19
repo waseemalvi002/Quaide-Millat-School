@@ -2,30 +2,48 @@
 
 import { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { DollarSign, Search, Plus, Eye, Download, X, AlertCircle, CheckCircle, Clock } from 'lucide-react';
+import { DollarSign, Search, Plus, Eye, Download, X, AlertCircle, CheckCircle, Clock, Upload } from 'lucide-react';
 import styles from '../admin.module.css';
 
 const DEMO_FEES = [
-  { _id: '1', student: 'Ali Khan', rollNumber: 'QM-01-001', class: 'Class 1', month: 'January 2025', amount: 2000, dueDate: '2025-01-15', status: 'paid', paidDate: '2025-01-10', lateAmount: 0 },
-  { _id: '2', student: 'Hassan Ahmed', rollNumber: 'QM-01-002', class: 'Class 1', month: 'January 2025', amount: 2000, dueDate: '2025-01-15', status: 'paid', paidDate: '2025-01-14', lateAmount: 0 },
-  { _id: '3', student: 'Muhammad Usman', rollNumber: 'QM-02-001', class: 'Class 2', month: 'January 2025', amount: 2000, dueDate: '2025-01-15', status: 'unpaid', paidDate: null, lateAmount: 200 },
-  { _id: '4', student: 'Bilal Hussain', rollNumber: 'QM-02-002', class: 'Class 2', month: 'January 2025', amount: 2000, dueDate: '2025-01-15', status: 'paid', paidDate: '2025-01-12', lateAmount: 0 },
-  { _id: '5', student: 'Ahmed Raza', rollNumber: 'QM-03-001', class: 'Class 3', month: 'January 2025', amount: 2200, dueDate: '2025-01-15', status: 'overdue', paidDate: null, lateAmount: 500 },
-  { _id: '6', student: 'Zain Abbas', rollNumber: 'QM-03-002', class: 'Class 3', month: 'January 2025', amount: 2200, dueDate: '2025-01-15', status: 'partial', paidDate: null, lateAmount: 0, paidAmount: 1000 },
-  { _id: '7', student: 'Hamza Malik', rollNumber: 'QM-04-001', class: 'Class 4', month: 'January 2025', amount: 2200, dueDate: '2025-01-15', status: 'paid', paidDate: '2025-01-05', lateAmount: 0 },
-  { _id: '8', student: 'Fahad Sheikh', rollNumber: 'QM-05-001', class: 'Class 5', month: 'January 2025', amount: 2500, dueDate: '2025-01-15', status: 'unpaid', paidDate: null, lateAmount: 200 },
+  { _id: '1', student: 'Ali Khan', rollNumber: 'QM-01-001', class: 'Class 1', month: 'January 2025', amount: 2000, dueDate: '2025-01-15', status: 'paid', paidDate: '2025-01-10', lateAmount: 0, profileImage: '/boy_1.png' },
+  { _id: '2', student: 'Hassan Ahmed', rollNumber: 'QM-01-002', class: 'Class 2', month: 'January 2025', amount: 2000, dueDate: '2025-01-15', status: 'paid', paidDate: '2025-01-14', lateAmount: 0, profileImage: '/boy_2.png' },
+  { _id: '3', student: 'Muhammad Usman', rollNumber: 'QM-02-001', class: 'Class 3', month: 'January 2025', amount: 2000, dueDate: '2025-01-15', status: 'unpaid', paidDate: null, lateAmount: 200, profileImage: '/boy_3.png' },
+  { _id: '4', student: 'Bilal Hussain', rollNumber: 'QM-02-002', class: 'Class 4', month: 'January 2025', amount: 2000, dueDate: '2025-01-15', status: 'paid', paidDate: '2025-01-12', lateAmount: 0, profileImage: '/boy_1.png' },
+  { _id: '5', student: 'Ahmed Raza', rollNumber: 'QM-03-001', class: 'Class 5', month: 'January 2025', amount: 2200, dueDate: '2025-01-15', status: 'overdue', paidDate: null, lateAmount: 500, profileImage: '/boy_2.png' },
+  { _id: '6', student: 'Zaid Ali', rollNumber: 'QM-06-001', class: 'Class 6', month: 'January 2025', amount: 2500, dueDate: '2025-01-15', status: 'paid', paidDate: '2025-01-10', lateAmount: 0, profileImage: '/boy_3.png' },
+  { _id: '7', student: 'Asad Malik', rollNumber: 'QM-07-001', class: 'Class 7', month: 'January 2025', amount: 2500, dueDate: '2025-01-15', status: 'unpaid', paidDate: null, lateAmount: 200, profileImage: '/boy_1.png' },
+  { _id: '8', student: 'Omar Sheikh', rollNumber: 'QM-08-001', class: 'Class 8', month: 'January 2025', amount: 2800, dueDate: '2025-01-15', status: 'paid', paidDate: '2025-01-12', lateAmount: 0, profileImage: '/boy_2.png' },
+  { _id: '9', student: 'Hamza Khan', rollNumber: 'QM-09-001', class: 'Class 9', month: 'January 2025', amount: 3000, dueDate: '2025-01-15', status: 'overdue', paidDate: null, lateAmount: 500, profileImage: '/boy_3.png' },
+  { _id: '10', student: 'Noman Niaz', rollNumber: 'QM-10-001', class: 'Class 10', month: 'January 2025', amount: 3500, dueDate: '2025-01-15', status: 'paid', paidDate: '2025-01-14', lateAmount: 0, profileImage: '/boy_1.png' },
+  { _id: '11', student: 'Sanaullah', rollNumber: 'QM-11-001', class: 'Class 11', month: 'January 2025', amount: 4000, dueDate: '2025-01-15', status: 'unpaid', paidDate: null, lateAmount: 300, profileImage: '/boy_2.png' },
+  { _id: '12', student: 'Mustafa Jatt', rollNumber: 'QM-12-001', class: 'Class 12', month: 'January 2025', amount: 4500, dueDate: '2025-01-15', status: 'paid', paidDate: '2025-01-10', lateAmount: 0, profileImage: '/boy_3.png' },
 ];
+
+const getStudentAvatar = (fee, index) => {
+  if (!fee) return '/boy_1.png';
+  if (fee.profileImage) return fee.profileImage;
+  const name = fee.student || '';
+  const isFemale = name.includes('Sara') || name.includes('Ayesha') || name.includes('Fatima') || name.includes('Zainab') || name.includes('Mariam');
+  return isFemale ? `/girl_${(index % 3) + 1}.png` : `/boy_${(index % 3) + 1}.png`;
+};
+
+
 
 export default function AdminFees() {
   const [fees, setFees] = useState(DEMO_FEES);
   const [search, setSearch] = useState('');
+  const [filterClass, setFilterClass] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
   const [showModal, setShowModal] = useState(false);
 
   const filtered = fees.filter(f => {
-    const matchSearch = f.student.toLowerCase().includes(search.toLowerCase()) || f.rollNumber.toLowerCase().includes(search.toLowerCase());
+    const studentName = f.student || '';
+    const rollNo = f.rollNumber || '';
+    const matchSearch = studentName.toLowerCase().includes(search.toLowerCase()) || rollNo.toLowerCase().includes(search.toLowerCase());
+    const matchClass = !filterClass || f.class === filterClass;
     const matchStatus = !filterStatus || f.status === filterStatus;
-    return matchSearch && matchStatus;
+    return matchSearch && matchClass && matchStatus;
   });
 
   const totalCollected = fees.filter(f => f.status === 'paid').reduce((s, f) => s + f.amount, 0);
@@ -70,6 +88,9 @@ export default function AdminFees() {
             <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
             <input type="text" placeholder="Search by student name or roll number..." value={search} onChange={(e) => setSearch(e.target.value)} className="form-input" style={{ paddingLeft: '40px' }} />
           </div>
+          <select value={filterClass} onChange={(e) => setFilterClass(e.target.value)} className="form-input" style={{ width: '160px' }}>
+            <option value="">All Classes</option>{[...Array(12)].map((_, i) => <option key={i} value={`Class ${i + 1}`}>Class {i + 1}</option>)}
+          </select>
           <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)} className="form-input" style={{ width: '160px' }}>
             <option value="">All Status</option>
             <option value="paid">Paid</option><option value="unpaid">Unpaid</option><option value="overdue">Overdue</option><option value="partial">Partial</option>
@@ -81,9 +102,39 @@ export default function AdminFees() {
             <table className="table">
               <thead><tr><th>Student</th><th>Roll No</th><th>Class</th><th>Month</th><th>Amount</th><th>Late Fee</th><th>Due Date</th><th>Status</th><th>Actions</th></tr></thead>
               <tbody>
-                {filtered.map(fee => (
-                  <tr key={fee._id}>
-                    <td style={{ fontWeight: 600 }}>{fee.student}</td>
+                {filtered.map((fee, index) => {
+                  const displayAvatar = getStudentAvatar(fee, index);
+                  return (
+                    <tr key={fee._id}>
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <div 
+                            style={{ position: 'relative', width: '45px', height: '45px', cursor: 'pointer', flexShrink: 0 }} 
+                            onClick={() => document.getElementById(`f-img-input-${fee._id}`).click()}
+                            title="Click to change image"
+                          >
+                            <div style={{ width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden', border: '2px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 4px 10px rgba(0,0,0,0.3)' }}>
+                              <img src={displayAvatar} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                              <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0, transition: '0.2s', borderRadius: '50%' }} onMouseEnter={e => e.currentTarget.style.opacity = 1} onMouseLeave={e => e.currentTarget.style.opacity = 0}>
+                                <Upload size={14} color="#fff" />
+                              </div>
+                            </div>
+                          <input 
+                            id={`f-img-input-${fee._id}`}
+                            type="file" 
+                            hidden 
+                            accept="image/*"
+                            onChange={(e) => {
+                              if (e.target.files?.[0]) {
+                                const url = URL.createObjectURL(e.target.files[0]);
+                                setFees(prev => prev.map(f => f._id === fee._id ? { ...f, profileImage: url } : f));
+                              }
+                            }}
+                          />
+                        </div>
+                        <span style={{ fontWeight: 600 }}>{fee.student}</span>
+                      </div>
+                    </td>
                     <td><span className="badge badge-primary">{fee.rollNumber}</span></td>
                     <td>{fee.class}</td>
                     <td>{fee.month}</td>
@@ -105,7 +156,8 @@ export default function AdminFees() {
                       </div>
                     </td>
                   </tr>
-                ))}
+                );
+              })}
               </tbody>
             </table>
           </div>

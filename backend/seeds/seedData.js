@@ -18,125 +18,231 @@ const seedData = async () => {
       Staff.deleteMany(), Class.deleteMany(), Fee.deleteMany()
     ]);
 
-    // 1. Create Admin
-    console.log('👤 Creating admin...');
-    const admin = await User.create({
-      name: 'Admin User', email: 'admin@qmschool.edu.pk',
-      password: 'admin123', role: 'admin', phone: '0300-1234567'
+    // 1. Password Pre-hashing for efficiency
+    console.log('🔑 Pre-hashing passwords...');
+    const adminPass = await bcrypt.hash('admin123', 10);
+    const teacherPass = await bcrypt.hash('teacher123', 10);
+    const studentPass = await bcrypt.hash('student123', 10);
+    const staffPass = await bcrypt.hash('staff123', 10);
+
+    // 2. Create Admin
+    console.log('👤 Creating admin user...');
+    await User.create({
+      name: 'Hamza Niaz',
+      email: 'admin@qmschool.edu.pk',
+      password: adminPass,
+      role: 'admin',
+      phone: '0300-1234567'
     });
 
-    // 2. Create Classes (1-10)
+    // 3. Create Classes (including Nursery, Classes 1-10, Class 11-12 Pre-Med and Pre-Eng)
     console.log('📚 Creating classes...');
-    const classData = [];
-    const categories = { 1: 'primary', 2: 'primary', 3: 'primary', 4: 'primary', 5: 'primary',
-      6: 'middle', 7: 'middle', 8: 'middle', 9: 'secondary', 10: 'secondary' };
+    const classDefs = [
+      { name: 'Nursery', numericLevel: 0, category: 'primary', monthlyFee: 1500, studentsCount: 60 },
+      { name: 'Class 1', numericLevel: 1, category: 'primary', monthlyFee: 2000, studentsCount: 70 },
+      { name: 'Class 2', numericLevel: 2, category: 'primary', monthlyFee: 2000, studentsCount: 70 },
+      { name: 'Class 3', numericLevel: 3, category: 'primary', monthlyFee: 2200, studentsCount: 70 },
+      { name: 'Class 4', numericLevel: 4, category: 'primary', monthlyFee: 2200, studentsCount: 70 },
+      { name: 'Class 5', numericLevel: 5, category: 'primary', monthlyFee: 2500, studentsCount: 70 },
+      { name: 'Class 6', numericLevel: 6, category: 'middle', monthlyFee: 2800, studentsCount: 70 },
+      { name: 'Class 7', numericLevel: 7, category: 'middle', monthlyFee: 2800, studentsCount: 70 },
+      { name: 'Class 8', numericLevel: 8, category: 'middle', monthlyFee: 3000, studentsCount: 70 },
+      { name: 'Class 9', numericLevel: 9, category: 'high', monthlyFee: 3500, studentsCount: 70 },
+      { name: 'Class 10', numericLevel: 10, category: 'high', monthlyFee: 3500, studentsCount: 70 },
+      { name: 'Class 11 (Pre-Med)', numericLevel: 11, category: 'high', monthlyFee: 4500, studentsCount: 35, onlySection: 'A' },
+      { name: 'Class 11 (Pre-Eng)', numericLevel: 11, category: 'high', monthlyFee: 4500, studentsCount: 35, onlySection: 'B' },
+      { name: 'Class 12 (Pre-Med)', numericLevel: 12, category: 'high', monthlyFee: 5000, studentsCount: 35, onlySection: 'A' },
+      { name: 'Class 12 (Pre-Eng)', numericLevel: 12, category: 'high', monthlyFee: 5000, studentsCount: 35, onlySection: 'B' },
+    ];
+
     const subjectsByLevel = {
       primary: ['English', 'Urdu', 'Mathematics', 'Islamiyat', 'General Knowledge'],
       middle: ['English', 'Urdu', 'Mathematics', 'Islamiyat', 'Science', 'Social Studies', 'Computer'],
-      secondary: ['English', 'Urdu', 'Mathematics', 'Islamiyat', 'Physics', 'Chemistry', 'Biology', 'Computer Science', 'Pakistan Studies']
+      high: ['English', 'Urdu', 'Mathematics', 'Islamiyat', 'Physics', 'Chemistry', 'Biology', 'Computer Science', 'Pakistan Studies']
     };
-    for (let i = 1; i <= 10; i++) {
-      const cat = categories[i];
-      const subjects = subjectsByLevel[cat].map(s => ({ name: s, code: s.substring(0, 3).toUpperCase() }));
-      classData.push({
-        name: `Class ${i}`, numericLevel: i, category: cat,
-        sections: [{ name: 'A', capacity: 40 }, { name: 'B', capacity: 40 }],
-        subjects, monthlyFee: 1500 + (i * 200), academicYear: '2024-2025'
-      });
-    }
-    const classes = await Class.insertMany(classData);
 
-    // 3. Create Teachers
-    console.log('👨‍🏫 Creating teachers...');
+    const insertedClasses = await Class.insertMany(
+      classDefs.map(c => {
+        const subjects = subjectsByLevel[c.category].map(s => ({ name: s, code: s.substring(0, 3).toUpperCase() }));
+        const sections = c.onlySection 
+          ? [{ name: c.onlySection, capacity: 40 }]
+          : [{ name: 'A', capacity: 40 }, { name: 'B', capacity: 40 }];
+        
+        return {
+          name: c.name,
+          numericLevel: c.numericLevel,
+          category: c.category,
+          sections,
+          subjects,
+          monthlyFee: c.monthlyFee,
+          academicYear: '2025-2026'
+        };
+      })
+    );
+
+    // 4. Create 25 Teachers
+    console.log('👨‍🏫 Creating 25 teachers...');
     const teacherNames = [
-      { f: 'Ahmed', l: 'Khan', sub: ['Mathematics'] },
-      { f: 'Muhammad', l: 'Ali', sub: ['English'] },
-      { f: 'Usman', l: 'Sheikh', sub: ['Urdu'] },
-      { f: 'Bilal', l: 'Ahmad', sub: ['Science', 'Physics'] },
-      { f: 'Hassan', l: 'Raza', sub: ['Islamiyat'] },
-      { f: 'Kashif', l: 'Mehmood', sub: ['Computer Science'] },
-      { f: 'Farhan', l: 'Siddiqui', sub: ['Chemistry'] },
-      { f: 'Imran', l: 'Qureshi', sub: ['Biology'] },
+      'Ahmed Khan', 'Muhammad Farooq', 'Sajid Ali', 'Zia-ur-Rehman', 'Asif Mahmood',
+      'Noman Sheikh', 'Zeeshan Haider', 'Hafiz Muhammad', 'Tanveer Ahmed', 'Irfan Jameel',
+      'Rashid Minhas', 'Mustafa Akram', 'Bilal Warraich', 'Kashif Mehmood', 'Amjad Sabri',
+      'Shakeel Ahmed', 'Junaid Jamshed', 'Tahir Shah', 'Waseem Akram', 'Shoaib Akhtar',
+      'Zahid Hussain', 'Nida Yasir', 'Faisal Qureshi', 'Hina Dilpazeer', 'Babar Azam'
     ];
-    const teachers = [];
-    for (let i = 0; i < teacherNames.length; i++) {
-      const t = teacherNames[i];
-      const user = await User.create({
-        name: `${t.f} ${t.l}`, email: `${t.f.toLowerCase()}.${t.l.toLowerCase()}@qmschool.edu.pk`,
-        password: 'teacher123', role: 'teacher', phone: `030${i}-1234567`
-      });
-      const teacher = await Teacher.create({
-        user: user._id, firstName: t.f, lastName: t.l,
-        fatherName: `Mr. ${t.l}`, employeeId: `TCH-${String(i + 1).padStart(4, '0')}`,
-        qualification: 'M.Ed', specialization: t.sub[0], experience: 3 + i,
-        subjects: t.sub, designation: 'Senior Teacher', department: 'Academics',
-        phone: `030${i}-1234567`, address: `House ${i + 1}, Block ${i + 1}, Karachi`,
-        baseSalary: 35000 + (i * 5000), allowances: 5000,
-        profileImage: { url: '/images/default-teacher.png', isDefault: true }
-      });
-      teachers.push(teacher);
-    }
 
-    // 4. Create Students (5 per class = 50 students)
-    console.log('🎓 Creating students...');
-    const firstNames = ['Ali', 'Hamza', 'Zain', 'Abdullah', 'Bilal', 'Umar', 'Hassan', 'Saad', 'Fahad', 'Owais'];
-    const lastNames = ['Khan', 'Ahmed', 'Malik', 'Sheikh', 'Qureshi', 'Siddiqui', 'Raza', 'Iqbal', 'Hussain', 'Shah'];
-    let studentCount = 0;
-    for (let c = 0; c < classes.length; c++) {
-      for (let s = 0; s < 5; s++) {
-        studentCount++;
+    const teacherUserIds = Array.from({ length: 25 }, () => new mongoose.Types.ObjectId());
+    const teacherUsers = teacherNames.map((name, i) => ({
+      _id: teacherUserIds[i],
+      name,
+      email: `${name.toLowerCase().replace(/[^a-z0-9]/g, '')}@qmschool.edu.pk`,
+      password: teacherPass,
+      role: 'teacher',
+      phone: `030${i % 10}-${String(i).padStart(7, '0')}`
+    }));
+    await User.insertMany(teacherUsers);
+
+    const teacherDocs = teacherNames.map((name, i) => {
+      const parts = name.split(' ');
+      const firstName = parts[0];
+      const lastName = parts.slice(1).join(' ') || 'Khan';
+      return {
+        user: teacherUserIds[i],
+        firstName,
+        lastName,
+        fatherName: `Mr. ${lastName}`,
+        employeeId: `TCH-${String(i + 1).padStart(4, '0')}`,
+        qualification: i % 2 === 0 ? 'M.Sc Mathematics' : 'M.A English',
+        specialization: i % 3 === 0 ? 'Science' : 'Arts',
+        experience: 4 + (i % 8),
+        subjects: [i % 2 === 0 ? 'Mathematics' : 'English'],
+        designation: i === 1 ? 'Head Teacher' : 'Senior Teacher',
+        department: 'Academics',
+        phone: `030${i % 10}-${String(i).padStart(7, '0')}`,
+        address: `Karachi, Pakistan`,
+        baseSalary: 35000 + (i * 1000),
+        allowances: 3000,
+        profileImage: { url: '/images/default-teacher.png', isDefault: true }
+      };
+    });
+    await Teacher.insertMany(teacherDocs);
+
+    // 5. Create 6 Staff Members
+    console.log('🧹 Creating 6 staff members...');
+    const staffNames = [
+      { name: 'Rashid Peon', role: 'peon', designation: 'Senior Peon', salary: 20000 },
+      { name: 'Akbar Ali', role: 'guard', designation: 'Security Guard', salary: 18000 },
+      { name: 'Nasir Ahmed', role: 'clerk', designation: 'Office Clerk', salary: 25000 },
+      { name: 'Shafiq Hussain', role: 'lab-assistant', designation: 'Lab Assistant', salary: 22000 },
+      { name: 'Zameer Librarian', role: 'librarian', designation: 'Librarian', salary: 24000 },
+      { name: 'Munir Driver', role: 'driver', designation: 'Van Driver', salary: 21000 }
+    ];
+
+    const staffUserIds = Array.from({ length: 6 }, () => new mongoose.Types.ObjectId());
+    const staffUsers = staffNames.map((sm, i) => ({
+      _id: staffUserIds[i],
+      name: sm.name,
+      email: `${sm.name.toLowerCase().replace(/[^a-z0-9]/g, '')}@qmschool.edu.pk`,
+      password: staffPass,
+      role: 'staff',
+      phone: `032${i % 10}-${String(i).padStart(7, '0')}`
+    }));
+    await User.insertMany(staffUsers);
+
+    const staffDocs = staffNames.map((sm, i) => {
+      const parts = sm.name.split(' ');
+      const firstName = parts[0];
+      const lastName = parts.slice(1).join(' ') || 'Ali';
+      return {
+        user: staffUserIds[i],
+        firstName,
+        lastName,
+        employeeId: `STF-${String(i + 1).padStart(4, '0')}`,
+        designation: sm.designation,
+        role: sm.role,
+        phone: `032${i % 10}-${String(i).padStart(7, '0')}`,
+        baseSalary: sm.salary,
+        profileImage: { url: '/images/default-staff.png', isDefault: true }
+      };
+    });
+    await Staff.insertMany(staffDocs);
+
+    // 6. Create 900 Students
+    console.log('🎓 Generating 900 student documents...');
+    const firstNames = ['Ali', 'Hamza', 'Zain', 'Abdullah', 'Bilal', 'Umar', 'Hassan', 'Saad', 'Fahad', 'Owais', 'Sara', 'Ayesha', 'Fatima', 'Zainab', 'Mariam', 'Sana', 'Sidra', 'Amina', 'Hina', 'Nida'];
+    const lastNames = ['Khan', 'Ahmed', 'Malik', 'Sheikh', 'Qureshi', 'Siddiqui', 'Raza', 'Iqbal', 'Hussain', 'Shah', 'Alvi', 'Lodhi', 'Mughal', 'Jatt', 'Chaudhry', 'Farooq', 'Ansari', 'Mirza', 'Dar', 'Butt'];
+
+    const studentUsers = [];
+    const studentDocs = [];
+    let studentTotalCount = 0;
+
+    for (let c = 0; c < classDefs.length; c++) {
+      const def = classDefs[c];
+      const mongoClass = insertedClasses.find(cl => cl.name === def.name);
+      const count = def.studentsCount;
+
+      for (let s = 0; s < count; s++) {
+        studentTotalCount++;
+        const userId = new mongoose.Types.ObjectId();
+        
         const fn = firstNames[(c + s) % firstNames.length];
         const ln = lastNames[(c + s + 1) % lastNames.length];
-        const rollNum = `QM-${String(classes[c].numericLevel).padStart(2, '0')}-${String(s + 1).padStart(3, '0')}`;
-        const user = await User.create({
-          name: `${fn} ${ln}`, email: `student${studentCount}@qmschool.edu.pk`,
-          password: 'student123', role: 'student'
+        const fullName = `${fn} ${ln}`;
+        
+        let sectionName = 'A';
+        if (def.onlySection) {
+          sectionName = def.onlySection;
+        } else {
+          sectionName = s < (count / 2) ? 'A' : 'B';
+        }
+
+        const rollNum = `QM-${String(mongoClass.numericLevel).padStart(2, '0')}-${sectionName}-${String((s % (count / 2)) + 1).padStart(3, '0')}`;
+
+        studentUsers.push({
+          _id: userId,
+          name: fullName,
+          email: `student${studentTotalCount}@qmschool.edu.pk`,
+          password: studentPass,
+          role: 'student'
         });
-        await Student.create({
-          user: user._id, firstName: fn, lastName: ln, fatherName: `Mr. ${ln}`,
-          dateOfBirth: new Date(2015 - c, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1),
-          rollNumber: rollNum, admissionNumber: `ADM-${String(studentCount).padStart(4, '0')}`,
-          currentClass: classes[c]._id, section: s < 3 ? 'A' : 'B',
-          phone: `031${studentCount}-0000000`, address: `Street ${studentCount}, Karachi`,
-          monthlyFee: classes[c].monthlyFee,
+
+        studentDocs.push({
+          user: userId,
+          firstName: fn,
+          lastName: ln,
+          fatherName: `Mr. ${ln}`,
+          dateOfBirth: new Date(2018 - mongoClass.numericLevel, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1),
+          rollNumber: rollNum,
+          admissionNumber: `ADM-${String(studentTotalCount).padStart(5, '0')}`,
+          currentClass: mongoClass._id,
+          section: sectionName,
+          phone: `031${studentTotalCount % 10}-${String(studentTotalCount).padStart(7, '0')}`,
+          address: `Karachi, Pakistan`,
+          monthlyFee: mongoClass.monthlyFee,
           profileImage: { url: '/images/default-student.png', isDefault: true }
         });
       }
     }
 
-    // 5. Create Staff
-    console.log('🧹 Creating staff...');
-    const staffMembers = [
-      { f: 'Rashid', l: 'Peon', role: 'peon', designation: 'Senior Peon', salary: 18000 },
-      { f: 'Aslam', l: 'Guard', role: 'guard', designation: 'Security Guard', salary: 20000 },
-      { f: 'Khalid', l: 'Clerk', role: 'clerk', designation: 'Office Clerk', salary: 25000 },
-      { f: 'Naveed', l: 'Driver', role: 'driver', designation: 'School Van Driver', salary: 22000 },
-    ];
-    for (let i = 0; i < staffMembers.length; i++) {
-      const sm = staffMembers[i];
-      const user = await User.create({
-        name: `${sm.f} ${sm.l}`, email: `${sm.f.toLowerCase()}@qmschool.edu.pk`,
-        password: 'staff123', role: 'staff'
-      });
-      await Staff.create({
-        user: user._id, firstName: sm.f, lastName: sm.l,
-        employeeId: `STF-${String(i + 1).padStart(4, '0')}`,
-        designation: sm.designation, role: sm.role,
-        phone: `032${i}-0000000`, baseSalary: sm.salary,
-        profileImage: { url: '/images/default-staff.png', isDefault: true }
-      });
-    }
+    console.log(`👤 Inserting ${studentUsers.length} student users in database...`);
+    await User.insertMany(studentUsers);
 
-    // 6. Create Fee Records
-    console.log('💰 Creating fee records...');
+    console.log(`🎓 Inserting ${studentDocs.length} student profiles in database...`);
+    await Student.insertMany(studentDocs);
+
+    // 7. Create Fee Records
+    console.log('💰 Creating fee records for first 100 students...');
     const students = await Student.find();
     const months = ['January 2025', 'February 2025', 'March 2025'];
-    for (const student of students.slice(0, 20)) {
+    const feeDocs = [];
+    for (const student of students.slice(0, 100)) {
       for (const month of months) {
         const isPaid = Math.random() > 0.3;
-        await Fee.create({
-          student: student._id, feeType: 'monthly', month,
-          amount: student.monthlyFee, dueDate: new Date(),
+        feeDocs.push({
+          student: student._id,
+          feeType: 'monthly',
+          month,
+          amount: student.monthlyFee,
+          dueDate: new Date(),
           status: isPaid ? 'paid' : 'unpaid',
           paidAmount: isPaid ? student.monthlyFee : 0,
           paymentDate: isPaid ? new Date() : undefined,
@@ -144,12 +250,13 @@ const seedData = async () => {
         });
       }
     }
+    await Fee.insertMany(feeDocs);
 
     console.log('\n✅ Seed data created successfully!');
     console.log('📧 Admin Login: admin@qmschool.edu.pk / admin123');
-    console.log('📧 Teacher Login: ahmed.khan@qmschool.edu.pk / teacher123');
+    console.log('📧 Teacher Login: ahmedkhan@qmschool.edu.pk / teacher123');
     console.log('📧 Student Login: student1@qmschool.edu.pk / student123');
-    console.log(`\n📊 Summary: ${await User.countDocuments()} users, ${await Student.countDocuments()} students, ${await Teacher.countDocuments()} teachers, ${await Staff.countDocuments()} staff, ${classes.length} classes`);
+    console.log(`\n📊 Summary: ${await User.countDocuments()} total users, ${await Student.countDocuments()} students, ${await Teacher.countDocuments()} teachers, ${await Staff.countDocuments()} staff, ${insertedClasses.length} classes`);
 
     process.exit(0);
   } catch (error) {

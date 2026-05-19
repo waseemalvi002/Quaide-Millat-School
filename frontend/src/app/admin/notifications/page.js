@@ -2,10 +2,23 @@
 
 import { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { Bell, Send, Trash2, X, Check, AlertCircle, Info, CheckCircle } from 'lucide-react';
+import { Bell, Send, Trash2, X, Check, AlertCircle, Info, CheckCircle, ShieldCheck, UserPlus, XCircle } from 'lucide-react';
 import styles from '../admin.module.css';
 
 const DEMO = [
+  { 
+    _id: 'reg_1', 
+    title: 'New User Registration', 
+    name: 'Waseem Akram', 
+    role: 'Teacher',
+    message: 'Waseem Akram has requested to join the portal as a Teacher. Please verify and approve.', 
+    type: 'approval', 
+    priority: 'high', 
+    recipients: 'Admin Only', 
+    date: '2025-05-16', 
+    isRead: false, 
+    status: 'pending' 
+  },
   { _id: '1', title: 'Fee Reminder', message: 'Monthly fee for January is due. Please pay before 15th.', type: 'fee', priority: 'high', recipients: 'All Parents', date: '2025-01-10', isRead: false },
   { _id: '2', title: 'PTM Announcement', message: 'Parent-Teacher meeting on 25th January at 10:00 AM.', type: 'general', priority: 'medium', recipients: 'All Parents', date: '2025-01-12', isRead: true },
   { _id: '3', title: 'Holiday Notice', message: 'School will remain closed on 5th February (Kashmir Day).', type: 'general', priority: 'low', recipients: 'All Users', date: '2025-01-15', isRead: false },
@@ -18,8 +31,8 @@ export default function AdminNotifications() {
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({ title: '', message: '', type: 'general', priority: 'medium', recipients: 'All Users' });
 
-  const typeIcons = { fee: <AlertCircle size={16} />, general: <Info size={16} />, result: <CheckCircle size={16} />, class: <Bell size={16} /> };
-  const typeColors = { fee: '#ef4444', general: '#3b82f6', result: '#10b981', class: '#f59e0b' };
+  const typeIcons = { approval: <ShieldCheck size={16} />, fee: <AlertCircle size={16} />, general: <Info size={16} />, result: <CheckCircle size={16} />, class: <Bell size={16} /> };
+  const typeColors = { approval: '#8b5cf6', fee: '#ef4444', general: '#3b82f6', result: '#10b981', class: '#f59e0b' };
   
   const handleSend = () => {
     setNotifications(prev => [{ ...form, _id: Date.now().toString(), date: new Date().toISOString().split('T')[0], isRead: false }, ...prev]);
@@ -84,6 +97,32 @@ export default function AdminNotifications() {
                   <span style={{ fontSize: '0.8rem', color: '#94a3b8', fontWeight: 500 }}>{notif.date}</span>
                 </div>
                 <p style={{ fontSize: '0.9rem', color: '#e2e8f0', marginBottom: '16px', lineHeight: '1.6' }}>{notif.message}</p>
+                
+                {notif.type === 'approval' && notif.status === 'pending' && (
+                  <div style={{ display: 'flex', gap: '10px', marginBottom: '16px' }}>
+                    <button 
+                      onClick={() => {
+                        setNotifications(prev => prev.map(n => n._id === notif._id ? { ...n, status: 'approved', message: `APPROVED: ${n.message}` } : n));
+                        alert('User approved successfully!');
+                      }}
+                      className="btn btn-sm" 
+                      style={{ background: '#10b981', color: 'white', display: 'flex', alignItems: 'center', gap: '6px' }}
+                    >
+                      <Check size={14} /> Approve User
+                    </button>
+                    <button 
+                      onClick={() => {
+                        setNotifications(prev => prev.map(n => n._id === notif._id ? { ...n, status: 'rejected', message: `REJECTED: ${n.message}` } : n));
+                        alert('User registration rejected.');
+                      }}
+                      className="btn btn-sm" 
+                      style={{ background: 'rgba(239, 68, 68, 0.2)', color: '#f87171', border: '1px solid #f87171', display: 'flex', alignItems: 'center', gap: '6px' }}
+                    >
+                      <XCircle size={14} /> Reject
+                    </button>
+                  </div>
+                )}
+
                 <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                   <span className="badge" style={{ 
                     background: notif.priority === 'high' ? 'rgba(239, 68, 68, 0.2)' : notif.priority === 'medium' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(96, 165, 250, 0.2)',
@@ -93,6 +132,11 @@ export default function AdminNotifications() {
                     letterSpacing: '1px'
                   }}>{notif.priority}</span>
                   <span style={{ fontSize: '0.8rem', color: '#94a3b8', fontWeight: 600 }}>Recipient: <span style={{ color: '#60a5fa' }}>{notif.recipients}</span></span>
+                  {notif.status && (
+                    <span className="badge" style={{ background: notif.status === 'approved' ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.05)', color: notif.status === 'approved' ? '#10b981' : '#94a3b8' }}>
+                      {notif.status.toUpperCase()}
+                    </span>
+                  )}
                 </div>
               </div>
               <button className="btn btn-sm btn-danger" style={{ flexShrink: 0, borderRadius: '10px' }} onClick={() => setNotifications(prev => prev.filter(n => n._id !== notif._id))}><Trash2 size={16} /></button>

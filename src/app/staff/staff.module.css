@@ -1,0 +1,25 @@
+.dashboard { animation: fadeIn 0.4s ease; }
+.header { margin-bottom: 24px; }
+.header h1 { font-size: 1.75rem; color: var(--gray-900); margin-bottom: 4px; }
+.header p { color: var(--gray-500); }
+
+.statsGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+.statCard { background: var(--white); border-radius: var(--radius-md); padding: 20px; display: flex; align-items: center; gap: 16px; border: 1px solid var(--gray-100); }
+.statCard h3 { font-size: 1.4rem; font-weight: 700; color: var(--gray-900); }
+.statCard p { font-size: 0.85rem; color: var(--gray-500); }
+
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.card { background: var(--white); border-radius: var(--radius-md); border: 1px solid var(--gray-100); overflow: hidden; }
+.cardHeader { padding: 20px 24px; border-bottom: 1px solid var(--gray-100); }
+.cardHeader h3 { font-size: 1rem; font-weight: 600; color: var(--gray-800); }
+
+.salaryDetails, .attendance { padding: 20px 24px; }
+.salaryItem, .attItem { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--gray-100); }
+.salaryItem:last-child, .attItem:last-child { border: none; }
+.net { color: var(--success); font-weight: 700; font-size: 1.1rem; }
+.present { color: var(--success); font-weight: 600; }
+.absent { color: var(--danger); font-weight: 600; }
+.leave { color: var(--warning); font-weight: 600; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 768px) { .statsGrid, .grid { grid-template-columns: 1fr; } }

@@ -1,18 +1,20 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { useAuth } from '@/context/AuthContext';
 import { dashboardAPI } from '@/lib/api';
 import { useThemeLang } from '@/context/ThemeLangContext';
 import {
   Users, GraduationCap, UserCheck, DollarSign, Calendar,
-  TrendingUp, Clock, AlertCircle, ShieldCheck
+  TrendingUp, Clock, AlertCircle, ShieldCheck, Edit
 } from 'lucide-react';
 import styles from './admin.module.css';
 
 export default function AdminDashboard() {
   const { user } = useAuth();
+  const router = useRouter();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const { t, lang } = useThemeLang();
@@ -29,11 +31,11 @@ export default function AdminDashboard() {
       console.error('Error fetching stats:', error);
       // Use demo data if API fails
       setStats({
-        students: { total: 50, active: 48, newThisMonth: 5 },
-        teachers: { total: 8, active: 8 },
-        staff: { total: 4, active: 4 },
+        students: { total: 900, active: 900, newThisMonth: 35 },
+        teachers: { total: 25, active: 25 },
+        staff: { total: 6, active: 6 },
         fees: { collected: 450000, pending: 75000, overdue: 15000 },
-        attendance: { todayPresent: 92, todayAbsent: 8 },
+        attendance: { todayPresent: 95, todayAbsent: 5 },
         recentAdmissions: []
       });
     } finally {
@@ -48,7 +50,8 @@ export default function AdminDashboard() {
       icon: Users,
       color: '#3b82f6',
       bg: '#eff6ff',
-      trend: '+5 ' + t('this_month')
+      trend: '+5 ' + t('this_month'),
+      link: '/admin/students'
     },
     {
       title: t('total_teachers'),
@@ -56,7 +59,8 @@ export default function AdminDashboard() {
       icon: GraduationCap,
       color: '#10b981',
       bg: '#d1fae5',
-      trend: t('all_active')
+      trend: t('all_active'),
+      link: '/admin/teachers'
     },
     {
       title: t('total_staff'),
@@ -64,7 +68,8 @@ export default function AdminDashboard() {
       icon: UserCheck,
       color: '#f59e0b',
       bg: '#fef3c7',
-      trend: t('all_active')
+      trend: t('all_active'),
+      link: '/admin/staff'
     },
     {
       title: t('fees') + ' ' + t('collected'),
@@ -72,7 +77,8 @@ export default function AdminDashboard() {
       icon: DollarSign,
       color: '#8b5cf6',
       bg: '#ede9fe',
-      trend: t('this_month')
+      trend: t('this_month'),
+      link: '/admin/fees'
     }
   ];
 
@@ -94,7 +100,12 @@ export default function AdminDashboard() {
         {/* Stats Grid */}
         <div className={styles.statsGrid}>
           {statCards.map((stat, index) => (
-            <div key={index} className={styles.statCard} style={{ animationDelay: `${index * 0.1}s` }}>
+            <div 
+              key={index} 
+              className={styles.statCard} 
+              style={{ animationDelay: `${index * 0.1}s`, cursor: 'pointer' }}
+              onClick={() => router.push(stat.link)}
+            >
               <div className={styles.statIcon} style={{ background: stat.bg, color: stat.color }}>
                 <stat.icon size={24} />
               </div>
@@ -114,27 +125,27 @@ export default function AdminDashboard() {
               <h3>{t('quick_actions')}</h3>
             </div>
             <div className={styles.quickActions}>
-              <button className={styles.actionBtn}>
+              <button className={styles.actionBtn} onClick={() => router.push('/admin/students')}>
                 <Users size={20} />
                 <span>{t('add_student')}</span>
               </button>
-              <button className={styles.actionBtn}>
-                <GraduationCap size={20} />
+              <button className={styles.actionBtn} onClick={() => router.push('/admin/teachers')}>
+                <Users size={20} />
                 <span>{t('add_teacher')}</span>
               </button>
-              <button className={styles.actionBtn}>
+              <button className={styles.actionBtn} onClick={() => router.push('/admin/fees')}>
                 <DollarSign size={20} />
                 <span>{t('generate_fee')}</span>
               </button>
-              <button className={styles.actionBtn}>
+              <button className={styles.actionBtn} onClick={() => router.push('/admin/attendance')}>
                 <Calendar size={20} />
                 <span>{t('mark_attendance')}</span>
               </button>
-              <button className={styles.actionBtn}>
+              <button className={styles.actionBtn} onClick={() => router.push('/admin/results')}>
                 <TrendingUp size={20} />
                 <span>{t('upload_results')}</span>
               </button>
-              <button className={styles.actionBtn}>
+              <button className={styles.actionBtn} onClick={() => router.push('/admin/notifications')}>
                 <AlertCircle size={20} />
                 <span>{t('send_notice')}</span>
               </button>
@@ -198,72 +209,86 @@ export default function AdminDashboard() {
               <Clock size={20} color="#f59e0b" />
             </div>
             <div className={styles.classList}>
-              {['Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5'].map((cls, i) => (
-                <div key={i} className={styles.classItem}>
-                  <span>{cls}</span>
-                  <span className={styles.classCount}>{8 + i} {t('students')}</span>
+              {[
+                { name: 'Nursery', count: 60 },
+                { name: 'Class 1', count: 70 },
+                { name: 'Class 2', count: 70 },
+                { name: 'Class 3', count: 70 },
+                { name: 'Class 4', count: 70 },
+                { name: 'Class 5', count: 70 },
+                { name: 'Class 6', count: 70 },
+                { name: 'Class 7', count: 70 },
+                { name: 'Class 8', count: 70 },
+                { name: 'Class 9', count: 70 },
+                { name: 'Class 10', count: 70 },
+                { name: 'Class 11 (Pre-Med)', count: 35 },
+                { name: 'Class 11 (Pre-Eng)', count: 35 },
+                { name: 'Class 12 (Pre-Med)', count: 35 },
+                { name: 'Class 12 (Pre-Eng)', count: 35 }
+              ].map((cls, i) => (
+                <div key={i} className={styles.classItem} style={{ cursor: 'pointer', transition: 'all 0.2s' }} onClick={() => router.push('/admin/students')}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(250, 204, 21, 0.1)', color: '#facc15', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: 800 }}>{i + 1}</div>
+                    <span>{cls.name}</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    <span className={styles.classCount}>{cls.count} {t('students')}</span>
+                    <button 
+                      className={styles.editBtn} 
+                      style={{ padding: '4px 8px', borderRadius: '6px', fontSize: '0.7rem' }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const newName = prompt(`Edit Details for ${cls.name}:`, cls.name);
+                        if (newName) alert(`${cls.name} updated successfully!`);
+                      }}
+                    >
+                      <Edit size={12} />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* User Credentials Management & Recent Activity */}
-        <div className={styles.dashboardGrid}>
+        {/* User Credentials Management */}
+        <div className={styles.fullWidthCard}>
           <div className={styles.card}>
             <div className={styles.cardHeader}>
-              <h3>User & Access Management</h3>
+              <h3>{lang === 'ur' ? 'صارف اور رسائی کا انتظام' : 'User & Access Management'}</h3>
               <ShieldCheck size={20} color="#3b82f6" />
             </div>
             <div className={styles.userTableContainer}>
               <table className={styles.userTable}>
                 <thead>
                   <tr>
-                    <th>Role</th>
-                    <th>Default Username</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                    <th>{t('role')}</th>
+                    <th>{lang === 'ur' ? 'پہلے سے طے شدہ صارف نام' : 'Default Username'}</th>
+                    <th>{t('status')}</th>
+                    <th>{t('actions')}</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {['Student', 'Teacher', 'Staff', "Parent's"].map((roleName) => (
-                    <tr key={roleName}>
-                      <td><span className={styles.roleBadge}>{roleName}</span></td>
-                      <td>{roleName.toLowerCase()}@qmschool.com</td>
-                      <td><span className={styles.statusActive}>Active</span></td>
+                  {[
+                    { key: 'Student',  label: lang === 'ur' ? 'طالب علم' : 'Student' },
+                    { key: 'Teacher',  label: lang === 'ur' ? 'استاد' : 'Teacher' },
+                    { key: 'Staff',    label: lang === 'ur' ? 'عملہ' : 'Staff' },
+                    { key: "Parent's", label: lang === 'ur' ? 'والدین' : "Parent's" },
+                  ].map(({ key, label }) => (
+                    <tr key={key}>
+                      <td><span className={styles.roleBadge}>{label}</span></td>
+                      <td>{key.toLowerCase()}@qmschool.com</td>
+                      <td><span className={styles.statusActive}>{t('active')}</span></td>
                       <td>
                         <button className={styles.editBtn} onClick={() => {
-                          const newPass = prompt(`Set new password for all ${roleName} accounts:`);
-                          if (newPass) alert(`All ${roleName} passwords updated successfully!`);
-                        }}>Update</button>
+                          const newPass = prompt(`Set new password for all ${key} accounts:`);
+                          if (newPass) alert(`All ${key} passwords updated!`);
+                        }}>{t('update')}</button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-            </div>
-          </div>
-
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <h3>Recent System Activity</h3>
-              <Clock size={20} color="#10b981" />
-            </div>
-            <div className={styles.activityList}>
-              {[
-                { user: 'Admin', action: 'Updated Student Passwords', time: '2 mins ago' },
-                { user: 'Teacher', action: 'Marked Attendance - Class 4', time: '15 mins ago' },
-                { user: 'System', action: 'Database Backup Completed', time: '1 hour ago' },
-                { user: 'Staff', action: 'Updated Fee Record #402', time: '3 hours ago' }
-              ].map((act, i) => (
-                <div key={i} className={styles.activityItem}>
-                  <div className={styles.activityInfo}>
-                    <span className={styles.activityUser}>{act.user}</span>
-                    <span className={styles.activityAction}>{act.action}</span>
-                  </div>
-                  <span className={styles.activityTime}>{act.time}</span>
-                </div>
-              ))}
             </div>
           </div>
         </div>
