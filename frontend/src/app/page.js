@@ -1,3 +1,4 @@
+/* Build: force-desktop-mockup-v2 */
 'use client';
 
 import { useState } from 'react';
