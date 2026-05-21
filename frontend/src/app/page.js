@@ -426,7 +426,7 @@ export default function HomePage() {
         .admin-floating-bell {
           position: absolute;
           top: 5.8%;
-          left: 21.8%;
+          left: 23.5%;
           z-index: 100;
           display: flex;
           align-items: center;
@@ -441,6 +441,11 @@ export default function HomePage() {
           transition: all 0.3s ease;
         }
 
+        .admin-floating-bell:hover {
+          background: rgba(239, 68, 68, 0.25);
+          transform: scale(1.1);
+        }
+
         .admin-floating-bell :global(.bell-icon) {
           width: 22px;
           height: 22px;
@@ -448,11 +453,12 @@ export default function HomePage() {
 
         .admin-floating-bell .bell-badge-inner {
           position: absolute;
-          top: -8px;
-          right: -8px;
-          background: #ef4444;
-          color: white;
-          border-radius: 50%;
+          top: -4px;
+          right: -4px;
+          background: #facc15;
+          color: #000;
+          font-weight: 900;
+          font-size: 11px;
           width: 18px;
           height: 18px;
           font-size: 10px;
@@ -1106,7 +1112,6 @@ export default function HomePage() {
           RESPONSIVE BREAKPOINTS (MEDIA QUERIES)
           ====================================================
         */
-        /* Always show the beautiful original desktop homepage mockup on all devices */
         .desktop-mockup {
           display: block !important;
         }
